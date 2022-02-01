@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="">
+    <script>
+    </script>
+</head>
+
+<body>
+    <ul>
+
+        {% for branchProduct in branchProducts %}
+        <li>{{branchProduct}}</li>
+
+        <a href="{% url 'branch:branchProductView' branchProduct.id 'delete' %}"> DELETE</a>
+        <a href="{% url 'branch:branchProductView' branchProduct.id 'edit' %}"> Edict</a> {% endfor %}
+
+    </ul>
+    <form action="{% url 'branch:branchProductView' branchProductId action %}" method="post">
+        {% csrf_token %} {{form}}
+        <button type="submit">
+            
+            {% if action == "add" %}
+                ADD
+            {% else %}
+                UPDATE
+            {% endif %}
+                
+        </button>
+    </form>
+
+</body>
+<script>
+</script>
+
+</html>

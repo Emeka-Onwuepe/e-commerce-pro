@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="">
+    <script>
+    </script>
+</head>
+
+<body>
+    <h1>Hello2 </h1>
+    <ul>
+
+        {% for productType in productTypes %}
+        <li>{{productType}}</li>
+
+        <a href="{% url 'product:productTypeView' productType.id 'delete' %}"> DELETE</a>
+        <a href="{% url 'product:productTypeView' productType.id 'edit' %}"> Edict</a> {% endfor %}
+
+    </ul>
+    <form action="{% url 'product:productTypeView' productTypeId action %}" method="post">
+        {% csrf_token %} {{form}}
+        <button type="submit">
+            
+            {% if action == "add" %}
+                ADD
+            {% else %}
+                UPDATE
+            {% endif %}
+                
+        </button>
+    </form>
+
+</body>
+<script>
+</script>
+
+</html>
