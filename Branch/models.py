@@ -28,6 +28,8 @@ class Branch_Product(models.Model):
     product = models.ForeignKey("Product.Product", verbose_name="product", 
                 on_delete=models.CASCADE, related_name="branch_product_product") 
     current_qty = models.IntegerField("current_qty", default=0)
+    returned_qty = models.IntegerField("returned_qty", default=0)
+    bad_qty = models.IntegerField("bad_qty", default=0)
 
 
     class Meta:

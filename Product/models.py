@@ -35,7 +35,7 @@ class Product_Type(models.Model):
 
     def __str__(self):
         """Unicode representation of Product_Type."""
-        return f"{self.name} - {self.category}"
+        return f"{self.category} - {self.name}"
 
 
 class Product(models.Model):
@@ -68,17 +68,18 @@ class Bad_Product(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE,related_name = "bad_product_product_type")
     branch = models.ForeignKey(Branch, on_delete=models.CASCADE, related_name="bad_product_branch")
     qty = models.IntegerField("qty",null=False,blank=False)
-    
+    date = models.DateField("date", auto_now=False, auto_now_add=True)
     
     class Meta:
         """Meta definition for Bad_Product."""
 
         verbose_name = 'Bad_Product'
         verbose_name_plural = 'Bad_Products'
+        ordering = ['-date']
 
     def __str__(self):
         """Unicode representation of Bad_Product."""
-        return f'{self.product} - {self.branch}'
+        return f'{self.branch} - {self.product} ({self.date})'
 
 class Returned_Product(models.Model):
     """Model definition for Returned_Product."""
@@ -100,4 +101,4 @@ class Returned_Product(models.Model):
 
     def __str__(self):
         """Unicode representation of Returned_Product."""
-        return f"{self.product} - {self.branch} - {self.total_price}"
+        return f" {self.branch} - {self.product} - {self.total_price}"

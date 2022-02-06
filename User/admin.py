@@ -15,7 +15,7 @@ class UserCreationForm(forms.ModelForm):
     password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
     class Meta:
         model = User
-        fields = ('email',)
+        fields = ("full_name","email","phone_number","branch",)
     def clean_password2(self):
         # Check that the two password entries match
         password1 = self.cleaned_data.get("password1")

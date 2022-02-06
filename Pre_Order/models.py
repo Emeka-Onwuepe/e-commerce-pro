@@ -1,5 +1,4 @@
 from django.db import models
-
 from Product.models import Product
 from User.models import Customer
 
@@ -12,8 +11,9 @@ class Pre_Order(models.Model):
                 on_delete=models.CASCADE, related_name="pre_ordered_product")
     customer = models.ForeignKey(Customer, verbose_name="pre_ordered_customer", 
                 on_delete=models.CASCADE, related_name="pre_ordered_customer")
-    qty = models.IntegerField("qty",default=0,blank=True)
-    
+    qty = models.IntegerField("qty",blank=False)
+    archive = models.BooleanField("archive",default=False) 
+    date = models.DateField("date", auto_now=False, auto_now_add=True)   
 
     class Meta:
         """Meta definition for Pre_Order."""
@@ -23,4 +23,4 @@ class Pre_Order(models.Model):
 
     def __str__(self):
         """Unicode representation of Pre_Order."""
-        pass
+        return f'{self.customer} - {self.product} - {self.qty}'

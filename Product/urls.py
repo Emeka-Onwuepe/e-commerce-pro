@@ -10,7 +10,9 @@ app_name="product"
 urlpatterns = [ 
     path('cat/<int:categoryId>/<str:action>',views.categoryView,name="categoryView"), 
     path('producttype/<int:productTypeId>/<str:action>',views.productTypeView,name="productTypeView"), 
-    path('product/<int:productId>/<str:action>',views.productView,name="productView"),  
+    path('product/<int:productId>/<str:action>',views.productView,name="productView"), 
+    path('badproduct/<int:badProductId>/<str:action>',views.badProductView,name="badProductView"),  
+    path('returnedproduct/<int:returnedProductId>/<str:action>',views.returnedProductView,name="returnedProductView"),  
 
 ]
 urlpatterns += router.urls

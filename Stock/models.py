@@ -1,5 +1,6 @@
 from django.db import models
-from Branch.models import Branch_Product
+from Branch.models import Branch
+from Product.models import Product
 
 # Create your models here.
    
@@ -8,8 +9,10 @@ class Stock(models.Model):
 
     # TODO: Define fields here
     qty = models.IntegerField("qty", null=False, blank=False)
-    branch_product = models.ForeignKey(Branch_Product, verbose_name="branch_product", on_delete=models.CASCADE,
-                        related_name="stock_branch_product")
+    product = models.ForeignKey(Product, verbose_name="product", on_delete=models.CASCADE,
+                        related_name="stock_product")
+    branch = models.ForeignKey(Branch, verbose_name="branch", on_delete=models.CASCADE,
+                        related_name="stock_branch")
     date = models.DateTimeField("date",auto_now_add=True)
 
     class Meta:
@@ -20,5 +23,4 @@ class Stock(models.Model):
 
     def __str__(self):
         """Unicode representation of Stock."""
-        return self.branch_product
-
+        return f'{self.branch} - {self.product} - ({self.qty})'

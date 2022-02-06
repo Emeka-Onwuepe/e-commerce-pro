@@ -24,6 +24,8 @@ urlpatterns = [
     path('user/',include("User.urls" , namespace='user')),
     path('branch/',include("Branch.urls", namespace='branch')),
     path('product/',include("Product.urls",namespace='product')),
+    path('stock/',include("Stock.urls",namespace='stock')),
+    path('preorder/',include("Pre_Order.urls",namespace='preOrder')),
 ]
 
 urlpatterns+=staticfiles_urlpatterns()

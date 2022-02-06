@@ -39,7 +39,7 @@ class BadProductForm(forms.ModelForm):
         """Meta definition for BadProductform."""
 
         model = Bad_Product
-        fields = '__all__'
+        fields = ("product","branch","qty")
     
 class ReturnedProductForm(forms.ModelForm):
     """Form definition for ReturnedProduct."""
@@ -49,6 +49,10 @@ class ReturnedProductForm(forms.ModelForm):
 
         model = Returned_Product
         fields ='__all__'
+        widgets = {
+            "date_of_purchase" : forms.widgets.DateInput(attrs={'type':'date'}),
+            "date_of_return"  : forms.widgets.DateInput(attrs={'type':'date'})     
+        }
 
 
 
