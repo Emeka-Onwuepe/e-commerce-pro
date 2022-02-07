@@ -1,7 +1,8 @@
+from ctypes.wintypes import SIZE
 from django import forms
 from Branch.models import Branch
 
-from Product.models import Bad_Product, Category, Product, Product_Type, Returned_Product
+from Product.models import Bad_Product, Category, Product, Product_Type, Returned_Product, Size
 
 class CategoryForm(forms.ModelForm):
     """Form definition for Category."""
@@ -11,6 +12,17 @@ class CategoryForm(forms.ModelForm):
 
         model = Category
         fields = '__all__'
+        
+
+class SizeForm(forms.ModelForm):
+    """Form definition for Size."""
+
+    class Meta:
+        """Meta definition for Sizeform."""
+
+        model = Size
+        fields = '__all__'
+
         
 class ProductTypeForm(forms.ModelForm):
     """Form definition for Product_Type."""
@@ -25,6 +37,9 @@ class ProductForm(forms.ModelForm):
     """Form definition for Product."""
     branches = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple,
                                                 queryset=Branch.objects.all(),required=False)
+    
+    multipleSIzes = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple,
+                                                queryset=SIZE.objects.all(),required=False)
     
     class Meta:
         """Meta definition for Productform."""

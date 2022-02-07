@@ -38,15 +38,35 @@ class Product_Type(models.Model):
         return f"{self.category} - {self.name}"
 
 
+class Size(models.Model):
+    """Model definition for Size."""
+
+    size = models.CharField(verbose_name="size", max_length=150)
+    price = models.IntegerField(verbose_name="price")
+    description = models.CharField(verbose_name="size", max_length=150)
+
+    class Meta:
+        """Meta definition for Size."""
+
+        verbose_name = 'Size'
+        verbose_name_plural = 'Sizes'
+
+    def __str__(self):
+        """Unicode representation of Topping."""
+        return f' {self.description}-{self.size}-{self.price}'
+    
 class Product(models.Model):
     """Model definition for Product."""
 
     # TODO: Define fields here
     product_type = models.ForeignKey(Product_Type, on_delete=models.CASCADE, related_name="product_type")
-    size = models.IntegerField("size",null=False,blank=False)
+    size = models.CharField(verbose_name="size", max_length=150,null=False,blank=False)
+    description = models.TextField(verbose_name="description", max_length=150,null=False,blank=False)
+    multipleSIzes = models.ManyToManyField(
+        Size, verbose_name="multiplesizes", related_name="multiplesizes", blank=True)
     color = models.CharField("color",max_length = 200,null=False,blank=False)
     image = models.ImageField(verbose_name="image", default="image",null=True,blank=True)
-    price = models.DecimalField("price", max_digits=6, decimal_places=2,null=True,blank=True)
+    price = models.DecimalField("price", max_digits=6,default=0, decimal_places=2,null=True,blank=True)
     publish = models.BooleanField(default=False)
     branches = models.ManyToManyField(Branch, verbose_name="branches",related_name="products_branches",blank=True)
 

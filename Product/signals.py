@@ -16,9 +16,16 @@ def delete_product_image(sender, instance, using, *args, **kwargs):
     if instance.image:
         instance.image.delete(save=False)
             
+@receiver(m2m_changed, sender=Product.multipleSIzes.through)
+def product_multipleSIzes_changes(sender, instance,action,reverse,model,pk_set,**kwargs):
+    if action == "post_add":
+        if not len(pk_set):
+            instance.price = 0
+            instance.size = None
+
+               
 @receiver(m2m_changed, sender=Product.branches.through)
 def product_branch_changes(sender, instance,action,reverse,model,pk_set,**kwargs):
-    print(action)
     if action == "post_add":
         for branch_id in pk_set:
            try:
