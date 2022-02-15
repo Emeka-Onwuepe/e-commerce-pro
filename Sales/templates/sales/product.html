@@ -1,0 +1,93 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'CSS/productpage.css' %}">
+
+    <title>Document</title>
+</head>
+
+<body>
+    <p id="sales"></p>
+    hello world {% for product in products %}
+    <div>
+        <img src="" alt="" srcset="">
+        <p>{{product.product_type}}</p>
+
+
+        {% if not product.multipleSIzes.all %}
+        <p>{{product.price}}</p>
+        <p>{{product.size}}</p>
+        <p id='{{product.id}}productData'>{{product.id}};{{product.product_type.name}};{{product.size}};{{product.price}};{{product.color}};{{product.image}}</p>
+        {% else %}
+        <div class="multiselect">
+
+            <div id='{{product.id}};selectBox' class="selectBox">
+                <select>
+                <option>Select an option</option>
+              </select>
+                <div class="overSelect"></div>
+            </div>
+            <div id='{{product.id}}checkboxes' class="checkboxes">
+                {% for size in product.multipleSIzes.all %}
+                <label for={{size.id}}>
+                <input type="checkbox" name="{{product.id}}checkbox" id={{size.id}} 
+                data-data={{size.id}};{{size.price}};{{size.size}} />{{size}}</label> {% endfor %}
+            </div>
+        </div>
+
+        <p id='{{product.id}}productData'>{{product.id}};{{product.product_type.name}};{{product.color}};{{product.image}}</p>
+        {% endif %}
+        <button class="addToCartButton" id={{product.id}}>Add to Cart</button>
+    </div>
+
+    {% endfor %}
+    <form name="salesForm" onsubmit="processOrder()">
+        <div id='salesDetails'>
+            <div>
+                {{form}}
+            </div>
+
+            <div id="salesList">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>SN</th>
+                            <th>Product Name</th>
+                            <th>Color</th>
+                            <th>Size</th>
+                            <th>Unit Price</th>
+                            <th>Qty</th>
+                            <th>Total Price</th>
+
+                        </tr>
+                    </thead>
+                    <tbody id="tbody"></tbody>
+                    <tfoot>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td id="grandtotal">0</td>
+
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+        </div>
+        <button type="submit">Submit</button>
+    </form>
+
+    <script src="{% static 'javascript/state.js' %}"></script>
+    <script src="{% static 'javascript/productpage.js' %}"></script>
+</body>
+
+</html>

@@ -1,4 +1,3 @@
-from ctypes.wintypes import SIZE
 from django import forms
 from Branch.models import Branch
 
@@ -39,7 +38,7 @@ class ProductForm(forms.ModelForm):
                                                 queryset=Branch.objects.all(),required=False)
     
     multipleSIzes = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple,
-                                                queryset=SIZE.objects.all(),required=False)
+                                                queryset=Size.objects.all(),required=False)
     
     class Meta:
         """Meta definition for Productform."""

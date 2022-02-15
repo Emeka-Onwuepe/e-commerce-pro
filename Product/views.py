@@ -1,8 +1,8 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-from Product.form import BadProductForm, CategoryForm, ProductForm, ProductTypeForm, ReturnedProductForm
-from Product.models import Bad_Product, Category, Product, Product_Type, Returned_Product
+from Product.form import BadProductForm, CategoryForm, ProductForm, ProductTypeForm, ReturnedProductForm, SizeForm
+from Product.models import Bad_Product, Category, Product, Product_Type, Returned_Product, Size
 
 # Create your views here.
 def categoryView(request,categoryId,action):
@@ -88,6 +88,48 @@ def productTypeView(request,productTypeId,action):
                   {"form":ProductTypeForm(),"productTypeId":0, 'productTypes':productTypes,"action":"add"})
     
     
+def sizeView(request,sizeId,action):
+    
+    sizes = Size.objects.all()
+    
+    if sizeId != 0:   
+        size_instance = Size.objects.get(id=sizeId)
+    
+    if request.method == "POST" and action == "add":
+        form = SizeForm(data= request.POST,files=request.FILES)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('product:sizeView',
+            kwargs={"action":"view","sizeId":0}))
+        else:
+            return render(request,"product/size.html",
+                  {"form":form,"sizeId":0,"action":"view"})  
+            
+    if action == "edit":
+        if request.method == "POST":
+            form = SizeForm(data= request.POST,instance=size_instance)
+            if form.is_valid():
+                form.save()
+                return HttpResponseRedirect(reverse('product:sizeView',
+                        kwargs={"action":"view","sizeId":0}))
+            else:
+                return render(request,"product/size.html",
+                  {"form":form,"sizeId":size_instance.id,"action":"edit",'sizes':sizes})
+        else:
+            return render(request,"product/size.html",
+                  {"form":SizeForm(instance=size_instance),
+                   "sizeId":size_instance.id,"action":"edit",'sizes':sizes})
+    
+    if action == "delete":
+        size_instance.delete()
+        return HttpResponseRedirect(reverse('product:sizeView',
+            kwargs={"action":"view","sizeId":0}))
+                 
+    return render(request,"product/size.html",
+                  {"form":SizeForm(),"sizeId":0, 'sizes':sizes,"action":"add"})
+    
+
+
 def productView(request,productId,action):
     
     products = Product.objects.all()
@@ -109,6 +151,10 @@ def productView(request,productId,action):
         if request.method == "POST":
             form = ProductForm(data= request.POST,files=request.FILES,instance=product_instance)
             if form.is_valid():
+                multipleSIzes = form.cleaned_data["multipleSIzes"]
+                if len(multipleSIzes) > 0:
+                    form.cleaned_data['size'] = 0
+                    form.cleaned_data['price'] = 0   
                 form.save()
                 return HttpResponseRedirect(reverse('product:productView',
                         kwargs={"action":"view","productId":0}))
@@ -127,7 +173,6 @@ def productView(request,productId,action):
                  
     return render(request,"product/product.html",
                   {"form":ProductForm(),"productId":0, 'products':products,"action":"add"})
-    
 
 
 def badProductView(request,badProductId,action):

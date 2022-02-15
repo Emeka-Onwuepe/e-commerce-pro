@@ -43,7 +43,7 @@ class Size(models.Model):
 
     size = models.CharField(verbose_name="size", max_length=150)
     price = models.IntegerField(verbose_name="price")
-    description = models.CharField(verbose_name="size", max_length=150)
+    description = models.CharField(verbose_name="description", max_length=150)
 
     class Meta:
         """Meta definition for Size."""
@@ -60,13 +60,13 @@ class Product(models.Model):
 
     # TODO: Define fields here
     product_type = models.ForeignKey(Product_Type, on_delete=models.CASCADE, related_name="product_type")
-    size = models.CharField(verbose_name="size", max_length=150,null=False,blank=False)
+    size = models.CharField(verbose_name="size",default="0", max_length=150,null=True,blank=True)
     description = models.TextField(verbose_name="description", max_length=150,null=False,blank=False)
     multipleSIzes = models.ManyToManyField(
         Size, verbose_name="multiplesizes", related_name="multiplesizes", blank=True)
     color = models.CharField("color",max_length = 200,null=False,blank=False)
     image = models.ImageField(verbose_name="image", default="image",null=True,blank=True)
-    price = models.DecimalField("price", max_digits=6,default=0, decimal_places=2,null=True,blank=True)
+    price = models.DecimalField("price", max_digits=50,default=0, decimal_places=2,null=True,blank=True)
     publish = models.BooleanField(default=False)
     branches = models.ManyToManyField(Branch, verbose_name="branches",related_name="products_branches",blank=True)
 

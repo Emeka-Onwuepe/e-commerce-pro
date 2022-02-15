@@ -6,11 +6,14 @@ from Product.models import Bad_Product, Product, Returned_Product
 # products signals
 @receiver(pre_save, sender=Product)
 def update_Product_image(sender, instance, *args, **kwargs):
+    print("pre_save ran")
     if instance.pk:
         product = Product.objects.get(pk=instance.pk)
+        print(instance.multipleSIzes.all())
         if product.image != instance.image:
             product.image.delete(False)
-
+            
+    
 @receiver(post_delete, sender=Product)
 def delete_product_image(sender, instance, using, *args, **kwargs):
     if instance.image:
@@ -19,9 +22,12 @@ def delete_product_image(sender, instance, using, *args, **kwargs):
 @receiver(m2m_changed, sender=Product.multipleSIzes.through)
 def product_multipleSIzes_changes(sender, instance,action,reverse,model,pk_set,**kwargs):
     if action == "post_add":
-        if not len(pk_set):
+         if instance.multipleSIzes.exists():
+            print("many to many post add reset ran")
             instance.price = 0
-            instance.size = None
+            instance.size = 0
+            instance.save()
+            
 
                
 @receiver(m2m_changed, sender=Product.branches.through)
