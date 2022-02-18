@@ -1,13 +1,16 @@
 //Action Types
 const ADD_TO_CART = "ADD_TO_CART";
 const UPDATE_CART = "UPDATE_CART";
-//   const PROCESS_ORDER = "PROCESS_ORDER";
+const PROCESS_ORDER = "PROCESS_ORDER";
+const ADD_LATEST_ORDER = "ADD_LATEST_ORDER";
+const url = "https://127.0.0.1.8000"
+
 //   const GET_PRODUCT_AND_CUSTOMER = "GET_PRODUCT_AND_CUSTOMER"
-//   const LOADED = "LOADED";
-//   const LOADING = "LOADING";
-//   const ADD_ERROR = "ADD_ERROR";
+const LOADED = "LOADED";
+const LOADING = "LOADING";
+const ADD_ERROR = "ADD_ERROR";
 //   const SUCCESS = "SUCCESS";
-//   const CLEAR_SUCCESS = "CLEAR_SUCCESS";
+// const CLEAR_SUCCESS = "CLEAR_SUCCESS";
 //   const DELETE_MESSAGES = "DELETE_MESSAGES";
 //   const PAYMENT = "PAYMENT";
 //   const GET_LOCATION = "GET_LOCATION";
@@ -32,27 +35,6 @@ const UPDATE_CART = "UPDATE_CART";
 // }
 
 //Actions dispatchers
-
-// const processOrder = (data, config) => {
-//     return axios.post('https://lameloapi.herokuapp.com/orderview', data, config).then(res => {
-//         return {
-//             type: PROCESS_ORDER,
-//             data: res.data.Ordered,
-//             success: true,
-//             cart: [],
-//             toppingcart: [],
-//             user: res.data.user
-//         }
-//     }).catch(err => {
-//         return {
-//             type: ADD_ERROR,
-//             data: err.response.data,
-//             status: err.response.status
-//         }
-
-//     })
-// }
-
 
 
 // const payment = (data, orderlist) => {
@@ -100,16 +82,24 @@ const addToCart = (data) => {
 
 
 const UpdateCart = (data) => {
+    return {
+        type: UPDATE_CART,
+        data: data
+    }
+}
+
+const addLatestOrder = (data) => {
+    return {
+        type: ADD_LATEST_ORDER,
+        data: data
+    }
+}
+
+const load = (type) => {
         return {
-            type: UPDATE_CART,
-            data: data
+            type: type
         }
     }
-    // const load = (type) => {
-    //     return {
-    //         type: type
-    //     }
-    // }
     // const success = () => {
     //     return {
     //         type: SUCCESS
@@ -136,9 +126,11 @@ const getState = () => {
         const jsonify = JSON.parse(localdata)
         finaldata = {
             // User: "",
-            // loading: true,
+            loading: false,
             // logged: false,
             cart: [],
+            latestOrder: '',
+            // success: false,
             // locations: [],
             // destination: "",
             // customer: { address: "", email: "", fullName: "", id: "", phoneNumber: "" },
@@ -152,9 +144,11 @@ const getState = () => {
     } else {
         finaldata = {
             // User: "",
-            // loading: true,
+            loading: false,
             // logged: false,
             cart: [],
+            latestOrder: '',
+            // success: false,
             // locations: [],
             // destination: "",
             // customer: { address: "", email: "", fullName: "", id: "", phoneNumber: "" },
@@ -187,16 +181,24 @@ const storeReducer = (action) => {
                 loading: false,
             }
 
-            // case LOADING:
-            //     return {
-            //         ...state,
-            //         loading: true
-            //     }
-            // case LOADED:
-            //     return {
-            //         ...state,
-            //         loading: false,
-            //     }
+        case ADD_LATEST_ORDER:
+            return {
+                ...state,
+                cart: [],
+                // success: true,
+                latestOrder: action.data,
+                loading: false,
+            }
+        case LOADING:
+            return {
+                ...state,
+                loading: true
+            }
+        case LOADED:
+            return {
+                ...state,
+                loading: false,
+            }
             // case PROCESS_ORDER:
             //     return {
             //         ...state,
@@ -284,7 +286,41 @@ const setState = (storestate) => {
     localStorage.setItem("storestate", JSON.stringify(storestate))
 }
 
+const ProcessOrder = async(data, token) => {
+    setState(storeReducer(load(LOADING)))
+    let response = await fetch(`/sales/process`, {
+        method: 'POST', // or 'PUT'
+        credentials: 'same-origin',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': token
+        },
+        body: JSON.stringify(data),
+    })
 
+    if (!response.ok) {
+        throw new Error(response.statusText)
+    }
+    return await response.json()
+}
+
+const GetCustomer = async(data, token) => {
+    setState(storeReducer(load(LOADING)))
+    let response = await fetch('http://127.0.0.1:8000/user/customer/0/get', {
+        method: 'POST', // or 'PUT'
+        credentials: 'same-origin',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': token
+        },
+        body: JSON.stringify(data),
+    })
+
+    if (!response.ok) {
+        throw new Error(response.statusText)
+    }
+    return await response.json()
+}
 
 
 

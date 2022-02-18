@@ -1,3 +1,15 @@
+let tbody = document.querySelector("#tbody")
+const grandtotal = document.getElementById('grandtotal')
+const salesForm = document.forms.salesForm
+const csrtoken = document.getElementsByName("csrfmiddlewaretoken")[0].value
+
+const getCustomer = () => {
+    GetCustomer({ phone_number: "08132180216" }, csrtoken)
+        .then(data => console.log(data))
+        .catch(error => console.log(error))
+}
+getCustomer()
+
 const PriceEvent = (e) => {
     const Id = e.target.id.split("-")[0]
     const price = document.getElementById(`${Id}-price`)
@@ -91,7 +103,7 @@ const addOrder = (e) => {
                 product.image = image
                 product.color = color
                 product.price = parseFloat(price)
-                product.Id = parseInt(`${product.id}${Id}`)
+                product.Id = `${product.id}-${Id}`
                 product.qty = 1
                 product.productTotal = parseFloat(price)
                 productList.push(product)
@@ -141,21 +153,56 @@ const addOrder = (e) => {
     appendOrderList(purelist)
 }
 
+
+const manageLastSale = (data = null) => {
+    const lastSale = document.getElementById("lastSale")
+    const latestOrder = data ? data : getState().latestOrder
+    if (latestOrder != "") {
+        lastSale.lastChild.href = `/sales/sale/${latestOrder}`
+    }
+}
+manageLastSale()
+
 const processOrder = (e) => {
-    const salesForm = document.forms.salesForm
+    e.preventDefault()
+    const date = Date.now().toString().slice(5)
+    const random = Math.floor(Math.random() * 100)
+    const OrderId = `smb${random}${date}`
     const data = {
-        customer_name: salesForm.elements.customer_name.value,
+        name: salesForm.elements.name.value,
         phone_number: salesForm.elements.phone_number.value,
         email: salesForm.elements.email.value,
         address: salesForm.elements.address.value,
         payment_method: salesForm.elements.payment_method.value,
         remark: salesForm.elements.remark.value,
+        total_amount: grandtotal.innerHTML,
+        purchase_id: OrderId,
+        orders: getState().cart
     }
-    console.log(data)
+    ProcessOrder(data, csrtoken).then(data => {
+            setState(storeReducer(addLatestOrder(data.data)))
+            manageLastSale(data.data)
+            let rows = tbody.children
+            grandtotal.innerHTML = ""
+            salesForm.elements.name.value = ""
+            salesForm.elements.phone_number.value = ""
+            salesForm.elements.email.value = ""
+            salesForm.elements.address.value = ""
+            salesForm.elements.payment_method.value = ""
+            salesForm.elements.remark.value = ""
+            grandtotal.innerHTML = ""
+            for (const row of rows) {
+                row.remove()
+            }
+        })
+        .catch((error) => {
+            setState(storeReducer(load(LOADED)))
+        });
+
+
+    // console.log(JSON.stringify(data))
 }
 const appendOrderList = (data) => {
-    let tbody = document.querySelector("#tbody")
-    const grandtotal = document.getElementById('grandtotal')
     let total = parseFloat(grandtotal.innerHTML)
     for (let i = 0; i < data.length; i++) {
         total += data[i].productTotal
@@ -197,4 +244,4 @@ const selectBoxDiv = document.querySelectorAll(".selectBox")
 selectBoxDiv.forEach(div => {
     div.addEventListener("click", showCheckboxes)
 })
-document.forms.salesForm.addEventListener("submit", processOrder)
+salesForm.addEventListener("submit", processOrder)

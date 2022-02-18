@@ -15,4 +15,4 @@ class UserEditForm(forms.ModelForm):
 class CustomerForm(forms.ModelForm):
     class Meta:
         model = Customer
-        fields = ("full_name","email","phone_number","address",)
+        fields = ("name","email","phone_number","address",)

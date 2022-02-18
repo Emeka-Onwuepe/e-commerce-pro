@@ -67,9 +67,9 @@ class Customer(models.Model):
     """Model definition for Customer."""
 
     # TODO: Define fields here
-    full_name = models.CharField(verbose_name='full name', max_length=255)
+    name = models.CharField(verbose_name='name', max_length=255)
     email = models.EmailField(verbose_name='email address',max_length=255,unique=True,)
-    phone_number = models.CharField("phone_number", max_length=20)
+    phone_number = models.CharField("phone_number", max_length=20,unique=True,)
     address = models.CharField(verbose_name="address", max_length=256)
     total_credit = models.IntegerField(verbose_name="total_credit",default=0)
     total_payment = models.IntegerField(verbose_name="total_payment",default=0)
@@ -84,4 +84,4 @@ class Customer(models.Model):
 
     def __str__(self):
         """Unicode representation of Customer."""
-        return self.full_name
+        return self.name

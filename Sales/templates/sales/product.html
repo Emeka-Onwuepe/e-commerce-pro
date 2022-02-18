@@ -13,43 +13,64 @@
 
 <body>
     <p id="sales"></p>
-    hello world {% for product in products %}
     <div>
-        <img src="" alt="" srcset="">
-        <p>{{product.product_type}}</p>
+        {% for category in categories %}
+        <div>
+            <h3>{{category}}</h3>
+            {% for productType in category.category.all %}
+            <p><a href="{% url 'sales:salesProductView' category.id %}"> {{productType}} </a>
+            </p>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+    <div>
 
+        {% if products %} {% for product in products %}
+        <div>
+            <img src="" alt="" srcset="">
+            <p>{{product.product_type}}</p>
 
-        {% if not product.multipleSIzes.all %}
-        <p>{{product.price}}</p>
-        <p>{{product.size}}</p>
-        <p id='{{product.id}}productData'>{{product.id}};{{product.product_type.name}};{{product.size}};{{product.price}};{{product.color}};{{product.image}}</p>
-        {% else %}
-        <div class="multiselect">
+            {% if not product.multipleSIzes.all %}
+            <p>{{product.price}}</p>
+            <p>{{product.size}}</p>
+            <p id='{{product.id}}productData'>{{product.id}};{{product.product_type.name}};{{product.size}};{{product.price}};{{product.color}};{{product.image}}</p>
+            {% else %}
+            <div class="multiselect">
 
-            <div id='{{product.id}};selectBox' class="selectBox">
-                <select>
+                <div id='{{product.id}};selectBox' class="selectBox">
+                    <select>
                 <option>Select an option</option>
               </select>
-                <div class="overSelect"></div>
-            </div>
-            <div id='{{product.id}}checkboxes' class="checkboxes">
-                {% for size in product.multipleSIzes.all %}
-                <label for={{size.id}}>
+                    <div class="overSelect"></div>
+                </div>
+                <div id='{{product.id}}checkboxes' class="checkboxes">
+                    {% for size in product.multipleSIzes.all %}
+                    <label for={{size.id}}>
                 <input type="checkbox" name="{{product.id}}checkbox" id={{size.id}} 
                 data-data={{size.id}};{{size.price}};{{size.size}} />{{size}}</label> {% endfor %}
+                </div>
             </div>
+
+            <p id='{{product.id}}productData'>{{product.id}};{{product.product_type.name}};{{product.color}};{{product.image}}</p>
+            {% endif %}
+            <button class="addToCartButton" id={{product.id}}>Add to Cart</button>
         </div>
 
-        <p id='{{product.id}}productData'>{{product.id}};{{product.product_type.name}};{{product.color}};{{product.image}}</p>
+        {% endfor %} {% elif initial %}
+        <p>Please select a product type</p>
+        {% else %}
+        <p>No product Found</p>
         {% endif %}
-        <button class="addToCartButton" id={{product.id}}>Add to Cart</button>
+
     </div>
 
-    {% endfor %}
-    <form name="salesForm" onsubmit="processOrder()">
+    <p id="lastSale"> <a href="">View Recent Sale</a></p>
+    <form name="salesForm">
+        {% csrf_token %}
         <div id='salesDetails'>
             <div>
-                {{form}}
+                {{customerForm}} {{saleForm}}
             </div>
 
             <div id="salesList">

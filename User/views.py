@@ -1,10 +1,12 @@
+import json
 from django.urls import reverse
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login,logout,authenticate
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.contrib.auth import get_user_model
 
 from User.models import Customer
+from User.serializer import CustomerSerializer
 User=get_user_model()
 from django.shortcuts import render
 from Branch.models import Branch
@@ -81,6 +83,18 @@ def userView(request,userId,action):
     
     
 def customerView(request,customerId,action):
+    
+    if request.method == "POST" and action == "get":
+         data = json.loads(request.body.decode("utf-8"))
+         customerdata = ""
+         try:
+            customer = Customer.objects.get(phone_number = data['phone_number'])
+            customerdata = CustomerSerializer(customer)
+         except Customer.DoesNotExist:
+             pass
+         return JsonResponse({"data":customerdata.data})
+           
+                     
     customers = Customer.objects.all()
     if customerId != 0:   
         customer_instance = Customer.objects.get(id=customerId)

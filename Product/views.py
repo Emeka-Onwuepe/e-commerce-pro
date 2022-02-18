@@ -131,7 +131,7 @@ def sizeView(request,sizeId,action):
 
 
 def productView(request,productId,action):
-    
+    print(request)
     products = Product.objects.all()
     
     if productId != 0:   

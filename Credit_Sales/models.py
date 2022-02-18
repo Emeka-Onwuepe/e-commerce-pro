@@ -14,7 +14,7 @@ class Credit_Sale(models.Model):
     date = models.DateField("date", auto_now=False, auto_now_add=True)
     items = models.ManyToManyField(Items, verbose_name="items",related_name="credit_sale_Items")
     customer = models.ForeignKey(Customer, verbose_name="customer",related_name="credit_sale_customer",on_delete=models.CASCADE)
-
+    purchase_id = models.CharField("purchase_id", max_length=150)
     class Meta:
         """Meta definition for Credit_Sale."""
 

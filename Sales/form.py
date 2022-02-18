@@ -9,8 +9,7 @@ class salesForm(forms.ModelForm):
         """Meta definition for salesform."""
 
         model = Sales
-        fields = ('customer_name','phone_number',
-                  'email','address','payment_method','remark')
+        fields = ('payment_method','remark')
         widgets = {
             "remark" : forms.widgets.Textarea()     
             }

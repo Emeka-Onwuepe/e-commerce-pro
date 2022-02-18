@@ -1,6 +1,7 @@
 from django.db import models
 from Branch.models import Branch
-from Product.models import Product
+from Product.models import Product, Size
+from User.models import Customer
 
 # Create your models here.
 
@@ -8,10 +9,12 @@ class Items(models.Model):
     """Model definition for Items."""
     product = models.ForeignKey(Product, verbose_name="product", 
                     related_name="selected_product", on_delete=models.CASCADE)
+    product_type = models.CharField('size', max_length = 200)
+    size  = models.CharField('product_type', max_length = 200)
+    color = models.CharField('color', max_length = 200)
     qty = models.IntegerField("qty")
     unit_price = models.DecimalField("unit_price", max_digits=10, decimal_places=2)
     total_price = models.DecimalField("total_price", max_digits=10, decimal_places=2)
-
 
     # TODO: Define fields here
 
@@ -23,7 +26,7 @@ class Items(models.Model):
 
     def __str__(self):
         """Unicode representation of Items."""
-        return self.product
+        return f"{self.product_type} - {str(self.total_price)}"
 
 
 class Sales(models.Model):
@@ -35,6 +38,7 @@ class Sales(models.Model):
     PAYMENT_CHOICES = (
         ('transfer', 'transfer'),
         ('cash', 'cash'),
+        ('credit', 'credit'),
         ('online', 'online'),
     )
 
@@ -44,12 +48,10 @@ class Sales(models.Model):
     remark = models.CharField("remark", max_length=200)
     channel = models.CharField("channel", max_length=5, choices=CHANNEL_CHOICES)
     payment_method = models.CharField("payment_method", max_length=8, choices=PAYMENT_CHOICES)
-    customer_name = models.CharField("customer_name", max_length=200, blank=True, null= True)
-    phone_number = models.CharField("phone_number", max_length=20, null = False,blank=False)
-    email = models.EmailField("email", max_length=254)
-    address = models.CharField("address", max_length=254)
     date = models.DateField("date", auto_now=False, auto_now_add=True)
+    customer = models.ForeignKey(Customer, verbose_name="customer",related_name="sales_customer",on_delete=models.CASCADE)
     items = models.ManyToManyField(Items, verbose_name="items",related_name="items")
+    purchase_id = models.CharField("purchase_id", max_length=150)
 
     class Meta:
         """Meta definition for Sales."""
@@ -59,7 +61,7 @@ class Sales(models.Model):
 
     def __str__(self):
         """Unicode representation of Sales."""
-        return f"{self.phone_number} - {str(self.total_amount)}"
+        return f"{self.purchase_id} - {str(self.total_amount)}"
 
 
 
