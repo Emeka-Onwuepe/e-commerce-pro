@@ -19,11 +19,12 @@
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
     <div>
-        <p>Name: {{sale.customer_name}}</p>
-        <p>Phone Number: {{sale.phone_number}}</p>
-        <p>Email: {{sale.email}}</p>
-        <p>Address: {{sale.address}}</p>
+        <p>Name: {{customer.name}}</p>
+        <p>Phone Number: {{customer.phone_number}}</p>
+        <p>Email: {{customer.email}}</p>
+        <p>Address: {{customer.address}}</p>
         <p>Purchase_id: {{sale.purchase_id}}</p>
+        <p>Payment_method: {% if sale.payment_method %} {{sale.payment_method}}{% else %} Credit {% endif %}</p>
         <p>Remark: {{sale.remark}}</p>
         <p>Date: {{sale.date}}</p>
 

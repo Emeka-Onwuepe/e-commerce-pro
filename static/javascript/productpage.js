@@ -1,34 +1,52 @@
 let tbody = document.querySelector("#tbody")
 const grandtotal = document.getElementById('grandtotal')
+const expectedGroundTotal = document.getElementById('expectedgroundtotal')
 const salesForm = document.forms.salesForm
 const csrtoken = document.getElementsByName("csrfmiddlewaretoken")[0].value
+const userPhoneNumber = document.getElementById("user_phone_number")
+
 
 const getCustomer = () => {
-    GetCustomer({ phone_number: "08132180216" }, csrtoken)
-        .then(data => console.log(data))
-        .catch(error => console.log(error))
+    GetCustomer({ phone_number: userPhoneNumber.value }, csrtoken)
+        .then(data => {
+            salesForm.elements.name.value = data.data.name
+            salesForm.elements.phone_number.value = data.data.phone_number
+            salesForm.elements.email.value = data.data.email
+            salesForm.elements.address.value = data.data.address
+        })
+        .catch(error => alert(error))
 }
-getCustomer()
 
 const PriceEvent = (e) => {
     const Id = e.target.id.split("-")[0]
     const price = document.getElementById(`${Id}-price`)
     const qty = document.getElementById(`${Id}-qty`)
-    const product_total = parseFloat(price.value) * parseFloat(qty.value)
+    const miniPrice = document.getElementById(`${Id}-miniPrice`)
+    const expectedPrice = document.getElementById(`${Id}-expectedPrice`)
     const productTotal = document.getElementById(`${Id}-productTotal`)
-    const grandtotal = document.getElementById('grandtotal')
+
+    const product_total = parseFloat(price.value) * parseFloat(qty.value)
+    const expected_price = parseFloat(miniPrice.innerHTML) * parseFloat(qty.value)
+
+    // const grandtotal = document.getElementById('grandtotal')
     productTotal.innerHTML = product_total
+    expectedPrice.innerHTML = expected_price
+
     const previousCart = getState().cart
     let total = 0
+    let expectedTotal = 0
     previousCart.forEach(item => {
         if (item.Id == Id) {
             item.price = price.value;
             item.qty = qty.value;
-            item.productTotal = product_total
+            item.productTotal = product_total;
+            item.expected = expected_price;
         }
         total += item.productTotal
+        expectedTotal += item.expected
     })
     grandtotal.innerHTML = total
+    expectedGroundTotal.innerHTML = expectedTotal
     storestate = storeReducer(UpdateCart(previousCart))
     setState(storestate)
 
@@ -38,17 +56,15 @@ const deleteEvent = (e) => {
     let target = e.target
     const Id = target.id.split("-")[0]
     const previousCart = getState().cart
-    const grandtotal = document.getElementById('grandtotal')
     const productTotal = document.getElementById(`${Id}-productTotal`).innerHTML
+    const expectedPrice = document.getElementById(`${Id}-expectedPrice`).innerHTML
     let parentNode = target.parentNode.parentNode
     grandtotal.innerHTML = parseFloat(grandtotal.innerHTML) - parseFloat(productTotal)
+    expectedGroundTotal.innerHTML = parseFloat(expectedGroundTotal.innerHTML) - parseFloat(expectedPrice)
     parentNode.remove()
     const filtered = previousCart.filter(item => item.Id != Id)
     storestate = storeReducer(UpdateCart(filtered))
     setState(storestate)
-
-
-
 }
 
 const addPriceEvent = () => {
@@ -103,9 +119,12 @@ const addOrder = (e) => {
                 product.image = image
                 product.color = color
                 product.price = parseFloat(price)
-                product.Id = `${product.id}-${Id}`
+                product.mini = parseFloat(price)
+                product.Id = `${product.id}_${Id}`
+                product.qty = 1
                 product.qty = 1
                 product.productTotal = parseFloat(price)
+                product.expected = parseFloat(price)
                 productList.push(product)
                 node.checked = false
             }
@@ -118,6 +137,7 @@ const addOrder = (e) => {
         let [id, product_type, size, price, color, image] = list
         product.size = size
         product.price = parseFloat(price)
+        product.mini = parseFloat(price)
         product.id = parseInt(id)
         product.Id = parseInt(id)
         product.product_type = product_type
@@ -125,6 +145,7 @@ const addOrder = (e) => {
         product.image = image
         product.qty = 1
         product.productTotal = parseFloat(price)
+        product.expected = parseFloat(price)
         productList.push(product)
     }
 
@@ -145,7 +166,7 @@ const addOrder = (e) => {
     }
 
 
-    UpdateCart
+    // UpdateCart
     storestate = storeReducer(addToCart(purelist))
     setState(storestate)
     const currentCart = getState().cart
@@ -157,8 +178,8 @@ const addOrder = (e) => {
 const manageLastSale = (data = null) => {
     const lastSale = document.getElementById("lastSale")
     const latestOrder = data ? data : getState().latestOrder
-    if (latestOrder != "") {
-        lastSale.lastChild.href = `/sales/sale/${latestOrder}`
+    if (latestOrder.purchase_id != "") {
+        lastSale.lastChild.href = `/sales/sale/${latestOrder.purchase_id}/${latestOrder.type}`
     }
 }
 manageLastSale()
@@ -176,44 +197,58 @@ const processOrder = (e) => {
         payment_method: salesForm.elements.payment_method.value,
         remark: salesForm.elements.remark.value,
         total_amount: grandtotal.innerHTML,
+        expected_amount: expectedGroundTotal.innerHTML,
         purchase_id: OrderId,
         orders: getState().cart
     }
-    ProcessOrder(data, csrtoken).then(data => {
-            setState(storeReducer(addLatestOrder(data.data)))
-            manageLastSale(data.data)
-            let rows = tbody.children
-            grandtotal.innerHTML = ""
-            salesForm.elements.name.value = ""
-            salesForm.elements.phone_number.value = ""
-            salesForm.elements.email.value = ""
-            salesForm.elements.address.value = ""
-            salesForm.elements.payment_method.value = ""
-            salesForm.elements.remark.value = ""
-            grandtotal.innerHTML = ""
-            for (const row of rows) {
-                row.remove()
-            }
-        })
-        .catch((error) => {
-            setState(storeReducer(load(LOADED)))
-        });
-
+    if (data.orders.length > 0) {
+        if (data.total_amount >= data.expected_amount) {
+            ProcessOrder(data, csrtoken).then(data => {
+                    setState(storeReducer(addLatestOrder(data)))
+                    manageLastSale(data)
+                    let rows = tbody.children
+                    grandtotal.innerHTML = ""
+                    salesForm.elements.name.value = ""
+                    salesForm.elements.phone_number.value = ""
+                    salesForm.elements.email.value = ""
+                    salesForm.elements.address.value = ""
+                    salesForm.elements.payment_method.value = ""
+                    salesForm.elements.remark.value = ""
+                    grandtotal.innerHTML = ""
+                    expectedGroundTotal.innerHTML = ""
+                    for (const row of rows) {
+                        row.remove()
+                    }
+                })
+                .catch((error) => {
+                    alert(error)
+                    setState(storeReducer(load(LOADED)))
+                });
+        } else {
+            alert("You are selling below the expected price")
+        }
+    } else {
+        alert("No product selected")
+    }
 
     // console.log(JSON.stringify(data))
 }
 const appendOrderList = (data) => {
     let total = parseFloat(grandtotal.innerHTML)
+    let expectTotal = parseFloat(expectedGroundTotal.innerHTML)
     for (let i = 0; i < data.length; i++) {
         total += data[i].productTotal
+        expectTotal += data[i].expected
         let newrow = tbody.insertRow()
         let tds = ` <td class="counterCell"></td>
         <td>${data[i].product_type}</td>
         <td>${data[i].color}</td>
         <td>${data[i].size}</td>
         <td><input type="text" name="price" value=${data[i].price} id="${data[i].Id}-price"></td>
+        <td id="${data[i].Id}-miniPrice">${data[i].mini}</td>
         <td><input type="text" name="qty" value=${data[i].qty} id="${data[i].Id}-qty"></td>
         <td id="${data[i].Id}-productTotal">${data[i].productTotal}</td>
+        <td id="${data[i].Id}-expectedPrice">${data[i].expected}</td>
         <td><button class="delete" id="${data[i].Id}-delete">Delete</button></td>`
 
         newrow.innerHTML = tds
@@ -222,6 +257,7 @@ const appendOrderList = (data) => {
     }
     addPriceEvent()
     grandtotal.innerHTML = total
+    expectedGroundTotal.innerHTML = expectTotal
 
 
 }
@@ -245,3 +281,5 @@ selectBoxDiv.forEach(div => {
     div.addEventListener("click", showCheckboxes)
 })
 salesForm.addEventListener("submit", processOrder)
+const get_user = document.getElementById("get_user")
+get_user.addEventListener("click", getCustomer)

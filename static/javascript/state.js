@@ -3,7 +3,7 @@ const ADD_TO_CART = "ADD_TO_CART";
 const UPDATE_CART = "UPDATE_CART";
 const PROCESS_ORDER = "PROCESS_ORDER";
 const ADD_LATEST_ORDER = "ADD_LATEST_ORDER";
-const url = "https://127.0.0.1.8000"
+const rootUrl = "http://127.0.0.1:8000"
 
 //   const GET_PRODUCT_AND_CUSTOMER = "GET_PRODUCT_AND_CUSTOMER"
 const LOADED = "LOADED";
@@ -129,7 +129,7 @@ const getState = () => {
             loading: false,
             // logged: false,
             cart: [],
-            latestOrder: '',
+            latestOrder: { "purchase_id": "", "type": "" },
             // success: false,
             // locations: [],
             // destination: "",
@@ -147,7 +147,7 @@ const getState = () => {
             loading: false,
             // logged: false,
             cart: [],
-            latestOrder: '',
+            latestOrder: { "purchase_id": "", "type": "" },
             // success: false,
             // locations: [],
             // destination: "",
@@ -306,7 +306,7 @@ const ProcessOrder = async(data, token) => {
 
 const GetCustomer = async(data, token) => {
     setState(storeReducer(load(LOADING)))
-    let response = await fetch('http://127.0.0.1:8000/user/customer/0/get', {
+    let response = await fetch(`${rootUrl}/user/customer/0/get`, {
         method: 'POST', // or 'PUT'
         credentials: 'same-origin',
         headers: {

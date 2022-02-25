@@ -27,6 +27,7 @@ urlpatterns = [
     path('stock/',include("Stock.urls",namespace='stock')),
     path('preorder/',include("Pre_Order.urls",namespace='preOrder')),
     path('sales/',include("Sales.urls",namespace='sales')),
+    path('credits/',include("Credit_Sales.urls",namespace='credit_sales')),
 ]
 
 urlpatterns+=staticfiles_urlpatterns()

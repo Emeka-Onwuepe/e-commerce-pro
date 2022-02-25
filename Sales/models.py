@@ -9,12 +9,14 @@ class Items(models.Model):
     """Model definition for Items."""
     product = models.ForeignKey(Product, verbose_name="product", 
                     related_name="selected_product", on_delete=models.CASCADE)
-    product_type = models.CharField('size', max_length = 200)
-    size  = models.CharField('product_type', max_length = 200)
+    product_type = models.CharField('product_type', max_length = 200)
+    size  = models.CharField('size', max_length = 200)
     color = models.CharField('color', max_length = 200)
     qty = models.IntegerField("qty")
     unit_price = models.DecimalField("unit_price", max_digits=10, decimal_places=2)
     total_price = models.DecimalField("total_price", max_digits=10, decimal_places=2)
+    mini_price = models.DecimalField("mini_price", max_digits=10, decimal_places=2)
+    expected_price = models.DecimalField("expected_price", max_digits=10, decimal_places=2)
 
     # TODO: Define fields here
 
@@ -39,12 +41,12 @@ class Sales(models.Model):
         ('transfer', 'transfer'),
         ('cash', 'cash'),
         ('credit', 'credit'),
-        ('online', 'online'),
     )
 
     # TODO: Define fields here
     branch = models.ForeignKey(Branch,related_name="sales_branch", verbose_name="branch", on_delete=models.CASCADE)
     total_amount = models.DecimalField("total_amount", max_digits=10, decimal_places=2)
+    expected_amount = models.DecimalField("expected_amount", max_digits=10, decimal_places=2)
     remark = models.CharField("remark", max_length=200)
     channel = models.CharField("channel", max_length=5, choices=CHANNEL_CHOICES)
     payment_method = models.CharField("payment_method", max_length=8, choices=PAYMENT_CHOICES)

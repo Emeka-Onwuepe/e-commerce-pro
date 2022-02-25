@@ -15,6 +15,10 @@ class Credit_Sale(models.Model):
     items = models.ManyToManyField(Items, verbose_name="items",related_name="credit_sale_Items")
     customer = models.ForeignKey(Customer, verbose_name="customer",related_name="credit_sale_customer",on_delete=models.CASCADE)
     purchase_id = models.CharField("purchase_id", max_length=150)
+    total_payment = models.DecimalField("total_payment",max_digits=10, decimal_places=2,default=0)
+    balance = models.DecimalField("balance",max_digits=10, decimal_places=2,default=0)
+    fully_paid = models.BooleanField("fully_paid",default=False)
+
     class Meta:
         """Meta definition for Credit_Sale."""
 
@@ -32,9 +36,10 @@ class Payment(models.Model):
     # TODO: Define fields here
     amount = models.DecimalField("amount", max_digits=10, decimal_places=2)
     date = models.DateField("date", auto_now=False, auto_now_add=True)
-    customer = models.ForeignKey(Customer, verbose_name="customer",related_name="customer",on_delete=models.CASCADE)
-
-
+    customer = models.ForeignKey(Customer, verbose_name="customer",
+                                 related_name="customer",on_delete=models.CASCADE)
+    credit_sale  = models.ForeignKey(Credit_Sale,verbose_name="credit_sale",
+                                     related_name="payment_credit_sale", on_delete=models.CASCADE)
     class Meta:
         """Meta definition for Payment."""
 

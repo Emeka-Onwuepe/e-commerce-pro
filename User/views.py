@@ -2,7 +2,7 @@ import json
 from django.urls import reverse
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login,logout,authenticate
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import Http404, HttpResponseRedirect, JsonResponse
 from django.contrib.auth import get_user_model
 
 from User.models import Customer
@@ -89,10 +89,10 @@ def customerView(request,customerId,action):
          customerdata = ""
          try:
             customer = Customer.objects.get(phone_number = data['phone_number'])
-            customerdata = CustomerSerializer(customer)
+            customerdata = CustomerSerializer(customer).data
          except Customer.DoesNotExist:
-             pass
-         return JsonResponse({"data":customerdata.data})
+             return JsonResponse({},status=404,reason="Customer not found.")
+         return JsonResponse({"data":customerdata})
            
                      
     customers = Customer.objects.all()

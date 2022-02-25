@@ -64,7 +64,11 @@
         {% endif %}
 
     </div>
-
+    <div class="get_user">
+        <label for="user_phone_number">Phone_Number</label>
+        <input type="text" name="user_phone_number" id="user_phone_number">
+        <button id="get_user">Get User</button>
+    </div>
     <p id="lastSale"> <a href="">View Recent Sale</a></p>
     <form name="salesForm">
         {% csrf_token %}
@@ -82,8 +86,10 @@
                             <th>Color</th>
                             <th>Size</th>
                             <th>Unit Price</th>
+                            <th>Mini Price</th>
                             <th>Qty</th>
                             <th>Total Price</th>
+                            <th>Expected Price</th>
 
                         </tr>
                     </thead>
@@ -96,7 +102,9 @@
                             <td></td>
                             <td></td>
                             <td></td>
+                            <td></td>
                             <td id="grandtotal">0</td>
+                            <td id="expectedgroundtotal">0</td>
 
                         </tr>
                     </tfoot>

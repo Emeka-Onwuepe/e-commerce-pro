@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="">
+</head>
+
+<body>
+    <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+    <p>Hello world</p>
+    <form action="{% url 'credit_sales:creditSalesView'%}" method="post">
+        {% csrf_token %}
+        <label for="phone_number">Phone Number</label>
+        <input type="text" name="phone_number" id="phone_number">
+        <button type="submit"> Get Credit Details </button>
+    </form>
+
+    <div>
+        <p>{{credits.0.customer}}</p>
+    </div>
+    <div>
+
+        {% if message %}
+        <p>{{message}}</p>
+        {% endif %}
+
+    </div>
+    <div>
+        <table>
+            <thead></thead>
+            <tbody>
+                {% for item in credits %}
+                <tr>
+                    <td></td>
+                    <td>{{item.date}}</td>
+                    <td>{{item.branch}}</td>
+                    <td><a href="{% url 'sales:saleView' item.purchase_id 'credit' %}">
+                        {{item.purchase_id}}</a></td>
+                    <td>{{item.total_amount}}</td>
+                    <td>{{item.total_payment}}</td>
+                    <td>{{item.balance}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot></tfoot>
+        </table>
+    </div>
+    <script src="" async defer></script>
+</body>
+
+</html>
