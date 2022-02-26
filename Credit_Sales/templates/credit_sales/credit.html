@@ -19,7 +19,7 @@
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
     <p>Hello world</p>
-    <form action="{% url 'credit_sales:creditSalesView'%}" method="post">
+    <form action="{% url 'credit_sales:creditSalesView' 0 %}" method="post">
         {% csrf_token %}
         <label for="phone_number">Phone Number</label>
         <input type="text" name="phone_number" id="phone_number">
@@ -50,6 +50,8 @@
                     <td>{{item.total_amount}}</td>
                     <td>{{item.total_payment}}</td>
                     <td>{{item.balance}}</td>
+                    <td><a href="{% url 'credit_sales:paymentView' item.id 'view' %}">
+                        View</a></td>
                 </tr>
                 {% endfor %}
             </tbody>

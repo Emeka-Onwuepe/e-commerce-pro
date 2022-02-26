@@ -19,9 +19,25 @@
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
     <div>
-        <form action="{% url 'branch:branchView' branchID action %}" method="post">
+        <a href="{% url 'credit_sales:creditSalesView' customer.id %}">{{customer.name}}</a>
+    </div>
+    <ul>
+
+        {% for previous_payment in previous_payments %}
+        <li>{{previous_payment.date}} {{previous_payment.amount}}</li>
+
+        <a href="{% url 'credit_sales:paymentView' previous_payment.id 'delete' %}"> DELETE</a>
+        <a href="{% url 'credit_sales:paymentView' previous_payment.id 'edit' %}"> Edict</a> {% endfor %}
+
+    </ul>
+    <div>
+        <form action="{% url 'credit_sales:paymentView' creditId action %}" method="post">
             {% csrf_token %} {{form}}
-            <button type="submit">Submit</button>
+            <button type="submit">{% if action == "add" %}
+                ADD
+            {% else %}
+                UPDATE
+            {% endif %}</button>
         </form>
     </div>
     <script src="" async defer></script>

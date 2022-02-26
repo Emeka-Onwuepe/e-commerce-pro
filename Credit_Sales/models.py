@@ -36,8 +36,6 @@ class Payment(models.Model):
     # TODO: Define fields here
     amount = models.DecimalField("amount", max_digits=10, decimal_places=2)
     date = models.DateField("date", auto_now=False, auto_now_add=True)
-    customer = models.ForeignKey(Customer, verbose_name="customer",
-                                 related_name="customer",on_delete=models.CASCADE)
     credit_sale  = models.ForeignKey(Credit_Sale,verbose_name="credit_sale",
                                      related_name="payment_credit_sale", on_delete=models.CASCADE)
     class Meta:
@@ -48,4 +46,4 @@ class Payment(models.Model):
 
     def __str__(self):
         """Unicode representation of Payment."""
-        return f"{self.customer} - {str(self.amount)}"
+        return f"{self.credit_sale} - {str(self.amount)}"

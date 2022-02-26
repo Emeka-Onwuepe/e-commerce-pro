@@ -7,6 +7,7 @@ router = routers.DefaultRouter()
 app_name="credit_sales"
 
 urlpatterns = [ 
-    path('',views.creditSalesView,name="creditSalesView"), 
+    path('<int:customerID>',views.creditSalesView,name="creditSalesView"), 
+     path('payment/<int:creditId>/<str:action>',views.paymentView,name="paymentView"), 
 ]
 urlpatterns += router.urls
