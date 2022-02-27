@@ -8,16 +8,17 @@ from django.contrib.auth import get_user_model
 from User.models import Customer
 from User.serializer import CustomerSerializer
 User=get_user_model()
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from Branch.models import Branch
 from User.Forms import CustomerForm, UserEditForm, UserForm
 
 # Create your views here.
-def loginView(request):
+def loginView(request,next):
+    print(next)
     if request.user.is_authenticated:
             user= request.user
-            # return HttpResponseRedirect(reverse("publisher:publisherView",
-            # kwargs={"username":user.full_name}))
+            # return HttpResponseRedirect(reverse("sales:salesView",
+            # kwargs={}))
     if request.method=="POST":
         form= AuthenticationForm(data=request.POST)
         if form.is_valid():
@@ -26,7 +27,10 @@ def loginView(request):
             user= authenticate(request, username=email, password=password)
             if user:
                 login(request,user)
-            return HttpResponseRedirect(reverse('user:dashboardView', kwargs={'fullname':user.full_name}))
+                if next !=None and next !="logout":
+                    return redirect(next)
+                else:
+                    return HttpResponseRedirect(reverse('sales:salesView', kwargs={}))
     else:
         form=AuthenticationForm()
     return render(request,"user/login.html",{"form":form})
@@ -34,12 +38,12 @@ def loginView(request):
 def logoutView(request):
     if request.method=="POST":
         logout(request)
-    return HttpResponseRedirect(reverse('user:loginView'))
+    return HttpResponseRedirect(reverse('user:loginView',kwargs={'next':'logout'}))
 
 
-def dashboardView(request,fullname):
-    branch_instance = Branch.objects.get(id=1)
-    return render(request,"user/dashboard.html",{"userform": UserForm})
+# def dashboardView(request,fullname):
+#     branch_instance = Branch.objects.get(id=1)
+#     return render(request,"user/dashboard.html",{"userform": UserForm})
 
 
 def userView(request,userId,action):

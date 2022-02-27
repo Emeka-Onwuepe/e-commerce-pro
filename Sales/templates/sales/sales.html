@@ -9,6 +9,10 @@
 </head>
 
 <body>
+    <form action="{% url 'user:logoutView' %}" method="post">
+        {% csrf_token %}
+        <button type="submit">Sign Out</button>
+    </form>
     {% for category in categories %}
     <div>
         <h3>{{category}}</h3>

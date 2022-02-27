@@ -1,13 +1,11 @@
 from datetime import datetime
-from xmlrpc.client import DateTime
-from MySQLdb import Date
 from django.db.models import Sum,Count
 from django.http import JsonResponse
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 import json
 from Branch.models import Branch
 from Credit_Sales.models import Credit_Sale
-
 from Product.models import Product
 from Sales.form import salesForm
 from Sales.models import Items, Sales
@@ -15,9 +13,11 @@ from User.Forms import CustomerForm
 from User.models import Customer
 
 # Create your views here.
+@login_required(login_url="user:loginView")
 def salesView(request):
     return render(request,"sales/sales.html")
 
+@login_required(login_url="user:loginView")
 def saleView(request,purchaseId,type):
     sale = None
     if type == 'credit':
@@ -26,6 +26,7 @@ def saleView(request,purchaseId,type):
         sale = Sales.objects.get(purchase_id= purchaseId)
     return render(request,"sales/sale.html",{"sale":sale,"customer":sale.customer})
 
+@login_required(login_url="user:loginView")
 def salesProductView(request,productTypeId):
     products = []
     initial = True
@@ -36,7 +37,7 @@ def salesProductView(request,productTypeId):
     return render(request,"sales/product.html",{"products":products,"customerForm":CustomerForm,
                                                 "saleForm":salesForm,'initial':initial})
 
-
+@login_required(login_url="user:loginView")
 def processSalesView(request):
    if request.method == "POST":
        customer_instance = None
@@ -86,7 +87,7 @@ def processSalesView(request):
        return JsonResponse({"purchase_id":credit_or_sales.purchase_id,
                             "type":credit_or_sales.payment_method})
        
-       
+@login_required(login_url="user:loginView")     
 def salesAnalysisView(request,date,branchID):
     
     selected_branch = request.user.branch
@@ -141,6 +142,7 @@ def salesAnalysisView(request,date,branchID):
            
     return render(request,"sales/daysales.html",day_data)
 
+@login_required(login_url="user:loginView")
 def rangeSalesView(request,start_date,end_date,branchID):
     
     # start_date ='2022-02-18'
