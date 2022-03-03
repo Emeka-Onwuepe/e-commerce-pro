@@ -1,77 +1,58 @@
-<!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
-<html>
+{% extends 'sales/sales.html' %} {% block title %}
+<title>Sale</title>{% endblock title %} {% block main %}
+<div>
+    <p>Name: {{customer.name}}</p>
+    <p>Phone Number: {{customer.phone_number}}</p>
+    <p>Email: {{customer.email}}</p>
+    <p>Address: {{customer.address}}</p>
+    <p>Purchase_id: {{sale.purchase_id}}</p>
+    <p>Payment_method: {% if sale.payment_method %} {{sale.payment_method}}{% else %} Credit {% endif %}</p>
+    <p>Remark: {{sale.remark}}</p>
+    <p>Date: {{sale.date}}</p>
 
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>sale</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="">
-</head>
+    <div id="salesList">
+        <table>
+            <thead>
+                <tr>
+                    <th>SN</th>
+                    <th>Product Name</th>
+                    <th>Color</th>
+                    <th>Size</th>
+                    <th>Unit Price</th>
+                    <th>Qty</th>
+                    <th>Total Price</th>
 
-<body>
-    <!--[if lt IE 7]>
-            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
-    <div>
-        <p>Name: {{customer.name}}</p>
-        <p>Phone Number: {{customer.phone_number}}</p>
-        <p>Email: {{customer.email}}</p>
-        <p>Address: {{customer.address}}</p>
-        <p>Purchase_id: {{sale.purchase_id}}</p>
-        <p>Payment_method: {% if sale.payment_method %} {{sale.payment_method}}{% else %} Credit {% endif %}</p>
-        <p>Remark: {{sale.remark}}</p>
-        <p>Date: {{sale.date}}</p>
+                </tr>
+            </thead>
+            <tbody id="tbody">
+                {% for item in sale.items.all %}
+                <tr>
+                    <td class="counterCell"></td>
+                    <td>{{item.product_type}}</td>
+                    <td>{{item.color}}</td>
+                    <td>{{item.size}} </td>
+                    <td>{{item.unit_price}}</td>
+                    <td>{{item.qty}} </td>
+                    <td>{{item.total_price}}</td>
+                </tr>
 
-        <div id="salesList">
-            <table>
-                <thead>
-                    <tr>
-                        <th>SN</th>
-                        <th>Product Name</th>
-                        <th>Color</th>
-                        <th>Size</th>
-                        <th>Unit Price</th>
-                        <th>Qty</th>
-                        <th>Total Price</th>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td id="grandtotal">{{sale.total_amount}}</td>
 
-                    </tr>
-                </thead>
-                <tbody id="tbody">
-                    {% for item in sale.items.all %}
-                    <tr>
-                        <td class="counterCell"></td>
-                        <td>{{item.product_type}}</td>
-                        <td>{{item.color}}</td>
-                        <td>{{item.size}} </td>
-                        <td>{{item.unit_price}}</td>
-                        <td>{{item.qty}} </td>
-                        <td>{{item.total_price}}</td>
-                    </tr>
-
-                    {% endfor %}
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td id="grandtotal">{{sale.total_amount}}</td>
-
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
+                </tr>
+            </tfoot>
+        </table>
     </div>
-    <script src="" async defer></script>
-</body>
-
-</html>
+</div>
+{% endblock main %}
+{% block javascript %}
+{% endblock javascript %}

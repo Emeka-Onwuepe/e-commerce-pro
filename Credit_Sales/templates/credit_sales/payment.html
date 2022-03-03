@@ -1,46 +1,25 @@
-<!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
-<html>
+{% extends 'sales/sales.html' %} {% block title %}
+<title>Payment</title>{% endblock title %} {% block main %}
+<div>
+    <a href="{% url 'credit_sales:creditSalesView' customer.id %}">{{customer.name}}</a>
+</div>
+<ul>
 
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title></title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="">
-</head>
+    {% for previous_payment in previous_payments %}
+    <li>{{previous_payment.date}} {{previous_payment.amount}}</li>
 
-<body>
-    <!--[if lt IE 7]>
-            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
-    <div>
-        <a href="{% url 'credit_sales:creditSalesView' customer.id %}">{{customer.name}}</a>
-    </div>
-    <ul>
+    <a href="{% url 'credit_sales:paymentView' previous_payment.id 'delete' %}"> DELETE</a>
+    <a href="{% url 'credit_sales:paymentView' previous_payment.id 'edit' %}"> Edict</a> {% endfor %}
 
-        {% for previous_payment in previous_payments %}
-        <li>{{previous_payment.date}} {{previous_payment.amount}}</li>
-
-        <a href="{% url 'credit_sales:paymentView' previous_payment.id 'delete' %}"> DELETE</a>
-        <a href="{% url 'credit_sales:paymentView' previous_payment.id 'edit' %}"> Edict</a> {% endfor %}
-
-    </ul>
-    <div>
-        <form action="{% url 'credit_sales:paymentView' creditId action %}" method="post">
-            {% csrf_token %} {{form}}
-            <button type="submit">{% if action == "add" %}
-                ADD
-            {% else %}
-                UPDATE
-            {% endif %}</button>
-        </form>
-    </div>
-    <script src="" async defer></script>
-</body>
-
-</html>
+</ul>
+<div>
+    <form action="{% url 'credit_sales:paymentView' creditId action %}" method="post">
+        {% csrf_token %} {{form}}
+        <button type="submit">{% if action == "add" %}
+            ADD
+        {% else %}
+            UPDATE
+        {% endif %}</button>
+    </form>
+</div>
+{% endblock main %}

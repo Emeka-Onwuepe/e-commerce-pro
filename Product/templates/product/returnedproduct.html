@@ -1,43 +1,25 @@
-{% load static %}
-<!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title></title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="">
-    <script>
-    </script>
-</head>
-
-<body>
-    <h1>Hello2 </h1>
-    {% for branch in branches %}
-    <p>{{branch}}</p>
-    {% for returnedProduct in branch.returned_product_branch.all %}
-    <p>{{returnedProduct}}</p>
-    <a href="{% url 'product:returnedProductView' returnedProduct.id 'delete' %}"> DELETE</a>
-    <a href="{% url 'product:returnedProductView' returnedProduct.id 'edit' %}"> Edict</a> {% endfor %} {% endfor %}
+{% extends 'sales/sales.html' %} {% block title %}
+<title>Returned Product</title>{% endblock title %} {% block main %}
+{% for branch in branches %}
+<p>{{branch}}</p>
+{% for returnedProduct in branch.returned_product_branch.all %}
+<p>{{returnedProduct}}</p>
+<a href="{% url 'product:returnedProductView' returnedProduct.id 'delete' %}"> DELETE</a>
+<a href="{% url 'product:returnedProductView' returnedProduct.id 'edit' %}"> Edict</a> {% endfor %} {% endfor %}
 
 
-    <form action="{% url 'product:returnedProductView' returnedProductId action %}" method="post">
-        {% csrf_token %} {{form}}
-        <button type="submit">
+<form action="{% url 'product:returnedProductView' returnedProductId action %}" method="post">
+    {% csrf_token %} {{form}}
+    <button type="submit">
+        
+        {% if action == "add" %}
+            ADD
+        {% else %}
+            UPDATE
+        {% endif %}
             
-            {% if action == "add" %}
-                ADD
-            {% else %}
-                UPDATE
-            {% endif %}
-                
-        </button>
-    </form>
+    </button>
+</form>
 
-</body>
-<script>
-</script>
 
-</html>
+{% endblock main %}

@@ -9,12 +9,20 @@
         <link rel="stylesheet" href="">
     </head>
     <body>
-        <form action="{% url 'user:loginView' 'logout' %}"
+
+        {% if request.GET.next %}
+        <form action="{% url 'user:loginRedirect' request.GET.next %}"
          method="post" id="loginForm">
             {% csrf_token %} {{form}}
             <input type="submit" id="loginButton" value="Login">
         </form>
-        
+        {% else %}
+        <form action="{% url 'user:loginView' %}"
+        method="post" id="loginForm">
+           {% csrf_token %} {{form}}
+           <input type="submit" id="loginButton" value="Login">
+       </form>
+        {% endif %}
         <script src="" async defer></script>
     </body>
 </html>

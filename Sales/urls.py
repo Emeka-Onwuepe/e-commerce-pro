@@ -11,7 +11,7 @@ urlpatterns = [
     path('sale/<str:purchaseId>/<str:type>',views.saleView,name="saleView"), 
     path('<int:productTypeId>',views.salesProductView,name="salesProductView"),
     path('process',views.processSalesView,name="processSalesView"),
-    path('<str:date>/<int:branchID>/analysis',views.salesAnalysisView,name="salesAnalysisView"),
+    path('<int:branchID>/<str:date>/analysis',views.salesAnalysisView,name="salesAnalysisView"),
     path('<str:start_date>/<str:end_date>/<int:branchID>/rangeanalysis',views.rangeSalesView,name="rangeSalesView"),
 
 ]

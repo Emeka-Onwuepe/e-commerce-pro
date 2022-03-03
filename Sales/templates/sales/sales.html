@@ -1,28 +1,87 @@
+ {% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" href="{% static 'CSS/administration.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'CSS/general.css' %}"> {% block styles %} {% endblock styles %}
+    <link rel="shortcut icon" href="{% static 'CSS/logo.png' %}" type="image/png">
+    <link rel="apple-touch-icon" href="{% static 'CSS/logo.png' %}">
+    <link rel="icon" href="{% static 'CSS/logo.png' %}" type="image/png"> {% block title %}
+    <title>Sales</title>
+    {% endblock title %}
+    <meta name="author" content="Emeka Casper Onwuepe " />
+    <meta name="description" content="" />
+    <meta name="keywords" content=" " />
+    <meta name="author" content="Emeka Casper Onwuepe " />
+    <meta property="og:url" content="{{request.build_absolute_uri}}" />
+    <meta property="og:type" content="" />
+    <meta property="og:title" content="" />
+    <meta property="og:description" content="" />
 </head>
 
 <body>
-    <form action="{% url 'user:logoutView' %}" method="post">
-        {% csrf_token %}
-        <button type="submit">Sign Out</button>
-    </form>
-    {% for category in categories %}
-    <div>
-        <h3>{{category}}</h3>
-        {% for productType in category.category.all %}
-        <p><a href="{% url 'sales:salesProductView' category.id %}"> {{productType}} </a>
-        </p>
-        {% endfor %}
-    </div>
-    {% endfor %}
+    <div id="bigwrapper">
+        <header>
+            <section class="menu">
+                <div id="logo-div">
+                    <a href="{% url 'sales:salesView' %}"> <img class="logo" src="{% static 'CSS/logo.png' %}" alt="logo" width="100%"></a>
+                </div>
+                <nav id="nav" class="nav">
+                    {% block nav %} {% block log-control %}
+                    <div class="logControl">
+                        <form action="{% url 'user:logoutView' %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit">Sign Out</button>
+                        </form>
+                    </div>
+                    {% endblock log-control %} {% endblock nav %}
+                </nav>
+            </section>
+        </header>
 
+        <aside>
+            <div id="SideNav">
+                <nav>
+                    <a href="{% url 'branch:branchView' 0 'view' %}">Branches</a>
+                    <a href="{% url 'credit_sales:creditSalesView' 0 %}">Credit Sales</a>
+                    <a href="{% url 'preOrder:preOrderView' 0 'view' %}">Pre Order</a>
+                    <a href="{% url 'product:categoryView' 0 'view' %}">Category</a>
+                    <a href="{% url 'product:productTypeView' 0 'view' %}">Product Type</a>
+                    <a href="{% url 'product:sizeView' 0 'view' %}">Size</a>
+                    <a href="{% url 'product:productView' 0 'view' %}">Product</a>
+                    <a href="{% url 'product:badProductView' 0 'view' %}">Bad Product</a>
+                    <a href="{% url 'product:returnedProductView' 0 'view' %}">Returned Product</a>
+                    <a href="{% url 'sales:salesAnalysisView' 0 'default' %}">Sales Analysis</a>
+                    <a href="{% url 'stock:stockView' 0 'view' %}">Stock</a>
+                    <a href="{% url 'user:userView' 0 'view' %}">Users</a>
+                    <a href="{% url 'user:customerView' 0 'view' %}">Customers</a>
+                </nav>
+            </div>
+        </aside>
+        <main>
+            {% block main %} {% for category in categories %}
+            <div>
+                <h3>{{category}}</h3>
+                {% for productType in category.category.all %}
+                <p><a href="{% url 'sales:salesProductView' category.id %}"> {{productType}} </a>
+                </p>
+                {% endfor %}
+            </div>
+            {% endfor %} {% endblock main %}
+        </main>
+        <footer>
+            {% block footer %} {% endblock footer %}
+        </footer>
+    </div>
+
+
+    {% block javascript %}
+    
+     {% endblock javascript %}
 
 </body>
 

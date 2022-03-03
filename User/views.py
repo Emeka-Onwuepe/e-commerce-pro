@@ -13,12 +13,12 @@ from Branch.models import Branch
 from User.Forms import CustomerForm, UserEditForm, UserForm
 
 # Create your views here.
-def loginView(request,next):
+def loginView(request,next="next"):
     print(next)
     if request.user.is_authenticated:
             user= request.user
-            # return HttpResponseRedirect(reverse("sales:salesView",
-            # kwargs={}))
+            return HttpResponseRedirect(reverse("sales:salesView",
+            kwargs={}))
     if request.method=="POST":
         form= AuthenticationForm(data=request.POST)
         if form.is_valid():
@@ -27,7 +27,7 @@ def loginView(request,next):
             user= authenticate(request, username=email, password=password)
             if user:
                 login(request,user)
-                if next !=None and next !="logout":
+                if next !="next":
                     return redirect(next)
                 else:
                     return HttpResponseRedirect(reverse('sales:salesView', kwargs={}))
@@ -38,7 +38,7 @@ def loginView(request,next):
 def logoutView(request):
     if request.method=="POST":
         logout(request)
-    return HttpResponseRedirect(reverse('user:loginView',kwargs={'next':'logout'}))
+    return HttpResponseRedirect(reverse('user:loginView'))
 
 
 # def dashboardView(request,fullname):

@@ -1,46 +1,27 @@
-{% load static %}
-<!DOCTYPE html>
-<html>
+{% extends 'sales/sales.html' %} {% block title %}
+<title>Branches</title>{% endblock title %} {% block main %}
 
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title></title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="">
-    <script>
-    </script>
-</head>
 
-<body>
-    <h1>Hello2 </h1>
-    <p id="data">{{branchjson|safe}}</p>
+<ul>
 
-    <ul>
+    {% for branch in branches %}
+    <li>{{branch.name}} {{branch.id}}</li>
 
-        {% for branch in branches %}
-        <li>{{branch.name}} {{branch.id}}</li>
+    <a href="{% url 'branch:branchView' branch.id 'delete' %}"> DELETE</a>
+    <a href="{% url 'branch:branchView' branch.id 'edit' %}"> Edict</a> {% endfor %}
 
-        <a href="{% url 'branch:branchView' branch.id 'delete' %}"> DELETE</a>
-        <a href="{% url 'branch:branchView' branch.id 'edit' %}"> Edict</a> {% endfor %}
-
-    </ul>
-    <form action="{% url 'branch:branchView' branchID action %}" method="post">
-        {% csrf_token %} {{form}}
-        <button type="submit">
+</ul>
+<form action="{% url 'branch:branchView' branchID action %}" method="post">
+    {% csrf_token %} {{form}}
+    <button type="submit">
+        
+        {% if action == "add" %}
+            ADD
+        {% else %}
+            UPDATE
+        {% endif %}
             
-            {% if action == "add" %}
-                ADD
-            {% else %}
-                UPDATE
-            {% endif %}
-                
-        </button>
-    </form>
+    </button>
+</form>
 
-</body>
-<script>
-</script>
-
-</html>
+{% endblock main %}

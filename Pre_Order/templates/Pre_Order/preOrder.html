@@ -1,48 +1,28 @@
-{% load static %}
-<!DOCTYPE html>
-<html>
+{% extends 'sales/sales.html' %} {% block title %}
+<title>Pre Order</title>{% endblock title %} {% block main %}
+<ul>
+    <a href="{% url 'preOrder:preOrderView' 0 'getarchive' %}"> Archives</a> {% for preOrder in preorders %}
+    <li>{{preOrder}}</li>
 
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title></title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="">
-    <script>
-    </script>
-</head>
-
-<body>
-    <h1>Hello2 </h1>
-    <ul>
-        <a href="{% url 'preOrder:preOrderView' 0 'getarchive' %}"> Archives</a> {% for preOrder in preorders %}
-        <li>{{preOrder}}</li>
-
-        {% if not preOrder.archive %}
-        <a href="{% url 'preOrder:preOrderView' preOrder.id 'archive' %}"> Archive</a> {% endif %}
+    {% if not preOrder.archive %}
+    <a href="{% url 'preOrder:preOrderView' preOrder.id 'archive' %}"> Archive</a> {% endif %}
 
 
-        <a href="{% url 'preOrder:preOrderView' preOrder.id 'delete' %}"> DELETE</a> {% if not preOrder.archive %}
-        <a href="{% url 'preOrder:preOrderView' preOrder.id 'edit' %}"> Edict</a> {% endif %} {% endfor %}
+    <a href="{% url 'preOrder:preOrderView' preOrder.id 'delete' %}"> DELETE</a> {% if not preOrder.archive %}
+    <a href="{% url 'preOrder:preOrderView' preOrder.id 'edit' %}"> Edict</a> {% endif %} {% endfor %}
 
 
-    </ul>
-    <form action="{% url 'preOrder:preOrderView' preOrderId action %}" method="post">
-        {% csrf_token %} {{form}}
-        <button type="submit">
+</ul>
+<form action="{% url 'preOrder:preOrderView' preOrderId action %}" method="post">
+    {% csrf_token %} {{form}}
+    <button type="submit">
+        
+        {% if action == "add" %}
+            ADD
+        {% else %}
+            UPDATE
+        {% endif %}
             
-            {% if action == "add" %}
-                ADD
-            {% else %}
-                UPDATE
-            {% endif %}
-                
-        </button>
-    </form>
-
-</body>
-<script>
-</script>
-
-</html>
+    </button>
+</form>
+{% endblock main %}
