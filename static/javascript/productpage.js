@@ -5,14 +5,20 @@ const salesForm = document.forms.salesForm
 const csrtoken = document.getElementsByName("csrfmiddlewaretoken")[0].value
 const userPhoneNumber = document.getElementById("user_phone_number")
 
+const setCustomerData = (data) => {
+    salesForm.elements.name.value = data.name
+    salesForm.elements.phone_number.value = data.phone_number
+    salesForm.elements.email.value = data.email
+    salesForm.elements.address.value = data.address
+}
 
 const getCustomer = () => {
     GetCustomer({ phone_number: userPhoneNumber.value }, csrtoken)
         .then(data => {
-            salesForm.elements.name.value = data.data.name
-            salesForm.elements.phone_number.value = data.data.phone_number
-            salesForm.elements.email.value = data.data.email
-            salesForm.elements.address.value = data.data.address
+            let storestate = storeReducer(addCustomer(data.data))
+            setState(storestate)
+            setCustomerData(data.data)
+
         })
         .catch(error => alert(error))
 }
@@ -107,6 +113,7 @@ const addOrder = (e) => {
     if (list.length < 5) {
         let [id, product_type, color, image] = list
         let checkbox = document.getElementsByName(`${id}checkbox`)
+        let selected = document.getElementById(`${id}checkboxes`)
         let selectionFound = false
         checkbox.forEach(node => {
             if (node.checked) {
@@ -129,6 +136,9 @@ const addOrder = (e) => {
                 node.checked = false
             }
         })
+
+        selected.style.display = "none";
+        expanded = false;
         if (!selectionFound) {
             alert("No selection made, please make a selection.")
         }
@@ -169,8 +179,8 @@ const addOrder = (e) => {
     // UpdateCart
     storestate = storeReducer(addToCart(purelist))
     setState(storestate)
-    const currentCart = getState().cart
-    setSalesCount(currentCart)
+        //const currentCart = getState().cart
+        // setSalesCount(currentCart)
     appendOrderList(purelist)
 }
 
@@ -262,14 +272,15 @@ const appendOrderList = (data) => {
 
 }
 
-const setSalesCount = (data) => {
-    let cartPara = document.getElementById("sales")
-    cartPara.innerText = data.length
-}
+// const setSalesCount = (data) => {
+//     let cartPara = document.getElementById("sales")
+//     cartPara.innerText = data.length
+// }
 
-const currentCart = getState().cart
-setSalesCount(currentCart)
-appendOrderList(currentCart)
+const state = getState()
+    // setSalesCount(state)
+appendOrderList(state.cart)
+setCustomerData(state.customer)
 
 const addToCartButtons = document.querySelectorAll(".addToCartButton")
 addToCartButtons.forEach(button => {
@@ -283,3 +294,16 @@ selectBoxDiv.forEach(div => {
 salesForm.addEventListener("submit", processOrder)
 const get_user = document.getElementById("get_user")
 get_user.addEventListener("click", getCustomer)
+
+const updateUserState = (e) => {
+    let target = e.target
+    let customer = getState().customer
+    customer[target.name] = target.value
+    let storestate = storeReducer(addCustomer(customer))
+    setState(storestate)
+
+}
+salesForm.elements.name.addEventListener('keyup', updateUserState)
+salesForm.elements.phone_number.addEventListener('keyup', updateUserState)
+salesForm.elements.email.addEventListener('keyup', updateUserState)
+salesForm.elements.address.addEventListener('keyup', updateUserState)

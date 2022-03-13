@@ -26,7 +26,7 @@ class User(AbstractBaseUser,PermissionsMixin):
     full_name =models.CharField(verbose_name='full name', max_length=255)
     email = models.EmailField(verbose_name='email address',max_length=255,unique=True,)
     phone_number = models.CharField("phone_number", max_length=20,null=True,blank=True)
-    branch = models.ForeignKey(Branch, verbose_name="branch", related_name="branch", on_delete=models.CASCADE,null=True)
+    branch = models.ForeignKey(Branch, verbose_name="branch", related_name="branch", on_delete=models.SET_NULL,null=True)
     is_super_admin = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)

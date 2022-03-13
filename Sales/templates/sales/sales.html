@@ -7,10 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" type="text/css" href="{% static 'CSS/administration.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'CSS/general.css' %}"> {% block styles %} {% endblock styles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'CSS/general.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'CSS/productpage.css' %}"> {% block styles %} {% endblock styles %}
     <link rel="shortcut icon" href="{% static 'CSS/logo.png' %}" type="image/png">
     <link rel="apple-touch-icon" href="{% static 'CSS/logo.png' %}">
-    <link rel="icon" href="{% static 'CSS/logo.png' %}" type="image/png"> {% block title %}
+    <link rel="icon" href="{% static 'CSS/logo4.png' %}" type="image/png"> {% block title %}
     <title>Sales</title>
     {% endblock title %}
     <meta name="author" content="Emeka Casper Onwuepe " />
@@ -30,58 +31,105 @@
                 <div id="logo-div">
                     <a href="{% url 'sales:salesView' %}"> <img class="logo" src="{% static 'CSS/logo.png' %}" alt="logo" width="100%"></a>
                 </div>
-                <nav id="nav" class="nav">
-                    {% block nav %} {% block log-control %}
-                    <div class="logControl">
-                        <form action="{% url 'user:logoutView' %}" method="post">
-                            {% csrf_token %}
-                            <button type="submit">Sign Out</button>
-                        </form>
+                <div class="nav_and_user">
+                    <div class="user">
+                        {{request.user}}
                     </div>
-                    {% endblock log-control %} {% endblock nav %}
-                </nav>
+                    <nav id="nav" class="nav">
+                        {% block nav %} {% block log-control %}
+                        <div class="logControl">
+                            <form action="{% url 'user:logoutView' %}" method="post">
+                                {% csrf_token %}
+                                <button class="logout" type="submit">SIGN OUT</button>
+                            </form>
+                        </div>
+                        {% endblock log-control %} {% endblock nav %}
+                    </nav>
+                </div>
+
             </section>
         </header>
 
-        <aside>
-            <div id="SideNav">
-                <nav>
-                    <a href="{% url 'branch:branchView' 0 'view' %}">Branches</a>
-                    <a href="{% url 'credit_sales:creditSalesView' 0 %}">Credit Sales</a>
-                    <a href="{% url 'preOrder:preOrderView' 0 'view' %}">Pre Order</a>
-                    <a href="{% url 'product:categoryView' 0 'view' %}">Category</a>
-                    <a href="{% url 'product:productTypeView' 0 'view' %}">Product Type</a>
-                    <a href="{% url 'product:sizeView' 0 'view' %}">Size</a>
-                    <a href="{% url 'product:productView' 0 'view' %}">Product</a>
-                    <a href="{% url 'product:badProductView' 0 'view' %}">Bad Product</a>
-                    <a href="{% url 'product:returnedProductView' 0 'view' %}">Returned Product</a>
-                    <a href="{% url 'sales:salesAnalysisView' 0 'default' %}">Sales Analysis</a>
-                    <a href="{% url 'stock:stockView' 0 'view' %}">Stock</a>
-                    <a href="{% url 'user:userView' 0 'view' %}">Users</a>
-                    <a href="{% url 'user:customerView' 0 'view' %}">Customers</a>
-                </nav>
-            </div>
-        </aside>
-        <main>
-            {% block main %} {% for category in categories %}
-            <div>
-                <h3>{{category}}</h3>
-                {% for productType in category.category.all %}
-                <p><a href="{% url 'sales:salesProductView' category.id %}"> {{productType}} </a>
-                </p>
-                {% endfor %}
-            </div>
-            {% endfor %} {% endblock main %}
-        </main>
+        <div class="adminWrapper">
+            <aside>
+                <div id="sideNav">
+                    <nav>
+                        <a href="{% url 'product:badProductView' 0 'view' %}">Bad Product</a>
+                        <a href="{% url 'branch:branchView' 0 'view' %}">Branches</a>
+                        <a href="{% url 'product:categoryView' 0 'view' %}">Category</a>
+                        <a href="{% url 'credit_sales:creditSalesView' 0 %}">Credit Sales</a>
+                        <a href="{% url 'user:customerView' 0 'view' %}">Customers</a>
+                        <a href="{% url 'preOrder:preOrderView' 0 'view' %}">Pre Order</a>
+                        <a href="{% url 'product:productTypeView' 0 'view' %}">Product Type</a>
+                        <a href="{% url 'product:productView' 0 'view' %}">Product</a>
+                        <a href="{% url 'product:returnedProductView' 0 'view' %}">Returned Product</a>
+                        <a href="{% url 'sales:salesView' %}">Sales</a>
+                        <a href="{% url 'sales:salesAnalysisView' 0 'default' %}">Sales Analysis</a>
+                        <a href="{% url 'product:sizeView' 0 'view' %}">Size</a>
+                        <a href="{% url 'stock:stockView' 0 'view' %}">Stock</a>
+                        <a href="{% url 'user:userView' 0 'view' %}">Users</a>
+
+                    </nav>
+                </div>
+            </aside>
+            <main>
+                {% block main %}
+
+                <div id="flex_container">
+                    <form action="{% url 'sales:salesView' %}" method="post">
+                        {% csrf_token %}
+                        <label for="data">Product Name</label>
+                        <input type="text" id="data" name="data" required>
+                        <button class="addbutton" type="submit">Get Product</button>
+                    </form>
+
+                    <div class="get_user">
+                        <label for="user_phone_number">Phone_Number</label>
+                        <input type="text" name="user_phone_number" id="user_phone_number">
+                        <button class="addbutton" id="get_user">Get User</button>
+                    </div>
+                </div>
+
+                <div class="product_container">
+
+                    {% if not initial and not found %}
+                    <p class="error">No Product Found</p>
+                    {% elif not initial and found %} {% for group in products %} {% for product in group %} {% include "sales/product_template.html" %} {% endfor %} {% endfor %} {% endif %}
+                </div>
+
+                <section class="list_items">
+                    {% for category in categories %}
+                    <div class="categories">
+                        <h3>{{category}}</h3>
+                        <div class="content">
+                            {% for productType in category.category.all %}
+                            <p class="innerItem"><a href="{% url 'sales:salesProductView' productType.id %}"> {{productType.name}} </a>
+                            </p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </section>
+
+                {% include "sales/salesform.html" %} {% endblock main %}
+            </main>
+        </div>
         <footer>
-            {% block footer %} {% endblock footer %}
+            {% block footer %}
+            <footer>
+                <p id="footer"> Copyright &copy;
+                    <span id="footerdate" style="padding: 0%"></span>. All rights reserved. Smbclassicwears.com.ng
+                    <br /> Designed by Emeka Onwuepe. </p>
+            </footer>
+            {% endblock footer %}
         </footer>
     </div>
 
 
     {% block javascript %}
-    
-     {% endblock javascript %}
+    <script src="{% static 'javascript/state.js' %}"></script>
+    <script src="{% static 'javascript/productpage.js' %}"></script>
+    {% endblock javascript %}
 
 </body>
 

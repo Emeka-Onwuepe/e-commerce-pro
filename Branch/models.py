@@ -6,7 +6,7 @@ class Branch(models.Model):
     """Model definition for Branch."""
 
     # TODO: Define fields here
-    name = models.CharField('name', max_length = 200)
+    name = models.CharField('Branch Name', max_length = 200)
 
     class Meta:
         """Meta definition for Branch."""

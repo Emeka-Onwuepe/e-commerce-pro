@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 import json
 from Branch.models import Branch
 from Credit_Sales.models import Credit_Sale
-from Product.models import Product
+from Product.models import Product, Product_Type
 from Sales.form import salesForm
 from Sales.models import Items, Sales
 from User.Forms import CustomerForm
@@ -15,7 +15,23 @@ from User.models import Customer
 # Create your views here.
 @login_required(login_url="user:loginView")
 def salesView(request):
-    return render(request,"sales/sales.html")
+    if request.method == "POST":
+        products=[]
+        found = False
+        data = request.POST['data']
+        product_type = Product_Type.objects.filter(name =data)
+        for item in product_type:   
+            product = Product.objects.filter(branches=request.user.branch,
+                                             product_type = item.id)
+            if product:
+                found = True
+            products.append(product)
+            print(products)
+        return render(request,"sales/sales.html",
+                          {'products':products, 'initial':False,"found":found,
+                           "customerForm":CustomerForm, "saleForm":salesForm})
+    return render(request,"sales/sales.html",{'initial':True,'found':False,
+                                              "customerForm":CustomerForm, "saleForm":salesForm})
 
 @login_required(login_url="user:loginView")
 def saleView(request,purchaseId,type):

@@ -9,16 +9,17 @@ const rootUrl = "http://127.0.0.1:8000"
 const LOADED = "LOADED";
 const LOADING = "LOADING";
 const ADD_ERROR = "ADD_ERROR";
-//   const SUCCESS = "SUCCESS";
-// const CLEAR_SUCCESS = "CLEAR_SUCCESS";
-//   const DELETE_MESSAGES = "DELETE_MESSAGES";
-//   const PAYMENT = "PAYMENT";
-//   const GET_LOCATION = "GET_LOCATION";
-//   const ADD_LOGISTICS = "ADD_LOGISTICS";
-//   const ADD_DESTINATION = "ADD_DESTINATION";
-//   const ADD_NOTIFICATION = "ADD_NOTIFICATION";
-//   const CLEAR_NOTIFICATION = "CLEAR_NOTIFICATION"
-//   const GET_CUSTOMERS = "GET_CUSTOMERS"
+const ADD_CUSTOMER = "ADD_CUSTOMER"
+    //   const SUCCESS = "SUCCESS";
+    // const CLEAR_SUCCESS = "CLEAR_SUCCESS";
+    //   const DELETE_MESSAGES = "DELETE_MESSAGES";
+    //   const PAYMENT = "PAYMENT";
+    //   const GET_LOCATION = "GET_LOCATION";
+    //   const ADD_LOGISTICS = "ADD_LOGISTICS";
+    //   const ADD_DESTINATION = "ADD_DESTINATION";
+    //   const ADD_NOTIFICATION = "ADD_NOTIFICATION";
+    //   const CLEAR_NOTIFICATION = "CLEAR_NOTIFICATION"
+    //   const GET_CUSTOMERS = "GET_CUSTOMERS"
 
 //Capitalise first word
 // const sentenceCase = (data) => {
@@ -95,6 +96,13 @@ const addLatestOrder = (data) => {
     }
 }
 
+const addCustomer = (data) => {
+    return {
+        type: ADD_CUSTOMER,
+        data: data
+    }
+}
+
 const load = (type) => {
         return {
             type: type
@@ -130,10 +138,11 @@ const getState = () => {
             // logged: false,
             cart: [],
             latestOrder: { "purchase_id": "", "type": "" },
+            customer: { address: "", email: "", name: "", id: "", phone_number: "" },
             // success: false,
             // locations: [],
             // destination: "",
-            // customer: { address: "", email: "", fullName: "", id: "", phoneNumber: "" },
+            // customer: { address: "", email: "", fullName: "", id: "", phone_number: "" },
             // logistics: 0,
             ...jsonify,
             // message: "",
@@ -148,10 +157,10 @@ const getState = () => {
             // logged: false,
             cart: [],
             latestOrder: { "purchase_id": "", "type": "" },
+            customer: { address: "", email: "", name: "", id: "", phone_number: "" },
             // success: false,
             // locations: [],
             // destination: "",
-            // customer: { address: "", email: "", fullName: "", id: "", phoneNumber: "" },
             // logistics: 0,
             // message: "",
             // status: "",
@@ -181,12 +190,20 @@ const storeReducer = (action) => {
                 loading: false,
             }
 
+        case ADD_CUSTOMER:
+            return {
+                ...state,
+                customer: action.data,
+                loading: false,
+            }
+
         case ADD_LATEST_ORDER:
             return {
                 ...state,
                 cart: [],
                 // success: true,
                 latestOrder: action.data,
+                customer: { address: "", email: "", name: "", id: "", phone_number: "" },
                 loading: false,
             }
         case LOADING:

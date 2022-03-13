@@ -1,3 +1,209 @@
-/* body {
-    
+body {
+    background-color: #F28B30;
+}
+
+.menu {
+    display: flex;
+    /* border: 2px solid red; */
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #FEF2E7;
+    position: fixed;
+    width: 100%;
+    z-index: 10;
+}
+
+.nav_and_user {
+    display: flex;
+    align-items: center;
+}
+
+.user {
+    margin-right: 20px;
+    color: #003B4A;
+    padding: 3px;
+}
+
+.logout {
+    border: 0px;
+    padding: 5px;
+    color: #003B4A;
+    background-color: #FFA04D;
+}
+
+
+/* #nav {} */
+
+.adminWrapper {
+    display: flex;
+    flex-grow: 1;
+    margin-top: 100px;
+}
+
+#sideNav {
+    padding: 10px 10px 5px 20px;
+    background-color: #B36624;
+    /* border: 2px solid green; */
+}
+
+#sideNav a {
+    display: block;
+    margin-bottom: 10px;
+    color: whitesmoke;
+}
+
+main {
+    /* border: 2px solid black; */
+    padding: 30px 20px 0px 20px;
+    flex-grow: 1;
+}
+
+.list_items {
+    display: flex;
+    flex-wrap: wrap;
+    /* border: 2px solid yellow; */
+    margin: 30px 0px;
+}
+
+#list_items {
+    margin: 0px;
+}
+
+.categories,
+.items {
+    padding: 5px;
+    flex-grow: 1;
+    /* background-color: #734217; */
+    border: 1px solid #FFA04D;
+    /* background-color: #734217; */
+    background-color: #D97C2B;
+    color: white;
+    /* border: 2px solid green; */
+}
+
+.content {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    /* border: 2px solid red; */
+}
+
+.innerItem {
+    flex-grow: 1;
+    /* border: 2px solid red; */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 5px;
+    align-items: center;
+}
+
+.innerItem p {
+    font-weight: bolder;
+    color: #003B4A;
+}
+
+#salesDetails,
+#flex_container {
+    display: flex;
+    justify-content: space-between;
+}
+
+a {
+    color: white;
+}
+
+.delete {
+    margin: 0px 10px;
+}
+
+.delete button {
+    background-color: red;
+    color: white;
+}
+
+.editButton {
+    background-color: #30D0F2;
+    color: white;
+}
+
+label {
+    color: #003B4A;
+}
+
+#salesList input {
+    width: 110px;
+}
+
+.salesform .submit {
+    margin-left: 120px;
+    margin-bottom: 30px;
+}
+
+.submit {
+    margin-left: 120px;
+}
+
+td,
+th {
+    padding: 5px;
+    border: 1px solid #FEF2E7;
+    text-align: center;
+}
+
+
+/* th{
+
 } */
+
+
+/* #id_name {
+    margin: 0px 10px;
+} */
+
+
+/* Color Theme Swatches in Hex */
+
+.My-Color-Theme-1-hex {
+    color: #A65611;
+}
+
+.My-Color-Theme-2-hex {
+    color: #FFA04D;
+}
+
+.My-Color-Theme-3-hex {
+    color: #F28B30;
+}
+
+.My-Color-Theme-4-hex {
+    color: #0089A6;
+}
+
+.My-Color-Theme-5-hex {
+    color: #30D0F2;
+}
+
+
+/* Color Theme Swatches in Hex */
+
+.My-Color-Theme-1-hex {
+    color: #B36624;
+}
+
+.My-Color-Theme-2-hex {
+    color: #734217;
+}
+
+.My-Color-Theme-3-hex {
+    color: #F28B30;
+}
+
+.My-Color-Theme-4-hex {
+    color: #FF9233;
+}
+
+.My-Color-Theme-5-hex {
+    color: #D97C2B;
+}

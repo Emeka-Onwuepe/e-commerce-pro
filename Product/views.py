@@ -209,9 +209,15 @@ def badProductView(request,badProductId,action):
         bad_product_instance.delete()
         return HttpResponseRedirect(reverse('product:badProductView',
             kwargs={"action":"view","badProductId":0}))
+        
+        
+    products =None
+    if not request.user.is_admin:
+        products = Product.objects.filter(branches = request.user.branch )
                  
     return render(request,"product/badproduct.html",
-                  {"form":BadProductForm(),"badProductId":0,"action":"add"})
+                  {"form":BadProductForm(),"badProductId":0,
+                   "action":"add","products":products})
     
     
     

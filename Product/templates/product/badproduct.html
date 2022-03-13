@@ -1,16 +1,30 @@
 {% extends 'sales/sales.html' %} {% block title %}
-<title>Bad Product</title>{% endblock title %} {% block main %}
-{% for branch in branches %}
-    <p>{{branch}}</p>
-    {% for badProduct in branch.bad_product_branch.all %}
-    <p>{{badProduct}}</p>
-    <a href="{% url 'product:badProductView' badProduct.id 'delete' %}"> DELETE</a>
-    <a href="{% url 'product:badProductView' badProduct.id 'edit' %}"> Edict</a> {% endfor %} {% endfor %}
+<title>Bad Product</title>{% endblock title %} {% block main %} {% if request.user.is_admin %} {% for branch in branches %}
+<p>{{branch}}</p>
+{% for badProduct in branch.bad_product_branch.all %}
+<p>{{badProduct.product}} - {{badProduct.qty}} - ({{badProduct.date}})</p>
+<a href="{% url 'product:badProductView' badProduct.id 'delete' %}"> Delete</a>
+<a href="{% url 'product:badProductView' badProduct.id 'edit' %}"> Edit</a> {% endfor %} {% endfor %} {% else %}
+<p>{{request.user.branch}}</p>
+{% for badProduct in request.user.branch.bad_product_branch.all %}
+<p>{{badProduct.product}} - {{badProduct.qty}} - ({{badProduct.date}})</p>
+<a href="{% url 'product:badProductView' badProduct.id 'delete' %}"> Delete</a>
+<a href="{% url 'product:badProductView' badProduct.id 'edit' %}"> Edit</a> {% endfor %} {% endif %}
 
 
-    <form action="{% url 'product:badProductView' badProductId action %}" method="post">
-        {% csrf_token %} {{form}}
-        <button type="submit">
+
+<form action="{% url 'product:badProductView' badProductId action %}" method="post">
+    {% csrf_token %} {% if action == 'add' and not request.user.is_admin %}
+    <label for="id_product">Product:</label><select name="product" required="" id="id_product">
+  <option value="" selected="">---------</option>
+  {% for product in products %}
+  <option value="{{product.id}}">{{product}}</option>
+  {% endfor %}
+</select>
+    <input type="hidden" name="branch" value={{request.user.branch_id}}>
+    <label for="id_qty">Qty:</label><input type="number" name="qty" required="" id="id_qty"> {% else %} {{form}} {% endif %}
+
+    <button type="submit">
             
             {% if action == "add" %}
                 ADD
@@ -19,5 +33,5 @@
             {% endif %}
                 
         </button>
-    </form>
+</form>
 {% endblock main %}
