@@ -1,16 +1,35 @@
 {% extends 'sales/sales.html' %} {% block title %}
 <title>Stock</title>{% endblock title %} {% block main %}
-{% for branch in branches %}
-    <p>{{branch}}</p>
-    {% for stock in branch.stock_branch.all %}
-    <p>{{stock}}</p>
-    <a href="{% url 'stock:stockView' stock.id 'delete' %}"> DELETE</a>
-    <a href="{% url 'stock:stockView' stock.id 'edit' %}"> Edict</a> {% endfor %} {% endfor %}
+<h3>{{branch}}</h3>
+
+<form action="{% url 'stock:stockView' stockId branch.id action %}" method="post">
+    {% csrf_token %} {% if action == "edit" %}
+    <p>{{instance.product.product_type.name}} - {{instance.size}} - ({{instance.qty}}) - {{instance.date}}</p>
+    {{form}} {% else %}
+    <label for="id_qty">Qty:</label>
+    <input type="number" name="qty" required="" id="id_qty">
+
+    <label for="id_product">Product:</label>
+    <select name="product" required="" id="id_product">
+ <option value="" selected="">---------</option>
+        {% for product in branch.products_branches.all  %}
+        
+        {% if product.multipleSIzes %}
+         
+         {% for size  in product.multipleSIzes.all  %}
+         <option value="{{product.id}}-{{size.id}}">{{product.product_type.name}} - {{product.color}} - &#8358 {{size.price}} - size:{{size.size}}</option>
+         {% endfor %}    
+            
+        {% else %}
+        <option value="{{product.id}}">{{product.product_type.name}} - {{product.color}} - &#8358 {{product.price}} - size:{{product.size}}</option>
+        {% endif %}
+            
+        {% endfor %}
+
+</select> {% endif %}
 
 
-    <form action="{% url 'stock:stockView' stockId action %}" method="post">
-        {{instance}} {% csrf_token %} {{form}}
-        <button type="submit">
+    <button type="submit">
             
             {% if action == "add" %}
                 ADD
@@ -19,8 +38,10 @@
             {% endif %}
                 
         </button>
-    </form>
+</form>
 
-{% endblock main %}
-{% block javascript %}
-{% endblock javascript %}
+
+{% for stock in branch.stock_branch.all %}
+<p>{{stock.product.product_type.name}} - {{stock.size}} - ({{stock.qty}}) - {{stock.date}}</p>
+<a href="{% url 'stock:stockView' stock.id branch.id 'delete' %}"> Delete</a>
+<a href="{% url 'stock:stockView' stock.id branch.id 'edit' %}"> Edit</a> {% endfor %} {% endblock main %} {% block javascript %} {% endblock javascript %}

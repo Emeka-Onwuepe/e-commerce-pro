@@ -11,6 +11,8 @@ class Items(models.Model):
                     related_name="selected_product", on_delete=models.CASCADE)
     product_type = models.CharField('product_type', max_length = 200)
     size  = models.CharField('size', max_length = 200)
+    size_instance = models.ForeignKey(Size, verbose_name="size_instance", on_delete=models.CASCADE,
+                        related_name="items_size_instance",null=True, blank=True)
     color = models.CharField('color', max_length = 200)
     qty = models.IntegerField("qty")
     unit_price = models.DecimalField("unit_price", max_digits=10, decimal_places=2)

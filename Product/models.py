@@ -78,7 +78,7 @@ class Product(models.Model):
 
     def __str__(self):
         """Unicode representation of Product."""
-        return f"{self.product_type} - {self.color} - {self.size}"
+        return f"{self.product_type} - {self.color} - size:{self.size}"
 
 
 class Bad_Product(models.Model):

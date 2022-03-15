@@ -7,7 +7,7 @@ router = routers.DefaultRouter()
 app_name="stock"
 
 urlpatterns = [ 
-    path('stock/<int:stockId>/<str:action>',views.stockView,name="stockView"), 
+    path('stock/<int:stockId>/<int:branchId>/<str:action>',views.stockView,name="stockView"), 
 
 ]
 urlpatterns += router.urls

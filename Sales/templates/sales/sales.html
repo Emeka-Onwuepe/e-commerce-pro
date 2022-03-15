@@ -66,7 +66,12 @@
                         <a href="{% url 'sales:salesView' %}">Sales</a>
                         <a href="{% url 'sales:salesAnalysisView' 0 'default' %}">Sales Analysis</a>
                         <a href="{% url 'product:sizeView' 0 'view' %}">Size</a>
-                        <a href="{% url 'stock:stockView' 0 'view' %}">Stock</a>
+                        <div class="stock_branches">
+                            <p>STOCK</p>
+                            {% for branch in branches %}
+                            <a href="{% url 'stock:stockView' 0 branch.id 'view' %}">{{branch}}</a> {% endfor %}
+                        </div>
+
                         <a href="{% url 'user:userView' 0 'view' %}">Users</a>
 
                     </nav>

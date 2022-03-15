@@ -27,6 +27,7 @@ class Branch_Product(models.Model):
                 on_delete=models.CASCADE, related_name="branch_product_branch")  
     product = models.ForeignKey("Product.Product", verbose_name="product", 
                 on_delete=models.CASCADE, related_name="branch_product_product") 
+    is_multiple_sized = models.BooleanField("is_multiple_sized",default=False)
     current_qty = models.IntegerField("current_qty", default=0)
     returned_qty = models.IntegerField("returned_qty", default=0)
     bad_qty = models.IntegerField("bad_qty", default=0)
@@ -41,4 +42,26 @@ class Branch_Product(models.Model):
     def __str__(self):
         """Unicode representation of Branch_Product."""
         return f'{self.branch} - {self.product}'
+    
 
+class Multiple_Size(models.Model):
+    """Model definition for multiple_size."""
+
+    # TODO: Define fields here
+    branch_product = models.ForeignKey(Branch_Product, verbose_name="multiple_size_branch_product",
+                                       on_delete=models.CASCADE)
+    size = models.ForeignKey("Product.Size", related_name='branch_product_sizes',
+                             on_delete=models.CASCADE)
+    current_qty = models.IntegerField("current_qty", default=0)
+    returned_qty = models.IntegerField("returned_qty", default=0)
+    bad_qty = models.IntegerField("bad_qty", default=0)
+
+    class Meta:
+        """Meta definition for multiple_size."""
+
+        verbose_name = 'multiple_size'
+        verbose_name_plural = 'multiple_sizes'
+
+    def __str__(self):
+        """Unicode representation of multiple_size."""
+        return f'{self.branch_product} - {self.size}'

@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 import json
 from Branch.models import Branch
 from Credit_Sales.models import Credit_Sale
-from Product.models import Product, Product_Type
+from Product.models import Product, Product_Type, Size
 from Sales.form import salesForm
 from Sales.models import Items, Sales
 from User.Forms import CustomerForm
@@ -58,6 +58,7 @@ def processSalesView(request):
    if request.method == "POST":
        customer_instance = None
        credit_or_sales = None
+       sale_type = None
        data = json.loads(request.body.decode("utf-8"))
        orderlist = data['orders']
        
@@ -87,21 +88,25 @@ def processSalesView(request):
                                                expected_amount=data['expected_amount'],
                                                remark = data['remark'],
                                                channel ="store",
-                                               payment_method = data['payment_method'],
                                                customer = customer_instance,
                                                purchase_id = data['purchase_id'])
+           sale_type = credit_or_sales.payment_method
        
        for item in orderlist:
             product = Product.objects.get(pk=int(item['id']))
+            size= None
+            if item['id'] != item['Id']:
+                _,sizeId= item['Id'].split("_")
+                size = Size.objects.get(pk=int(sizeId))
             Item =  Items.objects.create(product=product,product_type=item['product_type'],
-                                    size=item['size'],color=item['color'],qty=item['qty'],
+                                    size=item['size'],size_instance=size,color=item['color'],qty=item['qty'],
                                     unit_price=item['price'],total_price=item['productTotal'],
                                     mini_price=item['mini'],expected_price=item['expected'])
             credit_or_sales.items.add(Item)
          
            
        return JsonResponse({"purchase_id":credit_or_sales.purchase_id,
-                            "type":credit_or_sales.payment_method})
+                            "type":sale_type})
        
 @login_required(login_url="user:loginView")     
 def salesAnalysisView(request,date,branchID):

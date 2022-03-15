@@ -2,6 +2,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from Product.form import BadProductForm, CategoryForm, ProductForm, ProductTypeForm, ReturnedProductForm, SizeForm
+from Product.helper import addBranchProduct
 from Product.models import Bad_Product, Category, Product, Product_Type, Returned_Product, Size
 
 # Create your views here.
@@ -155,7 +156,8 @@ def productView(request,productId,action):
                 if len(multipleSIzes) > 0:
                     form.cleaned_data['size'] = 0
                     form.cleaned_data['price'] = 0   
-                form.save()
+                saved = form.save()
+                addBranchProduct(saved)
                 return HttpResponseRedirect(reverse('product:productView',
                         kwargs={"action":"view","productId":0}))
             else:

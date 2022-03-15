@@ -10,6 +10,7 @@ class Credit_Sale(models.Model):
     # TODO: Define fields here
     branch = models.ForeignKey(Branch,related_name="credit_sale_branch", verbose_name="branch", on_delete=models.CASCADE)
     total_amount = models.DecimalField("total_amount", max_digits=10, decimal_places=2)
+    expected_amount = models.DecimalField("expected_amount", max_digits=10, decimal_places=2)
     remark = models.CharField("remark", max_length=200)
     date = models.DateField("date", auto_now=False, auto_now_add=True)
     items = models.ManyToManyField(Items, verbose_name="items",related_name="credit_sale_Items")
