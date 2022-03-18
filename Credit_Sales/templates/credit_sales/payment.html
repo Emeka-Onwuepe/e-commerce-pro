@@ -1,7 +1,7 @@
 {% extends 'sales/sales.html' %} {% block title %}
 <title>Payment</title>{% endblock title %} {% block main %}
 <div>
-    <a href="{% url 'credit_sales:creditSalesView' customer.id %}">{{customer.name}}</a>
+    <a href="{% url 'credit_sales:creditSalesView' customer.id 'view' %}">{{customer.name}}</a>
 </div>
 <ul>
 

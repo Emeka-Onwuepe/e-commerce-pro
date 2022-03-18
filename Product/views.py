@@ -1,8 +1,9 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-from Product.form import BadProductForm, CategoryForm, ProductForm, ProductTypeForm, ReturnedProductForm, SizeForm
-from Product.helper import addBranchProduct
+from Branch.models import Branch
+from Product.form import  BadProductForm, CategoryForm, ProductForm, ProductTypeForm, ReturnedProductForm, SizeForm
+from Branch.helper import addBranchProduct
 from Product.models import Bad_Product, Category, Product, Product_Type, Returned_Product, Size
 
 # Create your views here.
@@ -183,15 +184,22 @@ def badProductView(request,badProductId,action):
         bad_product_instance = Bad_Product.objects.get(id=badProductId)
     
     if request.method == "POST" and action == "add":
-        form = BadProductForm(data= request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('product:badProductView',
-            kwargs={"action":"view","badProductId":0}))
+        data= request.POST
+        product_size = data['product'].split("-")
+        branch = Branch.objects.get(pk=int(data["branch"]))
+        if len(product_size)>1:
+            productId,sizeId = product_size
+            product = Product.objects.get(pk=int(productId)) 
+            size = Size.objects.get(pk = int(sizeId))
+            Bad_Product.objects.create(product = product,branch = branch,
+                                       size_instance =size,qty = int(data['qty']) )
         else:
-            return render(request,"product/badproduct.html",
-                  {"form":form,"badProductId":0,"action":"view"})  
-            
+            product = Product.objects.get(pk=int(product_size))
+            Bad_Product.objects.create(product = product,branch = branch,
+                                       qty = int(data['qty']) )
+        return HttpResponseRedirect(reverse('product:badProductView',
+            kwargs={"action":"view","badProductId":0}))
+        
     if action == "edit":
         if request.method == "POST":
             form = BadProductForm(data= request.POST,instance=bad_product_instance)
@@ -201,10 +209,11 @@ def badProductView(request,badProductId,action):
                         kwargs={"action":"view","badProductId":0}))
             else:
                 return render(request,"product/badproduct.html",
-                  {"form":form,"badProductId":bad_product_instance.id,"action":"edit"})
+                  {"form":form,'instance':bad_product_instance,
+                   "badProductId":bad_product_instance.id,"action":"edit"})
         else:
             return render(request,"product/badproduct.html",
-                  {"form":BadProductForm(instance=bad_product_instance),
+                  {'instance':bad_product_instance,
                    "badProductId":bad_product_instance.id,"action":"edit"})
     
     if action == "delete":
@@ -216,9 +225,11 @@ def badProductView(request,badProductId,action):
     products =None
     if not request.user.is_admin:
         products = Product.objects.filter(branches = request.user.branch )
+    else:
+        products = Product.objects.all()
                  
     return render(request,"product/badproduct.html",
-                  {"form":BadProductForm(),"badProductId":0,
+                  {"badProductId":0,
                    "action":"add","products":products})
     
     
@@ -229,14 +240,31 @@ def returnedProductView(request,returnedProductId,action):
         returned_product_instance = Returned_Product.objects.get(id=returnedProductId)
     
     if request.method == "POST" and action == "add":
-        form = ReturnedProductForm(data= request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('product:returnedProductView',
-            kwargs={"action":"view","returnedProductId":0}))
+        data= request.POST
+        product_size = data['product'].split("-")
+        if len(product_size)>1:
+            productId,sizeId = product_size
+            product = Product.objects.get(pk=int(productId))
+            size = Size.objects.get(pk = int(sizeId))
+            Returned_Product.objects.create(product=product,branch=request.user.branch,
+                                       qty=int(data['qty']),size_instance=size,
+                                       unit_price =float(data['unit_price']),
+                                       total_price=float(data['total_price']),
+                                       date_of_purchase = data['date_of_purchase'],
+                                       date_of_return = data['date_of_return']
+                                 )
         else:
-            return render(request,"product/returnedproduct.html",
-                  {"form":form,"returnedProductId":0})  
+            product = Product.objects.get(pk=int(product_size))
+            Returned_Product.objects.create(product=product,branch=request.user.branch,
+                                       qty=int(data['qty']),size_instance=size,
+                                       unit_price =float(data['unit_price']),
+                                       total_price=float(data['total_price']),
+                                       date_of_purchase = data['date_of_purchase'],
+                                       date_of_return = data['date_of_return']
+                                 )
+        return HttpResponseRedirect(reverse('product:returnedProductView',
+            kwargs={"action":"view","returnedProductId":0}))
+ 
             
     if action == "edit":
         if request.method == "POST":
@@ -247,10 +275,10 @@ def returnedProductView(request,returnedProductId,action):
                         kwargs={"action":"view","returnedProductId":0}))
             else:
                 return render(request,"product/returnedproduct.html",
-                  {"form":form,"returnedProductId":returned_product_instance.id,"action":"edit"})
+                  {"instance":returned_product_instance,"returnedProductId":returned_product_instance.id,"action":"edit"})
         else:
             return render(request,"product/returnedproduct.html",
-                  {"form":ReturnedProductForm(instance=returned_product_instance),
+                  {"instance":returned_product_instance,
                    "returnedProductId":returned_product_instance.id,"action":"edit"})
     
     if action == "delete":

@@ -18,11 +18,56 @@
     <label for="id_product">Product:</label><select name="product" required="" id="id_product">
   <option value="" selected="">---------</option>
   {% for product in products %}
-  <option value="{{product.id}}">{{product}}</option>
+ 
+  {% if product.multipleSIzes %}
+         
+  {% for size  in product.multipleSIzes.all  %}
+  <option value="{{product.id}}-{{size.id}}">{{product.product_type.name}} - {{product.color}} - &#8358 {{size.price}} - size:{{size.size}}</option>
+  {% endfor %}    
+     
+ {% else %}
+ <option value="{{product.id}}">{{product.product_type.name}} - {{product.color}} - &#8358 {{product.price}} - size:{{product.size}}</option>
+ {% endif %}
   {% endfor %}
 </select>
     <input type="hidden" name="branch" value={{request.user.branch_id}}>
-    <label for="id_qty">Qty:</label><input type="number" name="qty" required="" id="id_qty"> {% else %} {{form}} {% endif %}
+    <label for="id_qty">Qty:</label><input type="number" name="qty" required="" id="id_qty"> {% elif action == "edit" %}
+
+    <label for="id_product">Product:</label>
+    <input type="text" name="product" value="{{instance.product.product_type}}" id="id_product" readonly>
+
+    <label for="id_size_instance">Size_instance:</label>
+    <input type="text" name="size_instance" value="{{instance.size_instance}}" id="id_size_instance" readonly>
+
+    <label for="id_branch">Branch:</label>
+    <input type="text" value="{{instance.branch}}" name="branch" id="id_branch" readonly>
+
+    <label for="id_qty">Qty:</label>
+    <input type="number" name="qty" value="{{instance.qty}}" required="" id="id_qty"> {% else %}
+
+    <label for="id_product">Product:</label><select name="product" required="" id="id_product">
+        <option value="" selected="">---------</option>
+        {% for product in products %}
+       
+        {% if product.multipleSIzes %}
+               
+        {% for size  in product.multipleSIzes.all  %}
+        <option value="{{product.id}}-{{size.id}}">{{product.product_type.name}} - {{product.color}} - &#8358 {{size.price}} - size:{{size.size}}</option>
+        {% endfor %}    
+           
+       {% else %}
+       <option value="{{product.id}}">{{product.product_type.name}} - {{product.color}} - &#8358 {{product.price}} - size:{{product.size}}</option>
+       {% endif %}
+        {% endfor %}
+      </select>
+    <label for="id_branch">Branches</label>
+    <select name="branch" id="id_branch" required="">
+        <option value="" selected="">---------</option>
+        {% for branch in branches %}
+        <option value="{{branch.id}}">{{branch}}</option>
+        {% endfor%}
+      </select>
+    <label for="id_qty">Qty:</label><input type="number" name="qty" required="" id="id_qty"> {% endif %}
 
     <button type="submit">
             

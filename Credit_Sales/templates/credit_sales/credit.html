@@ -1,7 +1,6 @@
-
-{% extends 'sales/sales.html' %} {% block title %}
+ {% extends 'sales/sales.html' %} {% block title %}
 <title>Credit</title>{% endblock title %} {% block main %}
-<form action="{% url 'credit_sales:creditSalesView' 0 %}" method="post">
+<form action="{% url 'credit_sales:creditSalesView' 0 'view' %}" method="post">
     {% csrf_token %}
     <label for="phone_number">Phone Number</label>
     <input type="text" name="phone_number" id="phone_number">
@@ -11,6 +10,10 @@
 <div>
     <p>{{credits.0.customer}}</p>
 </div>
+{% if settled %}
+<a href="{% url 'credit_sales:creditSalesView' customerid 'view' %}">Debts</a> {% endif %} {% if not settled and customerid != 0 %}
+
+<a href="{% url 'credit_sales:creditSalesView' customerid 'settled' %}">Settled Payments</a> {% endif %}
 <div>
 
     {% if message %}
@@ -18,9 +21,21 @@
     {% endif %}
 
 </div>
+
+{% if credits %}
+
+
 <div>
     <table>
-        <thead></thead>
+        <thead>
+            <th>SN</th>
+            <th>Date</th>
+            <th>Branch</th>
+            <th>Purchase Id</th>
+            <th>Total Amount</th>
+            <th>Total Payment</th>
+            <th>Balance</th>
+        </thead>
         <tbody>
             {% for item in credits %}
             <tr>
@@ -33,11 +48,11 @@
                 <td>{{item.total_payment}}</td>
                 <td>{{item.balance}}</td>
                 <td><a href="{% url 'credit_sales:paymentView' item.id 'view' %}">
-                    View</a></td>
+                    Payments</a></td>
             </tr>
             {% endfor %}
         </tbody>
         <tfoot></tfoot>
     </table>
 </div>
-{% endblock main %}
+{% endif %} {% endblock main %}

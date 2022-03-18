@@ -8,13 +8,36 @@
     <a href="{% url 'preOrder:preOrderView' preOrder.id 'archive' %}"> Archive</a> {% endif %}
 
 
-    <a href="{% url 'preOrder:preOrderView' preOrder.id 'delete' %}"> DELETE</a> {% if not preOrder.archive %}
-    <a href="{% url 'preOrder:preOrderView' preOrder.id 'edit' %}"> Edict</a> {% endif %} {% endfor %}
+    <a href="{% url 'preOrder:preOrderView' preOrder.id 'delete' %}"> Delete</a> {% if not preOrder.archive %}
+    <a href="{% url 'preOrder:preOrderView' preOrder.id 'edit' %}"> Edit</a> {% endif %} {% endfor %}
 
 
 </ul>
 <form action="{% url 'preOrder:preOrderView' preOrderId action %}" method="post">
-    {% csrf_token %} {{form}}
+    {% csrf_token %} 
+    {% if action == "add" %}
+    <label for="id_product">Product:</label>
+    <select name="product" required="" id="id_product">
+        <option value="" selected="">---------</option>
+        {% for product in products %}
+        
+        {% if product.multipleSIzes %}
+         
+         {% for size  in product.multipleSIzes.all  %}
+         <option value="{{product.id}}-{{size.id}}">{{product.product_type.name}} - {{product.color}} - &#8358 {{size.price}} - size:{{size.size}}</option>
+         {% endfor %}    
+            
+        {% else %}
+        <option value="{{product.id}}">{{product.product_type.name}} - {{product.color}} - &#8358 {{product.price}} - size:{{product.size}}</option>
+        {% endif %} 
+        {% endfor %}
+</select> {% else %}
+    <label for="id_product">Product:</label>
+    <input type="text" name="product" value="{{instance.product.product_type}}" id="id_product" readonly>
+
+    <label for="id_size_instance">Size_instance:</label>
+    <input type="text" name="size_instance" value="{{instance.size_instance}}" id="id_size_instance" readonly> {% endif %}
+    {{form}}
     <button type="submit">
         
         {% if action == "add" %}

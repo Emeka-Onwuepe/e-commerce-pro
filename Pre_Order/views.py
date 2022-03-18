@@ -2,8 +2,9 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from Pre_Order.form import PreOrderForm
+from Pre_Order.form import PreOrderForm,PreOrder_Form
 from Pre_Order.models import Pre_Order
+from Product.models import Product
 
 # Create your views here.
 
@@ -14,6 +15,7 @@ def preOrderView(request,preOrderId,action):
         preorders = Pre_Order.objects.filter(archive=False)
     elif action == "getarchive":
         preorders = Pre_Order.objects.filter(archive=True)
+    products = Product.objects.all()
            
     if preOrderId != 0:   
         pre_order_instance = Pre_Order.objects.get(id=preOrderId)
@@ -25,18 +27,24 @@ def preOrderView(request,preOrderId,action):
             kwargs={"action":"view","preOrderId":0}))
         
     if request.method == "POST" and action == "add":
-        form = PreOrderForm(data= request.POST)
+        data= request.POST.copy()
+        product_size = data['product'].split("-")
+        if len(product_size)>1:
+            productId,sizeId = product_size
+            data['product'] = productId
+            data['size_instance'] = sizeId
+        form = PreOrderForm(data= data)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse('preOrder:preOrderView',
             kwargs={"action":"view","preOrderId":0}))
         else:
             return render(request,"Pre_Order/preOrder.html",
-                  {"form":form,"preOrderId":0})  
+                  {"form":form,"preOrderId":0,'products':products,'action':"add"})  
             
     if action == "edit":
         if request.method == "POST":
-            form = PreOrderForm(data= request.POST,instance=pre_order_instance)
+            form = PreOrder_Form(data= request.POST,instance=pre_order_instance)
             if form.is_valid():
                 form.save()
                 return HttpResponseRedirect(reverse('preOrder:preOrderView',
@@ -44,12 +52,14 @@ def preOrderView(request,preOrderId,action):
             else:
                 return render(request,"Pre_Order/preOrder.html",
                   {"form":form,"preOrderId":pre_order_instance.id,"action":"edit",
-                   "preorders":preorders})
+                   "preorders":preorders,'products':products,
+                   'instance':pre_order_instance})
         else:
             return render(request,"Pre_Order/preOrder.html",
-                  {"form":PreOrderForm(instance=pre_order_instance),
+                  {"form":PreOrder_Form(instance=pre_order_instance),
                    "preOrderId":pre_order_instance.id,"action":"edit",
-                   "preorders":preorders})
+                   "preorders":preorders,'products':products,
+                   'instance':pre_order_instance})
     
     if action == "delete":
         pre_order_instance.delete()
@@ -57,4 +67,6 @@ def preOrderView(request,preOrderId,action):
             kwargs={"action":"view","preOrderId":0}))
                  
     return render(request,"Pre_Order/preOrder.html",
-                  {"form":PreOrderForm(),"preOrderId":0,"action":"add","preorders":preorders})
+                  {"form":PreOrder_Form(),"preOrderId":0,
+                   "action":"add","preorders":preorders,
+                   'products':products})

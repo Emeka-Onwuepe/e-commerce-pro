@@ -84,4 +84,4 @@ class Customer(models.Model):
 
     def __str__(self):
         """Unicode representation of Customer."""
-        return self.name
+        return f'{self.name} {self.phone_number}'

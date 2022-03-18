@@ -10,7 +10,7 @@ class StockForm(forms.ModelForm):
         """Meta definition for Stockform."""
 
         model = Stock
-        fields =['qty','branch','product','size']
+        fields =['qty','branch','product','size_instance']
         
 class StockEditForm(forms.ModelForm):
     """Form definition for StockEdit."""

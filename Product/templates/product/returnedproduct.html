@@ -1,6 +1,5 @@
 {% extends 'sales/sales.html' %} {% block title %}
-<title>Returned Product</title>{% endblock title %} {% block main %}
-{% for branch in branches %}
+<title>Returned Product</title>{% endblock title %} {% block main %} {% for branch in branches %}
 <p>{{branch}}</p>
 {% for returnedProduct in branch.returned_product_branch.all %}
 <p>{{returnedProduct}}</p>
@@ -9,7 +8,41 @@
 
 
 <form action="{% url 'product:returnedProductView' returnedProductId action %}" method="post">
-    {% csrf_token %} {{form}}
+    {% csrf_token %} {% if action == "add" %}
+    <label for="id_product">Product:</label>
+    <select name="product" required="" id="id_product">
+        <option value="" selected="">---------</option>
+        {% for product in request.user.branch.products_branches.all  %}
+        
+        {% if product.multipleSIzes %}
+         
+         {% for size  in product.multipleSIzes.all  %}
+         <option value="{{product.id}}-{{size.id}}">{{product.product_type.name}} - {{product.color}} - &#8358 {{size.price}} - size:{{size.size}}</option>
+         {% endfor %}    
+            
+        {% else %}
+        <option value="{{product.id}}">{{product.product_type.name}} - {{product.color}} - &#8358 {{product.price}} - size:{{product.size}}</option>
+        {% endif %} 
+        {% endfor %}
+</select> {% else %}
+    <label for="id_product">Product:</label>
+    <input type="text" name="product" value="{{instance.product.product_type}}" id="id_product" readonly>
+
+    <label for="id_size_instance">Size_instance:</label>
+    <input type="text" name="size_instance" value="{{instance.size_instance}}" id="id_size_instance" readonly> {% endif %}
+
+    <input type="hidden" name="branch" value="{{request.user.branch_id}}">
+
+    <label for="id_qty">Qty:</label>
+    <input type="number" name="qty" required="" id="id_qty" value="{{instance.qty}}">
+    <label for="id_unit_price">Unit_price:</label>
+    <input type="number" name="unit_price" step="0.01" required="" id="id_unit_price" value="{{instance.unit_price}}">
+    <label for="id_total_price">Total_price:</label>
+    <input type="number" name="total_price" step="0.01" required="" id="id_total_price" value="{{instance.total_price}}">
+    <label for="id_date_of_purchase">Date_of_purchase:</label>
+    <input type="date" name="date_of_purchase" required="" id="id_date_of_purchase" value="{{instance.date_of_purchase|date:'Y-m-d'}}">
+    <label for="id_date_of_return">Date_of_return: </label>
+    <input type="date" name="date_of_return" required="" id="id_date_of_return" value="{{instance.date_of_return|date:'Y-m-d'}}">
     <button type="submit">
         
         {% if action == "add" %}
@@ -20,6 +53,16 @@
             
     </button>
 </form>
+{% endblock main %} {% block javascript %}
+<script>
+    const unit_price = document.getElementById("id_unit_price")
+    const qty = document.getElementById("id_qty")
+    const total_price = document.getElementById("id_total_price")
+    const calTotal = () => {
+        total_price.value = parseFloat(unit_price.value) * parseInt(qty.value)
+    }
 
-
-{% endblock main %}
+    unit_price.addEventListener('keyup', calTotal)
+    qty.addEventListener('keyup', calTotal)
+</script>
+{% endblock javascript %}

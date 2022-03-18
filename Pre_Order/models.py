@@ -1,5 +1,5 @@
 from django.db import models
-from Product.models import Product
+from Product.models import Product, Size
 from User.models import Customer
 
 # Create your models here.
@@ -9,6 +9,8 @@ class Pre_Order(models.Model):
     # TODO: Define fields here
     product = models.ForeignKey(Product, verbose_name="pre_ordered_product", 
                 on_delete=models.CASCADE, related_name="pre_ordered_product")
+    size_instance = models.ForeignKey(Size, verbose_name="size_instance", on_delete=models.CASCADE,
+                        related_name="pre_order_size_instance",null=True, blank=True)
     customer = models.ForeignKey(Customer, verbose_name="pre_ordered_customer", 
                 on_delete=models.CASCADE, related_name="pre_ordered_customer")
     qty = models.IntegerField("qty",blank=False)

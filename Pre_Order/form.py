@@ -9,4 +9,14 @@ class PreOrderForm(forms.ModelForm):
         """Meta definition for Pre_Orderform."""
 
         model = Pre_Order
-        fields = ("product","customer","qty")
+        fields = ("product","customer","qty",'size_instance')
+        
+class PreOrder_Form(forms.ModelForm):
+    """Form definition for Pre_Order."""
+
+    class Meta:
+        """Meta definition for Pre_Orderform."""
+
+        model = Pre_Order
+        fields = ("customer","qty")
+        

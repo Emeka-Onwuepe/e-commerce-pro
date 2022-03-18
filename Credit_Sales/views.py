@@ -9,27 +9,51 @@ from User.models import Customer
 
 # Create your views here.
 
-def creditSalesView(request,customerID):
+def creditSalesView(request,customerID,action):
     credits = []
     message =None
+    settled = False
+    customerid = customerID
     
     if request.method == "POST":
         data = request.POST
         phone_number = data['phone_number']
+        
         credits = Credit_Sale.objects.filter(
             customer__phone_number = phone_number, fully_paid=False )
         if not credits:
-            message = "No data found. Please be sure the phone number is correct"
+            message = "No unsettled debts found"
         
-    if customerID>0:
-        credits = Credit_Sale.objects.filter(
-            customer = customerID, fully_paid=False )
-        if not credits:
-            message = "No data found. Please be sure the phone number is correct"
+        try:
+            customer = Customer.objects.get(phone_number = phone_number)
+            customerid = customer.id
+        except Customer.DoesNotExist:
+            message = "No customer found. Please be sure the phone number is correct"
         
+        
+    if action == "settled" and customerID>0:
+        credits =  Credit_Sale.objects.filter(
+            customer = customerID, fully_paid=True ) 
+        settled = True
+        if not credits: 
+            message = "No settled debts found" 
     
+    if customerID>0 and action != "settled":
+        credits =  Credit_Sale.objects.filter(
+            customer = customerID, fully_paid=False ) 
+        try:
+            customer = Customer.objects.get(pk = customerID)
+            customerid = customer.id
+        except Customer.DoesNotExist:
+            pass
         
-    return render(request,"credit_sales/credit.html",{"credits":credits,"message":message}) 
+        if not credits: 
+            message = "No unsettled debts found" 
+        
+    return render(request,"credit_sales/credit.html",{"credits":credits,
+                                                      "message":message,
+                                                      "settled":settled,
+                                                      'customerid':customerid}) 
 
 
 def paymentView(request,creditId,action):

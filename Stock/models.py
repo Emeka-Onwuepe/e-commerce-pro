@@ -13,8 +13,8 @@ class Stock(models.Model):
                         related_name="stock_product")
     branch = models.ForeignKey(Branch, verbose_name="branch", on_delete=models.CASCADE,
                         related_name="stock_branch")
-    size = models.ForeignKey(Size, verbose_name="size", on_delete=models.CASCADE,
-                        related_name="size_branch",null=True, blank=True)
+    size_instance = models.ForeignKey(Size, verbose_name="size_instance", on_delete=models.CASCADE,
+                        related_name="stock_size_instance",null=True, blank=True)
     date = models.DateTimeField("date",auto_now_add=True)
 
     class Meta:

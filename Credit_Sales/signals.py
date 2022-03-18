@@ -1,7 +1,7 @@
-from django.db.models.signals import pre_delete,post_delete,m2m_changed
+from django.db.models.signals import pre_save,pre_delete,post_delete,m2m_changed
 from django.dispatch import receiver
 from Branch.models import Branch_Product, Multiple_Size
-from Credit_Sales.models import Credit_Sale
+from Credit_Sales.models import Credit_Sale, Payment
 from Sales.models import Items
 
 @receiver(m2m_changed, sender= Credit_Sale.items.through)
@@ -33,7 +33,17 @@ def sales_multipleSIzes_changes(sender, instance,action,reverse,model,pk_set,**k
                                                 size = item.size_instance)
                 multiple_size.current_qty -= item.qty
                 multiple_size.save()
+                
+@receiver(pre_save, sender=Credit_Sale)
+def add_credit_sale(sender, instance, *args, **kwargs):
+    if not instance.pk:
+        instance.balance = instance.total_amount * -1
+    if instance.total_payment  >= instance.total_amount:
+        instance.fully_paid = True
+    else:
+        instance.fully_paid = False
 
+          
 
 @receiver(pre_delete, sender=Credit_Sale)
 def delete_credit_sale(sender, instance, *args, **kwargs):
@@ -63,5 +73,24 @@ def delete_credit_sale(sender, instance, *args, **kwargs):
             multiple_size.current_qty += item.qty
             multiple_size.save()
 
-        
-        
+# Payment signals 
+@receiver(pre_save, sender=Payment)
+def add_payment(sender, instance, *args, **kwargs):
+    credit_sale = Credit_Sale.objects.get(pk=instance.credit_sale_id)
+    if instance.pk:
+        old_instance = Payment.objects.get(pk=instance.pk)
+        diff = instance.amount - old_instance.amount
+        credit_sale.total_payment += diff
+        credit_sale.balance += diff
+        credit_sale.save()
+    else:
+        credit_sale.total_payment += instance.amount
+        credit_sale.balance += instance.amount
+        credit_sale.save()
+ 
+@receiver(pre_delete, sender=Payment)   
+def delete_payment(sender, instance, *args, **kwargs):
+    credit_sale = Credit_Sale.objects.get(pk=instance.credit_sale_id)
+    credit_sale.total_payment -= instance.amount
+    credit_sale.balance -= instance.amount
+    credit_sale.save(False)

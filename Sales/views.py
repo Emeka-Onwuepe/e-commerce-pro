@@ -77,8 +77,8 @@ def processSalesView(request):
        
        if data['payment_method'] == "credit":
            credit_or_sales = Credit_Sale.objects.create(branch=request.user.branch,
-                                               total_amount=data['total_amount'],
-                                               expected_amount=data['expected_amount'],
+                                               total_amount=float(data['total_amount']),
+                                               expected_amount=float(data['expected_amount']),
                                                remark = data['remark'],
                                                customer = customer_instance,
                                                purchase_id = data['purchase_id'])
