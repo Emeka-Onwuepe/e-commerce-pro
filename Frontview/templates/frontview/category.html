@@ -1,0 +1,17 @@
+{% extends 'frontview/home.html' %} {% load static %} {% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'CSS/homeproductpage.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'CSS/general.css' %}"> {% endblock styles %} {% block title %}
+
+<title>Category</title>{% endblock title %}{% block banner %}{% endblock banner %} {% block main %}
+
+<div class="products">
+
+
+    {% for product_type in sorted_product_types %} {% for product in product_type.product_type.all %} {% if product.publish %} {% include "frontview/product_template.html" %} {% endif %} {% endfor %} {% endfor %}
+</div>
+{% endblock main %} {% block javascript %}
+<script src="{% static 'javascript/state.js' %}"></script>
+<script src="{% static 'javascript/homeproductpage.js' %}"></script>
+{% endblock javascript %}
+
+</html>

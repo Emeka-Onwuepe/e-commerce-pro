@@ -1,9 +1,11 @@
 //Action Types
 const ADD_TO_CART = "ADD_TO_CART";
 const UPDATE_CART = "UPDATE_CART";
+const ADD_TO_USER_CART = "ADD_TO_USER_CART";
+const UPDATE_USER_CART = "UPDATE_USER_CART";
 const PROCESS_ORDER = "PROCESS_ORDER";
 const ADD_LATEST_ORDER = "ADD_LATEST_ORDER";
-const rootUrl = "http://127.0.0.1:8000"
+const rootUrl = "http://127.0.0.1:8000";
 
 //   const GET_PRODUCT_AND_CUSTOMER = "GET_PRODUCT_AND_CUSTOMER"
 const LOADED = "LOADED";
@@ -74,19 +76,35 @@ const ADD_CUSTOMER = "ADD_CUSTOMER"
 // }
 
 
-const addToCart = (data) => {
-    return {
-        type: ADD_TO_CART,
-        data: data
+const addToCart = (data, action = "cart") => {
+    if (action == 'cart') {
+        return {
+            type: ADD_TO_CART,
+            data: data
+        }
+    } else if (action == "user_cart") {
+        return {
+            type: ADD_TO_USER_CART,
+            data: data
+        }
     }
+
 }
 
 
-const UpdateCart = (data) => {
-    return {
-        type: UPDATE_CART,
-        data: data
+const UpdateCart = (data, action = 'cart') => {
+    if (action == "cart") {
+        return {
+            type: UPDATE_CART,
+            data: data
+        }
+    } else if (action == "user_cart") {
+        return {
+            type: UPDATE_USER_CART,
+            data: data
+        }
     }
+
 }
 
 const addLatestOrder = (data) => {
@@ -137,6 +155,7 @@ const getState = () => {
             loading: false,
             // logged: false,
             cart: [],
+            user_cart: [],
             latestOrder: { "purchase_id": "", "type": "" },
             customer: { address: "", email: "", name: "", id: "", phone_number: "" },
             // success: false,
@@ -155,6 +174,7 @@ const getState = () => {
             // User: "",
             loading: false,
             // logged: false,
+            user_cart: [],
             cart: [],
             latestOrder: { "purchase_id": "", "type": "" },
             customer: { address: "", email: "", name: "", id: "", phone_number: "" },
@@ -187,6 +207,20 @@ const storeReducer = (action) => {
             return {
                 ...state,
                 cart: [...action.data],
+                loading: false,
+            }
+
+        case ADD_TO_USER_CART:
+            return {
+                ...state,
+                user_cart: [...state.user_cart, ...action.data],
+                loading: false,
+            }
+
+        case UPDATE_USER_CART:
+            return {
+                ...state,
+                user_cart: [...action.data],
                 loading: false,
             }
 

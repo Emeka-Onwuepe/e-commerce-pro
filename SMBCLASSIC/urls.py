@@ -20,6 +20,7 @@ from django.conf import settings
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 urlpatterns = [
+    path('',include("Frontview.urls" , namespace='frontview')),
     path('admin/', admin.site.urls),
     path('user/',include("User.urls" , namespace='user')),
     path('branch/',include("Branch.urls", namespace='branch')),

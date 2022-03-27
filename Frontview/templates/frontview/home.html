@@ -1,0 +1,169 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;700&family=Roboto:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'CSS/frontview.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'CSS/general.css' %}"> {% block styles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'CSS/slides.css' %}">{% endblock styles %}
+    <link rel="shortcut icon" href="{% static 'CSS/logo.png' %}" type="image/png">
+    <link rel="apple-touch-icon" href="{% static 'CSS/logo.png' %}">
+    <link rel="icon" href="{% static 'CSS/logo4.png' %}" type="image/png"> {% block title %}
+    <title>Sales</title>
+    {% endblock title %}
+    <meta name="author" content="Emeka Casper Onwuepe " />
+    <meta name="description" content="" />
+    <meta name="keywords" content=" " />
+    <meta name="author" content="Emeka Casper Onwuepe " />
+    <meta property="og:url" content="{{request.build_absolute_uri}}" />
+    <meta property="og:type" content="" />
+    <meta property="og:title" content="" />
+    <meta property="og:description" content="" />
+</head>
+
+<body>
+    <div id="bigwrapper">
+        <header>
+            <section class="menu">
+                <div id="logo-div">
+                    <a href="{% url 'frontview:homeView' %}"> <img class="logo" src="{% static 'CSS/logo.png' %}" alt="logo" width="100%"></a>
+                </div>
+                <nav id="nav" class="nav">
+                    {% block nav %}
+                    <div class="cart">
+                        <svg stroke="currentColor" fill="#D97C2B" stroke-width="0" viewBox="0 0 576 512" style="font-size: 50px;" class="cart-shop" height="48px" width="48px" xmlns="http://www.w3.org/2000/svg"><path d="M528.12 301.319l47.273-208C578.806 78.301 567.391 64 551.99 64H159.208l-9.166-44.81C147.758 8.021 137.93 0 126.529 0H24C10.745 0 0 10.745 0 24v16c0 13.255 10.745 24 24 24h69.883l70.248 343.435C147.325 417.1 136 435.222 136 456c0 30.928 25.072 56 56 56s56-25.072 56-56c0-15.674-6.447-29.835-16.824-40h209.647C430.447 426.165 424 440.326 424 456c0 30.928 25.072 56 56 56s56-25.072 56-56c0-22.172-12.888-41.332-31.579-50.405l5.517-24.276c3.413-15.018-8.002-29.319-23.403-29.319H218.117l-6.545-32h293.145c11.206 0 20.92-7.754 23.403-18.681z"></path></svg>
+                        <span id="cart_count" class="cart_count">0</span>
+                    </div>
+
+                    <a href="#contact_us">Contact</a> {% endblock nav %}
+                </nav>
+
+            </section>
+
+        </header>
+        <div class="seperator"></div>
+        {% block banner %}
+        <div class="bannerdiv">
+            <div class="svgdiv">
+                <svg width="100%" stroke="transparent" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <path  d="M0 0 L40 0 L60 50 L40 100 L0 100 " fill="#FEF2E7" />
+          </svg>
+
+            </div>
+            <div class="banner">
+                <img class="bannerImage" src="{% static 'CSS/shop.jpg' %}" alt="" />
+                <div></div>
+                <div class="bannertext">
+                </div>
+
+            </div>
+
+            <div class="bannercover">
+                <div class="bannerflex">
+                    <div class="banneritems">
+                        <h1>SMB Classic Wears Boutique</h1>
+                        <p class="lesser">RC No: 3265823</p>
+                        <p class="lesser">Our physical shops are situated at Abuja but we deliver nations wide</p>
+                        <p>...your look, our priority</p>
+
+                    </div>
+                    <div class="banneritems">
+                        <p class="less">We deal on different kinds of </p>
+                        <p class="less">Men and Woman Wears Suits | Shoes | Jeans | Chinos | Sneakers | T-Shirts | Under-wears | Night Wears | Jewelries and other accessories</p>
+
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        {% endblock banner %}
+        <div class="adminWrapper">
+            <aside>
+                <div id="sideNav">
+                    <nav>
+                        {% for category in sorted_categories %}
+
+                        <a href="{% url 'frontview:categoryView' category.id %}"> {{category}}</a> {% endfor %}
+
+                    </nav>
+                </div>
+            </aside>
+            <main>
+                {% block main %}
+
+                <section class="list_items">
+                    {% for category in sorted_categories %}
+                    <div class="items">
+                        <div class="inneritem">
+                            <a href="{% url 'frontview:categoryView' category.id %}"> {{category}}</a>
+                            <p> A nice Beginning</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </section>
+
+                <section id='contact_us' class="contact_us">
+                    <h3 class="contact_head">Contact Us</h3>
+                    <div class="contact_flex">
+                        <div class="mapbox-iframe">
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3940.353919858236!2d7.469045414779783!3d9.0314431914374!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x104e0b59ebfc6a6b%3A0xdcb8bccf0378825b!2sSMB%20CLASSIC%20WEARS%20BOUTIQUE!5e0!3m2!1sen!2sng!4v1648198341328!5m2!1sen!2sng"
+                                width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        </div>
+                        <div class="write_ups">
+                            <div>
+                                <h4>Open Hours</h4>
+                                <p> Monday - Saturday: 8AM - 9PM</p>
+                                <P> Sunday : 3PM - 9PM </P>
+                            </div>
+
+                            <div>
+                                <h4>Call</h4>
+                                <p>Phone:
+                                    <a href="tel:+2348038559808"></a>
+                                </p>
+                            </div>
+
+                            <div>
+                                <h4>Visit Us</h4>
+                                <p>Shop No. G-002, Ground Floor, Area 1 Shopping Complex, Garki, Abuja</p>
+                            </div>
+
+                            <div>
+                                <a href=""><img class="facebook" src="{% static 'CSS/facebook.png' %}" alt="facebook" /></a>
+                                <a href=""><img class="instagram" src="{% static 'CSS/instagram.png' %}" alt="instagram" /></a>
+                                <a href=""><img class="twitter" src="{% static 'CSS/twitter.png' %}" alt="twitter" /></a>
+                                <a href=""><img class="whatsapp" src="{% static 'CSS/whatsapp.png' %}" alt="whatsapp" /></a>
+                            </div>
+                        </div>
+                    </div>
+
+                </section>
+
+                {% endblock main %}
+            </main>
+        </div>
+        <footer>
+            {% block footer %}
+            <footer>
+                <p id="footer"> Copyright &copy;
+                    <span id="footerdate" style="padding: 0%"></span>. All rights reserved. Smbclassicwears.com.ng
+                    <br /> Designed by Emeka Onwuepe. </p>
+            </footer>
+            {% endblock footer %}
+        </footer>
+    </div>
+
+
+    {% block javascript %} {% endblock javascript %}
+
+</body>
+
+</html>

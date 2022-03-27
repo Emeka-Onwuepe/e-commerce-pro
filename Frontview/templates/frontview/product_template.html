@@ -1,0 +1,30 @@
+<div id="product">
+    <img src="{{product.image.url}}" alt="{{product.product_type.name}} image">
+    <h3>{{product.product_type.name}}</h3>
+    {% if not product.multipleSIzes.all %}
+
+    <p>Price: <span>&#8358</span> {{product.price}}</p>
+    <p>Size: {{product.size}}</p>
+    <p style="display: none;" id='{{product.id}}productData'>{{product.id}};{{product.product_type.name}};{{product.size}};{{product.price}};{{product.color}};{{product.image}}</p>
+    {% else %}
+
+
+    <div id='{{product.id}};selectBox' class="selectBox">
+        <select>
+        <option>Select size(s)</option>
+      </select>
+        <div class="overSelect"></div>
+    </div>
+    <div id='{{product.id}}checkboxes' class="checkboxes">
+        {% for size in product.multipleSIzes.all %}
+        <div class="multiple">
+            <input type="checkbox" name="{{product.id}}checkbox" id={{size.id}} data-data={{size.id}};{{size.price}};{{size.size}} />
+            <label for={{size.id}}>size: {{size.size}} - &#8358 {{size.price}}</label>
+        </div>
+        {% endfor %}
+    </div>
+    <p style="display: none;" id='{{product.id}}productData'>{{product.id}};{{product.product_type.name}};{{product.color}};{{product.image}}</p>
+    {% endif %}
+    <p>{{product.description}}</p>
+    <button class="addToCartButton addbutton" id={{product.id}}>Add to Cart</button>
+</div>

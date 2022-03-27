@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "Sales.apps.SalesConfig",
     "Stock.apps.StockConfig",
     "User.apps.UserConfig",
+    "Frontview.apps.FrontviewConfig",
     "Pre_Order.apps.PreOrderConfig",
 ]
 

@@ -42,10 +42,6 @@ h3 {
     margin-left: -15px;
 }
 
-body {
-    /* background-color: #FEF2E7; */
-}
-
 #bigwrapper {
     display: flex;
     flex-direction: column;
