@@ -9,7 +9,8 @@ app_name="frontview"
 urlpatterns = [
     
     path('',views.homeView,name="homeView"), 
-    path('cat/<int:catId>',views.categoryView,name="categoryView"), 
+    path('category/<int:catId>',views.categoryView,name="categoryView"),
+    path('cart',views.cartView,name="cartView"),  
     
    
       

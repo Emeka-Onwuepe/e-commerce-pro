@@ -9,9 +9,5 @@
 
     {% for product_type in sorted_product_types %} {% for product in product_type.product_type.all %} {% if product.publish %} {% include "frontview/product_template.html" %} {% endif %} {% endfor %} {% endfor %}
 </div>
-{% endblock main %} {% block javascript %}
-<script src="{% static 'javascript/state.js' %}"></script>
-<script src="{% static 'javascript/homeproductpage.js' %}"></script>
-{% endblock javascript %}
-
+{% endblock main %} 
 </html>

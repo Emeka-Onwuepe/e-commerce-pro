@@ -182,6 +182,36 @@ a {
     background-color: #9E612C;
 }
 
+#cart a {
+    border: 0px;
+    padding: 0px;
+    color: unset;
+    background-color: unset;
+}
+
+#cartflex {
+    display: flex;
+    justify-content: space-around;
+}
+
+.customerDetails {
+    display: flex;
+    justify-content: center;
+}
+
+.customerDetails input {
+    border: 2px double #FCA877;
+}
+
+fieldset {
+    padding: 20px;
+    border: 2px dotted black;
+}
+
+legend {
+    margin: 0px auto;
+}
+
 
 /* th{
 

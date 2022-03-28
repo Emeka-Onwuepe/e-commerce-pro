@@ -8,6 +8,9 @@ from Product.models import Category, Product_Type
 def homeView(request):
     return render(request,'frontview/home.html')
 
+def cartView(request):
+    return render(request,'frontview/cart.html')
+
 def categoryView(request,catId):
     category = Category.objects.get(pk=catId)
     unsorted_product_types = Product_Type.objects.filter(category=category.id,

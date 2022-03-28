@@ -11,17 +11,17 @@ const rootUrl = "http://127.0.0.1:8000";
 const LOADED = "LOADED";
 const LOADING = "LOADING";
 const ADD_ERROR = "ADD_ERROR";
-const ADD_CUSTOMER = "ADD_CUSTOMER"
-    //   const SUCCESS = "SUCCESS";
-    // const CLEAR_SUCCESS = "CLEAR_SUCCESS";
-    //   const DELETE_MESSAGES = "DELETE_MESSAGES";
-    //   const PAYMENT = "PAYMENT";
-    //   const GET_LOCATION = "GET_LOCATION";
-    //   const ADD_LOGISTICS = "ADD_LOGISTICS";
-    //   const ADD_DESTINATION = "ADD_DESTINATION";
-    //   const ADD_NOTIFICATION = "ADD_NOTIFICATION";
-    //   const CLEAR_NOTIFICATION = "CLEAR_NOTIFICATION"
-    //   const GET_CUSTOMERS = "GET_CUSTOMERS"
+const ADD_CUSTOMER = "ADD_CUSTOMER";
+//   const SUCCESS = "SUCCESS";
+// const CLEAR_SUCCESS = "CLEAR_SUCCESS";
+//   const DELETE_MESSAGES = "DELETE_MESSAGES";
+//   const PAYMENT = "PAYMENT";
+//   const GET_LOCATION = "GET_LOCATION";
+//   const ADD_LOGISTICS = "ADD_LOGISTICS";
+//   const ADD_DESTINATION = "ADD_DESTINATION";
+//   const ADD_NOTIFICATION = "ADD_NOTIFICATION";
+//   const CLEAR_NOTIFICATION = "CLEAR_NOTIFICATION"
+//   const GET_CUSTOMERS = "GET_CUSTOMERS"
 
 //Capitalise first word
 // const sentenceCase = (data) => {

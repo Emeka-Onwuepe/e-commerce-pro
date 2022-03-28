@@ -303,7 +303,7 @@ const updateUserState = (e) => {
     setState(storestate)
 
 }
-salesForm.elements.name.addEventListener('keyup', updateUserState)
-salesForm.elements.phone_number.addEventListener('keyup', updateUserState)
-salesForm.elements.email.addEventListener('keyup', updateUserState)
-salesForm.elements.address.addEventListener('keyup', updateUserState)
+salesForm.elements.name.addEventListener('change', updateUserState)
+salesForm.elements.phone_number.addEventListener('change', updateUserState)
+salesForm.elements.email.addEventListener('change', updateUserState)
+salesForm.elements.address.addEventListener('change', updateUserState)
