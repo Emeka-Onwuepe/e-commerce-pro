@@ -1,6 +1,7 @@
 const cartflex = document.getElementById("cartflex")
 const grand_total = document.getElementById('grand_total')
 const customerForm = document.forms.customerForm
+    // const csrtoken = document.getElementsByName("csrfmiddlewaretoken")[0].value
 
 
 // div.innerHTML = data
@@ -117,3 +118,70 @@ const deleteButtons = document.getElementsByClassName("delete")
 for (const button of decrementButtons) {
     button.addEventListener('click', deleteItem)
 }
+
+
+// pay Stack integration
+
+const public_key = document.getElementById("public_key").innerHTML
+const make_payment_button = document.getElementById("make_payment")
+
+function payWithPaystack() {
+
+    const date = Date.now().toString().slice(5)
+    const random = Math.floor(Math.random() * 100)
+    const OrderId = `smb${random}${date}`
+
+    var handler = PaystackPop.setup({
+
+        key: public_key, // Replace with your public key
+
+        email: customerForm.elements.email.value,
+
+        amount: Total * 100, // the amount value is multiplied by 100 to convert to the lowest currency unit
+
+        currency: 'NGN', // Use GHS for Ghana Cedis or USD for US Dollars
+
+        ref: OrderId, // Replace with a reference you generated
+
+        callback: function(response) {
+            //this happens after the payment is completed successfully
+            var reference = response.reference;
+            alert('Payment complete! Reference: ' + reference);
+
+            // Make an AJAX call to your server with the reference to verify the transaction
+            const data = {
+                name: customerForm.elements.name.value,
+                phone_number: customerForm.elements.phone_number.value,
+                email: customerForm.elements.email.value,
+                address: customerForm.elements.address.value,
+                payment_method: 'online',
+                remark: "Website Sales",
+                total_amount: Total,
+                expected_amount: Total,
+                purchase_id: OrderId,
+                orders: getState().user_cart
+            }
+            ProcessOrder(data, csrtoken, 'processorder').
+            then(data => {
+                    console.log(data)
+                    alert('Success')
+                })
+                .catch((error) => {
+                    alert(error)
+                    setState(storeReducer(load(LOADED)))
+                });
+        },
+
+        onClose: function() {
+
+            alert('Transaction was not completed, window closed.');
+
+        },
+
+    });
+
+    handler.openIframe();
+
+}
+
+make_payment_button.addEventListener('click', payWithPaystack)

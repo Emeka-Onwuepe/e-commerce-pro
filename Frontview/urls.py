@@ -11,6 +11,7 @@ urlpatterns = [
     path('',views.homeView,name="homeView"), 
     path('category/<int:catId>',views.categoryView,name="categoryView"),
     path('cart',views.cartView,name="cartView"),  
+    path('processorder',views.processPaymentView,name="processPaymentView"), 
     
    
       

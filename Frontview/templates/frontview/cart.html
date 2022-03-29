@@ -10,6 +10,7 @@
     <p>Grand Total <span id="grand_total"></span></p>
     <div class="customerDetails">
         <form name="customerForm" action="" method="post">
+            {% csrf_token %}
             <fieldset>
                 <legend>Customer Details</legend>
                 <label for="id_name">Name:</label><input type="text" name="name" maxlength="255" required="" id="id_name">
@@ -19,11 +20,17 @@
             </fieldset>
         </form>
     </div>
+    <p id="public_key" style="display: none;">{{public_key}}</p>
+    <script>
+    </script>
+    <button id="make_payment">Make Payment</button>
 </div>
 {% endblock main %} {% block javascript %}
 <script src="{% static 'javascript/state.js' %}"></script>
 <script src="{% static 'javascript/homeproductpage.js' %}"></script>
+<script src="https://js.paystack.co/v1/inline.js"></script>
 <script src="{% static 'javascript/cart.js' %}"></script>
+
 
 {% endblock javascript %}
 

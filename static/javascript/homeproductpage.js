@@ -1,3 +1,5 @@
+const csrtoken = document.getElementsByName("csrfmiddlewaretoken")[0].value
+
 let expanded = false;
 
 function showCheckboxes(e) {

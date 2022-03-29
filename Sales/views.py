@@ -89,6 +89,7 @@ def processSalesView(request):
                                                remark = data['remark'],
                                                channel ="store",
                                                customer = customer_instance,
+                                               payment_method = data['payment_method'],
                                                purchase_id = data['purchase_id'])
            sale_type = credit_or_sales.payment_method
        
