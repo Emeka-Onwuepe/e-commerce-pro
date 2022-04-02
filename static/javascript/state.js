@@ -1,6 +1,8 @@
 //Action Types
 const ADD_TO_CART = "ADD_TO_CART";
 const UPDATE_CART = "UPDATE_CART";
+const CLEAR_CART = "CLEAR_CART";
+const CLEAR_USER_CART = 'CLEAR_USER_CART';
 const ADD_TO_USER_CART = "ADD_TO_USER_CART";
 const UPDATE_USER_CART = "UPDATE_USER_CART";
 const PROCESS_ORDER = "PROCESS_ORDER";
@@ -26,6 +28,18 @@ const addToCart = (data, action = "cart") => {
 
 }
 
+const clearCart = (action = "cart") => {
+    if (action == 'cart') {
+        return {
+            type: CLEAR_CART
+        }
+    } else if (action == "user_cart") {
+        return {
+            type: CLEAR_USER_CART
+        }
+    }
+
+}
 
 const UpdateCart = (data, action = 'cart') => {
     if (action == "cart") {
@@ -127,6 +141,20 @@ const storeReducer = (action) => {
                 loading: false,
             }
 
+        case CLEAR_CART:
+            return {
+                ...state,
+                cart: [],
+                loading: false,
+            }
+
+        case CLEAR_USER_CART:
+            return {
+                ...state,
+                user_cart: [],
+                loading: false,
+            }
+
         case ADD_TO_USER_CART:
             return {
                 ...state,
@@ -196,6 +224,24 @@ const ProcessOrder = async(data, token, url = '/sales/process') => {
     }
     return await response.json()
 }
+
+
+// const getOrder = async(data) => {
+//     setState(storeReducer(load(LOADING)))
+//     let response = await fetch('/sales/csales', {
+//         method: 'POST', // or 'PUT'
+//         credentials: 'same-origin',
+//         headers: {
+//             'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify(data),
+//     })
+
+//     if (!response.ok) {
+//         throw new Error(response.statusText)
+//     }
+//     return await response.json()
+// }
 
 const GetCustomer = async(data, token) => {
     setState(storeReducer(load(LOADING)))

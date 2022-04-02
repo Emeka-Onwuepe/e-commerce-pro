@@ -1,0 +1,15 @@
+{% extends 'sales/sales.html' %} {% block title %} {% load static %}
+<title>Product</title>{% endblock title %} {% block main %}
+
+<section class="orderhistory">
+    {% for order in orders %}
+    <div class="order">
+        <p>{{order.orderId}}</p>
+    </div>
+    {% endfor %}
+</section>
+
+{% endblock main %} {% block javascript %}
+<script src="{% static 'javascript/state.js' %}"></script>
+<script src="{% static 'javascript/productpage.js' %}"></script>
+{% endblock javascript %}

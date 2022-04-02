@@ -5,35 +5,87 @@ from Credit_Sales.models import Credit_Sale, Payment
 from Sales.models import Items
 
 @receiver(m2m_changed, sender= Credit_Sale.items.through)
-def sales_multipleSIzes_changes(sender, instance,action,reverse,model,pk_set,**kwargs):
+def credit_sales_multipleSIzes_changes(sender, instance,action,reverse,model,pk_set,**kwargs):
     if action == "post_add":
         for item_id in pk_set:
             item = Items.objects.get(pk=item_id)
-            try:
+            if item.size_instance:        
+                try: 
+                    branch_product =  Branch_Product.objects.get(branch = instance.branch,
+                                                                    product = item.product,
+                                                                    is_multiple_sized = True )
+                    try:
+                        multiple_size = Multiple_Size.objects.get(branch_product = branch_product.id,
+                                                            size = item.size_instance)
+                        multiple_size.current_qty -= item.qty
+                        multiple_size.save()
+                        
+                    except Multiple_Size.DoesNotExist:
+                        
+                        multiple_size = Multiple_Size.objects.create(branch_product = branch_product,
+                                                    size = item.size_instance)
+                        multiple_size.current_qty -= item.qty
+                        multiple_size.save()
+                except Branch_Product.DoesNotExist:
+                    branch_product = Branch_Product.objects.create(branch = instance.branch, 
+                                                    product = item.product,
+                                                    current_qty = instance.qty,
+                                                    is_multiple_sized = True)
+                    multiple_size = Multiple_Size.objects.create(branch_product = branch_product,
+                                                    size = item.size_instance)
+                    multiple_size.current_qty -= item.qty
+                    multiple_size.save()
+            else:
+                try: 
+                    branch_product =  Branch_Product.objects.get(branch = instance.branch,
+                                                                    product = item.product,is_multiple_sized=False )
+                    branch_product.current_qty -= item.qty
+                    branch_product.save()    
+                except Branch_Product.DoesNotExist:
+                    branch_product =  Branch_Product.objects.create(branch = instance.branch, 
+                                                    product = item.product)
+                    branch_product.current_qty -= item.qty
+                    branch_product.save() 
+                
+            
+
+@receiver(pre_delete, sender=Credit_Sale)
+def delete_credit_sale(sender, instance, *args, **kwargs):
+    for item in instance.items.all():
+        if item.size_instance:
+            try: 
                 branch_product =  Branch_Product.objects.get(branch = instance.branch,
-                                                            product = item.product,
-                                                            is_multiple_sized = True )
+                                                                product = item.product,is_multiple_sized=True )
                 try:
                     multiple_size = Multiple_Size.objects.get(branch_product = branch_product.id,
-                                                size = item.size_instance)
-                    multiple_size.current_qty -= item.qty
-                    multiple_size.save() 
-                    
-                    
+                                                        size = item.size_instance)
+                    multiple_size.current_qty += item.qty
+                    multiple_size.save()
                 except Multiple_Size.DoesNotExist:
                     multiple_size = Multiple_Size.objects.create(branch_product = branch_product,
                                                 size = item.size_instance)
-                    multiple_size.current_qty -= item.qty
-                    multiple_size.save()
+                    multiple_size.current_qty += item.qty
+                    multiple_size.save()    
             except Branch_Product.DoesNotExist:
                 branch_product =  Branch_Product.objects.create(branch = instance.branch,
                                                             product = item.product,
                                                             is_multiple_sized = True )
                 multiple_size = Multiple_Size.objects.create(branch_product = branch_product,
                                                 size = item.size_instance)
-                multiple_size.current_qty -= item.qty
+                multiple_size.current_qty += item.qty
                 multiple_size.save()
-                
+        else:         
+            try: 
+                branch_product =  Branch_Product.objects.get(branch = instance.branch,
+                                                                product = item.product,is_multiple_sized=False )  
+                branch_product.current_qty += item.qty
+                branch_product.save()  
+            except Branch_Product.DoesNotExist:
+                branch_product =  Branch_Product.objects.create(branch = instance.branch,
+                                                                product = item.product,is_multiple_sized=False )  
+                branch_product.current_qty += item.qty
+                branch_product.save() 
+         
 @receiver(pre_save, sender=Credit_Sale)
 def add_credit_sale(sender, instance, *args, **kwargs):
     if not instance.pk:
@@ -43,35 +95,6 @@ def add_credit_sale(sender, instance, *args, **kwargs):
     else:
         instance.fully_paid = False
 
-          
-
-@receiver(pre_delete, sender=Credit_Sale)
-def delete_credit_sale(sender, instance, *args, **kwargs):
-    for item in instance.items.all():
-        try:
-            branch_product =  Branch_Product.objects.get(branch = instance.branch,
-                                                            product = item.product,
-                                                            is_multiple_sized = True )
-            try:
-                multiple_size = Multiple_Size.objects.get(branch_product = branch_product.id,
-                                                size = item.size_instance)
-                multiple_size.current_qty += item.qty
-                multiple_size.save() 
-                    
-                    
-            except Multiple_Size.DoesNotExist:
-                multiple_size = Multiple_Size.objects.create(branch_product = branch_product,
-                                                size = item.size_instance)
-                multiple_size.current_qty += item.qty
-                multiple_size.save()
-        except Branch_Product.DoesNotExist:
-            branch_product =  Branch_Product.objects.create(branch = instance.branch,
-                                                            product = item.product,
-                                                            is_multiple_sized = True )
-            multiple_size = Multiple_Size.objects.create(branch_product = branch_product,
-                                                size = item.size_instance)
-            multiple_size.current_qty += item.qty
-            multiple_size.save()
 
 # Payment signals 
 @receiver(pre_save, sender=Payment)

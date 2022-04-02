@@ -1,5 +1,9 @@
-const csrtoken = document.getElementsByName("csrfmiddlewaretoken")[0].value
+let csrtoken = undefined
+try {
+    csrtoken = document.getElementsByName("csrfmiddlewaretoken")[0].value
+} catch (error) {
 
+}
 let expanded = false;
 
 function showCheckboxes(e) {
@@ -12,6 +16,40 @@ function showCheckboxes(e) {
         checkboxes.style.display = "none";
         expanded = false;
     }
+}
+
+const handleDecisionBox = () => {
+    const decisionBox = document.getElementById('decisionBox')
+    decisionBox.style.display = 'block'
+}
+
+const handleCheckout = (e) => {
+    e.preventDefault()
+    const decisionBox = document.getElementById('decisionBox')
+    decisionBox.style.display = 'none'
+    window.location.href = `/cart`
+
+}
+
+try {
+    const checkout = document.querySelector('.checkout')
+    checkout.addEventListener('click', (e) => handleCheckout(e))
+} catch (error) {
+
+}
+
+
+const continueShopping = (e) => {
+    e.preventDefault()
+    const decisionBox = document.getElementById('decisionBox')
+    decisionBox.style.display = 'none'
+}
+
+try {
+    const continueButton = document.querySelector('.continue')
+    continueButton.addEventListener('click', (e) => continueShopping(e))
+} catch (error) {
+
 }
 
 
@@ -89,13 +127,32 @@ const addOrder = (e) => {
 
 
     // UpdateCart
-    storestate = storeReducer(addToCart(purelist, "user_cart"))
-    setState(storestate)
-        //const currentCart = getState().cart
-    setSalesCount(storestate.user_cart)
-        // appendOrderList(purelist)
+    if (productList.length > 0) {
+        handleDecisionBox('show')
+        storestate = storeReducer(addToCart(purelist, "user_cart"))
+        setState(storestate)
+            //const currentCart = getState().cart
+        setSalesCount(storestate.user_cart)
+            // appendOrderList(purelist)
+
+    }
+
 }
 
+
+const showOrderHistoryButton = (data = null) => {
+    let hidden_phone_number = undefined
+    try {
+        hidden_phone_number = document.getElementById("hidden_phone_number")
+        const phone_number = data ? data : getState().customerphone_number
+        if (phone_number != "" && phone_number != null) {
+            hidden_phone_number.value = phone_number
+        }
+    } catch (error) {
+
+    }
+}
+showOrderHistoryButton(getState().customer.phone_number)
 
 const processOrder = (e) => {
     e.preventDefault()

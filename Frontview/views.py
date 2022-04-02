@@ -7,6 +7,7 @@ from django.http import JsonResponse
 
 from django.shortcuts import render
 from Branch.models import Branch
+from Credit_Sales.models import Credit_Sale
 
 from Product.models import Category, Product, Product_Type, Size
 from Sales.models import Items, Sales
@@ -17,7 +18,7 @@ def homeView(request):
     return render(request,'frontview/home.html')
 
 def cartView(request):
-    print(settings.PAYSTACT_PUBLIC_KEY)
+   
     return render(request,'frontview/cart.html',{"public_key":settings.PAYSTACT_PUBLIC_KEY})
 
 def categoryView(request,catId):
@@ -45,19 +46,27 @@ def processPaymentView(request):
            sales = None
            sale_type = None
            data = json.loads(request.body.decode("utf-8"))
-           orderlist = data['orders']
-           print(data)
            
-           headers = {
-               "Authorization": f'Bearer {settings.PAYSTACT_SECRET_KEY}',
-                'Content-Type': 'application/json',
-           }
-           url = f'https://api.paystack.co/transaction/verify/{data["purchase_id"]}'
-           
-           response = requests.get(url,headers=headers)
-           if response.status_code == 200:
-                response_data = response.json()
-                # print(response_data) 
+           if data['action'] == "payment":
+
+               headers = {
+                    "Authorization": f'Bearer {settings.PAYSTACT_SECRET_KEY}',
+                        'Content-Type': 'application/json',
+                }
+               url = f'https://api.paystack.co/transaction/verify/{data["purchase_id"]}'
+                
+               response = requests.get(url,headers=headers)
+                
+               if response.status_code == 200:
+                   response_data = response.json()
+                   sales = Sales.objects.get(purchase_id=data["purchase_id"])
+                   sales.paid = True
+                   sales.save()
+                   return JsonResponse({"message":'success'})
+                        
+           if data['action'] == "create":
+               
+                orderlist = data['orders']
                 
                 try:
                     customer_instance = Customer.objects.get(phone_number = data['phone_number'])
@@ -79,9 +88,8 @@ def processPaymentView(request):
                                                     channel ="web",
                                                     customer = customer_instance,
                                                     payment_method = data['payment_method'],
-                                                    purchase_id = data['purchase_id'])
-                sale_type = sales.payment_method
-                print('sales_type',sale_type)
+                                                    purchase_id = data['purchase_id'],
+                                                    paid=False)
             
                 for item in orderlist:
                         product = Product.objects.get(pk=int(item['id']))
@@ -99,4 +107,15 @@ def processPaymentView(request):
                     
                 return JsonResponse({"purchase_id":sales.purchase_id,
                                     "type":sale_type})
+
+
+def customerOrderHistoryView(request):
+    if request.method == "POST":
+        phone_number = request.POST["phone_number"]
+        sales = Sales.objects.filter(customer__phone_number = phone_number)
         
+        return render(request,"frontview/orderhistory.html",{"orders":sales,"public_key":settings.PAYSTACT_PUBLIC_KEY})      
+        
+def saleView(request,purchaseId):
+    sale = Sales.objects.get(purchase_id= purchaseId)
+    return render(request,"frontview/saledetails.html",{"sale":sale,"customer":sale.customer})        

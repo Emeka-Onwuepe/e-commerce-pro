@@ -1,7 +1,8 @@
 const cartflex = document.getElementById("cartflex")
 const grand_total = document.getElementById('grand_total')
 const customerForm = document.forms.customerForm
-    // const csrtoken = document.getElementsByName("csrfmiddlewaretoken")[0].value
+
+// const csrtoken = document.getElementsByName("csrfmiddlewaretoken")[0].value
 
 
 // div.innerHTML = data
@@ -93,6 +94,7 @@ const setCustomerData = (data) => {
 
 setCustomerData(state.customer)
 
+
 const updateUserState = (e) => {
     let target = e.target
     let customer = getState().customer
@@ -101,6 +103,13 @@ const updateUserState = (e) => {
     setState(storestate)
 
 }
+
+// getOrder({ phone_number: getState().customer.phone_number })
+//     .then(data => {
+//         console.log(data)
+//     })
+//     .catch(error => alert(error))
+
 customerForm.elements.name.addEventListener('change', updateUserState)
 customerForm.elements.phone_number.addEventListener('change', updateUserState)
 customerForm.elements.email.addEventListener('change', updateUserState)
@@ -131,6 +140,38 @@ function payWithPaystack() {
     const random = Math.floor(Math.random() * 100)
     const OrderId = `smb${random}${date}`
 
+    const data = {
+        action: "create",
+        name: customerForm.elements.name.value,
+        phone_number: customerForm.elements.phone_number.value,
+        email: customerForm.elements.email.value,
+        address: customerForm.elements.address.value,
+        payment_method: 'online',
+        remark: "Website Sales",
+        total_amount: Total,
+        expected_amount: Total,
+        purchase_id: OrderId,
+        orders: getState().user_cart
+    }
+
+    ProcessOrder(data, csrtoken, 'processorder').
+    then(data => {
+            storestate = storeReducer(clearCart("user_cart"))
+            setState(storestate)
+            setSalesCount(storestate.user_cart)
+
+            const childNodes = cartflex.children
+            for (const div of childNodes) {
+                div.remove()
+            }
+            grand_total.innerHTML = 0
+            Total = 0
+        })
+        .catch((error) => {
+            alert(error)
+            setState(storeReducer(load(LOADED)))
+        });
+
     var handler = PaystackPop.setup({
 
         key: public_key, // Replace with your public key
@@ -150,21 +191,13 @@ function payWithPaystack() {
 
             // Make an AJAX call to your server with the reference to verify the transaction
             const data = {
-                name: customerForm.elements.name.value,
-                phone_number: customerForm.elements.phone_number.value,
-                email: customerForm.elements.email.value,
-                address: customerForm.elements.address.value,
-                payment_method: 'online',
-                remark: "Website Sales",
-                total_amount: Total,
-                expected_amount: Total,
+                action: "payment",
                 purchase_id: OrderId,
-                orders: getState().user_cart
+
             }
             ProcessOrder(data, csrtoken, 'processorder').
             then(data => {
-                    console.log(data)
-                    alert('Success')
+                    // wait here
                 })
                 .catch((error) => {
                     alert(error)
@@ -181,6 +214,8 @@ function payWithPaystack() {
     });
 
     handler.openIframe();
+
+    // if ()
 
 }
 

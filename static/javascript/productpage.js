@@ -177,11 +177,15 @@ const addOrder = (e) => {
 
 
     // UpdateCart
-    storestate = storeReducer(addToCart(purelist))
-    setState(storestate)
-        //const currentCart = getState().cart
-        // setSalesCount(currentCart)
-    appendOrderList(purelist)
+    if (purelist.length > 0) {
+        storestate = storeReducer(addToCart(purelist))
+        setState(storestate)
+            //const currentCart = getState().cart
+            // setSalesCount(currentCart)
+        appendOrderList(purelist)
+        handleDecisionBox()
+    }
+
 }
 
 
@@ -193,6 +197,8 @@ const manageLastSale = (data = null) => {
     }
 }
 manageLastSale()
+
+
 
 const processOrder = (e) => {
     e.preventDefault()

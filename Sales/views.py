@@ -128,7 +128,7 @@ def salesAnalysisView(request,date,branchID):
                                 items__branch=selected_branch,
                                        items__payment_method='cash').aggregate(total=Sum("total_price"))
     credit =  Items.objects.filter(credit_sale_Items__date =date,credit_sale_Items__branch=selected_branch)
-    online = Items.objects.filter(items__date=date,items__channel='web')
+    online = Items.objects.filter(items__date=date,items__channel='web',items__paid=True)
     
     day_data ={
         "store_sales":{
@@ -182,7 +182,7 @@ def rangeSalesView(request,start_date,end_date,branchID):
     credit =  Items.objects.filter(credit_sale_Items__date__range=[start_date,end_date],
                                    credit_sale_Items__branch=selected_branch)
     online = Items.objects.filter(items__date__range=[start_date,end_date],
-                                  items__branch=selected_branch, items__channel='web')
+                                  items__branch=selected_branch, items__channel='web', items__paid=True)
     
     data ={
         "store_sales":{
@@ -208,4 +208,4 @@ def rangeSalesView(request,start_date,end_date,branchID):
     
     data["branch"] = branch_instance
         
-    return render(request,"sales/rangesales.html",data)
+    return render(request,"sales/rangesales.html",data)      

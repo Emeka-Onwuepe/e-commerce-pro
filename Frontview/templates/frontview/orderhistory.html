@@ -1,0 +1,28 @@
+ {% extends 'frontview/home.html' %} {% load static %} {% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'CSS/homeproductpage.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'CSS/general.css' %}"> {% endblock styles %} {% block title %}
+<title>Order history</title>
+{% endblock title %} {% block banner %} {% endblock banner %} {% block main %}
+<section class="orderhistory">
+    {% csrf_token %} {% for order in orders %}
+    <div class="order">
+        <p class="center"> <a style="color: blue;" href="{% url 'frontview:saledetailsView' order.purchase_id %}">{{order.purchase_id}}</a></p>
+        <p>Total: {{order.total_amount}}</p>
+        <p>{{order.date}}</p>
+        <p>Channel: {{order.channel}}</p>
+        {% if order.paid %}
+        <p class="center">Paid</p>
+        {% else %}
+        <p id="data{{order.id}}" style="display: none;">{{order.purchase_id}};{{order.total_amount}};{{order.customer.email}}</p>
+        <button id="{{order.id}}" class="make_payment center">Pay Now</button> {% endif %}
+
+    </div>
+    {% endfor %}
+    <p id="public_key" style="display: none;">{{public_key}}</p>
+</section>
+{% endblock main %} {% block javascript %}
+<script src="{% static 'javascript/state.js' %}"></script>
+<script src="{% static 'javascript/homeproductpage.js' %}"></script>
+<script src="https://js.paystack.co/v1/inline.js"></script>
+<script src="{% static 'javascript/salesdetail.js' %}"></script>
+{% endblock javascript %}

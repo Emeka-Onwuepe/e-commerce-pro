@@ -1,4 +1,5 @@
 from django.db import models
+from django.forms import BooleanField
 from Branch.models import Branch
 from Product.models import Product, Size
 from User.models import Customer
@@ -56,6 +57,11 @@ class Sales(models.Model):
     customer = models.ForeignKey(Customer, verbose_name="customer",related_name="sales_customer",on_delete=models.CASCADE)
     items = models.ManyToManyField(Items, verbose_name="items",related_name="items")
     purchase_id = models.CharField("purchase_id", max_length=150)
+    paid = models.BooleanField("paid",default=True)
+    paid = models.BooleanField("paid",default=True)
+
+    
+    
 
     class Meta:
         """Meta definition for Sales."""

@@ -3,6 +3,14 @@
 <link rel="stylesheet" type="text/css" href="{% static 'CSS/general.css' %}"> {% endblock styles %} {% block title %}
 
 <title>Category</title>{% endblock title %}{% block banner %}{% endblock banner %} {% block main %}
+<div class="historyDiv">
+    <form action="{% url 'frontview:csales'%}" method="post">
+        {% csrf_token %}
+        <input type="hidden" id="hidden_phone_number" name="phone_number">
+        <button type="submit">Order History</button>
+    </form>
+</div>
+
 <div class="cartbody">
     <div id="cartflex">
 
