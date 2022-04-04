@@ -4,6 +4,8 @@
 
 <title>Category</title>{% endblock title %}{% block banner %}{% endblock banner %} {% block main %}
 
+<input type="text" placeholder="Filter products by name" id="filterInput">
+
 <div id="decisionBox">
     <p>Do you want to:</p>
     <a href="" class="continue">Continue Shopping</a>
@@ -16,5 +18,3 @@
     {% for product_type in sorted_product_types %} {% for product in product_type.product_type.all %} {% if product.publish %} {% include "frontview/product_template.html" %} {% endif %} {% endfor %} {% endfor %}
 </div>
 {% endblock main %}
-
-</html>

@@ -1,28 +1,26 @@
 import json
+from django.urls import reverse
 import requests
-from unicodedata import category
 from django.conf import settings
-from django.http import JsonResponse
-
-
-from django.shortcuts import render
+from django.http import HttpResponseRedirect, JsonResponse
+from django.core.mail import send_mail
+from django.shortcuts import get_object_or_404, render
 from Branch.models import Branch
-from Credit_Sales.models import Credit_Sale
-
 from Product.models import Category, Product, Product_Type, Size
 from Sales.models import Items, Sales
 from User.models import Customer
 
 # Create your views here.
 def homeView(request):
+    send_mail("Hello Guys", f"There is a new publisher at Illumpedia.", "emekaonwuepe@lotzcrocoz.com", [
+                'pascalemy2010@gmail.com'], fail_silently=False,)
     return render(request,'frontview/home.html')
 
-def cartView(request):
-   
+def cartView(request): 
     return render(request,'frontview/cart.html',{"public_key":settings.PAYSTACT_PUBLIC_KEY})
 
 def categoryView(request,catId):
-    category = Category.objects.get(pk=catId)
+    category = get_object_or_404(Category,pk=catId)
     unsorted_product_types = Product_Type.objects.filter(category=category.id,
                                                             product_type__publish = True)
     sorted_product_types = []
@@ -33,13 +31,6 @@ def categoryView(request,catId):
                                                      "sorted_product_types":sorted_product_types})
     
     
-# curl 
-
-# -H 
-
-# -X GET
-
-
 def processPaymentView(request):
        if request.method == "POST":
            customer_instance = None
@@ -115,7 +106,8 @@ def customerOrderHistoryView(request):
         sales = Sales.objects.filter(customer__phone_number = phone_number)
         
         return render(request,"frontview/orderhistory.html",{"orders":sales,"public_key":settings.PAYSTACT_PUBLIC_KEY})      
+    return HttpResponseRedirect(reverse('frontview:cartView'))
         
 def saleView(request,purchaseId):
-    sale = Sales.objects.get(purchase_id= purchaseId)
+    sale = get_object_or_404(Sales,purchase_id= purchaseId)
     return render(request,"frontview/saledetails.html",{"sale":sale,"customer":sale.customer})        

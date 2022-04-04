@@ -41,9 +41,9 @@
                     <td>{{item.product_type}}</td>
                     <td>{{item.color}}</td>
                     <td>{{item.size}} </td>
-                    <td>{{item.unit_price}}</td>
+                    <td class="amount">{{item.unit_price}}</td>
                     <td>{{item.qty}} </td>
-                    <td>{{item.total_price}}</td>
+                    <td class="amount">{{item.total_price}}</td>
                 </tr>
 
                 {% endfor %}
@@ -56,7 +56,7 @@
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td id="grandtotal">{{sale.total_amount}}</td>
+                    <td id="grandtotal" class="amount">{{sale.total_amount}}</td>
 
                 </tr>
             </tfoot>
@@ -72,5 +72,3 @@
 
 
 {% endblock javascript %}
-
-</html>

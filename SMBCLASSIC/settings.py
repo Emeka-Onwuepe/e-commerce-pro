@@ -29,7 +29,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY_8")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1','http://127.0.0.1:8000']
 
 
 # Application definition
@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "User.apps.UserConfig",
     "Frontview.apps.FrontviewConfig",
     "Pre_Order.apps.PreOrderConfig",
+    "errortemplate.apps.ErrortemplateConfig",
 ]
 
 REST_FRAMEWORK = {
@@ -172,3 +173,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # PAYSTACK CONFIG
 PAYSTACT_SECRET_KEY = os.environ.get("PAYSTACT_SECRET_KEY")
 PAYSTACT_PUBLIC_KEY = os.environ.get("PAYSTACT_PUBLIC_KEY")
+
+# email
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_SSL = True
+EMAIL_HOST = 'lotzcrocoz.com'
+EMAIL_HOST_USER = 'emekaonwuepe@lotzcrocoz.com'
+EMAIL_HOST_PASSWORD = 'casper1959'
+EMAIL_PORT = 465

@@ -262,6 +262,44 @@ const GetCustomer = async(data, token) => {
 }
 
 
+const addComas = (input) => {
+
+    const mutate = (array, result = []) => {
+        if (array.length < 3) {
+            if (array.length > 0) {
+                result.push(array)
+            }
+
+            return result
+        }
+
+        const LastThree = array.slice(-3, )
+        result.push(LastThree)
+        const lastIndex = array.length - 3
+        const remaining = array.slice(0, lastIndex)
+        mutate(remaining, result)
+        return result
+    }
+
+    let result = ""
+    const [first, second] = input.split(".")
+    const firstNum = mutate(first)
+    const firstHalf = firstNum.reverse().join(",")
+
+    if (second == undefined) {
+        result = firstHalf
+    } else {
+        result = `${firstHalf}.${second}`
+    }
+    return result
+
+}
+
+
+const convertToFloat = (input) => {
+    return parseFloat(input.replace(/,/g, ''))
+
+}
 
 
 

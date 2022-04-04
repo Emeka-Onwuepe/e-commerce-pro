@@ -17,18 +17,18 @@ for (const product of user_cart) {
     let productData = `<p>${product.product_type}</p>
                         <p>Color: ${product.color}</p>
                         <p>Size: ${product.size}</p>
-                        <p>Price: <span id="price;${product.Id}">  ${product.price}</span> </p>
-                        <p>Qty: <span id="qty;${product.Id}"> ${product.qty} </span> </p>
-                        <p>Total: <span id="total;${product.Id}"> ${product.productTotal}</span> </p>
+                        <p>Price:  &#8358 <span class="amount" id="price;${product.Id}">${product.price}</span></p>
+                        <p>Qty: <span  id="qty;${product.Id}"> ${product.qty} </span> </p>
+                        <p>Total:  &#8358 <span class="amount" id="total;${product.Id}">${product.productTotal}</span></p>
                         <button class="increment" id="incremet;${product.Id}">+</button>
                         <button class="decrement" id="decrement;${product.Id}">-</button>
-                        <button class="decrement" id="delete;${product.Id}">Delete</button>
+                        <button class="delete" id="delete;${product.Id}">Delete</button>
                         `
 
     div.innerHTML = productData
     cartflex.appendChild(div)
 }
-grand_total.innerHTML = Total
+grand_total.innerHTML = addComas(Total.toString())
 
 const priceEvent = (e, action) => {
     const button = e.target
@@ -36,26 +36,26 @@ const priceEvent = (e, action) => {
     const total = document.getElementById(`total;${Id}`)
     const qty = document.getElementById(`qty;${Id}`)
     const price = document.getElementById(`price;${Id}`)
-
-    // let Total = parseFloat(total.innerHTML.split(" ")[1])
+        // let Total = convertToFloat(total.innerHTML.split(" ")[1])
     let Qty = parseInt(qty.innerHTML)
-    let Price = parseFloat(price.innerHTML)
+    let Price = convertToFloat(price.innerHTML)
     if (action == "increment") {
         Qty++
-        grand_total.innerHTML = Total + Price
+        //grand_total.innerHTML = Total + Price
     } else if (action == "decrement") {
         Qty--
-        grand_total.innerHTML = Total - Price
+        //grand_total.innerHTML = Total - Price
     }
     if (Qty > 0) {
         qty.innerHTML = Qty
-        total.innerHTML = Price * Qty
+        let input = Price * Qty
+        total.innerHTML = addComas(input.toString())
         if (action == "increment") {
             Total += Price
-            grand_total.innerHTML = Total
+            grand_total.innerHTML = addComas(Total.toString())
         } else if (action == "decrement") {
             Total -= Price
-            grand_total.innerHTML = Total
+            grand_total.innerHTML = addComas(Total.toString())
         }
         const previousCart = getState().user_cart
         previousCart.forEach(product => {
@@ -75,7 +75,7 @@ const deleteItem = (e) => {
     const Id = button.id.split(";")[1]
     const div = document.getElementById(`${Id}`)
     const total = document.getElementById(`total;${Id}`)
-    grand_total.innerHTML = Total - parseFloat(total.innerHTML)
+    grand_total.innerHTML = Total - convertToFloat(total.innerHTML)
     div.remove()
     const previousCart = getState().user_cart
     const filtered = previousCart.filter(item => item.Id != Id)
@@ -124,10 +124,14 @@ for (const button of decrementButtons) {
     button.addEventListener('click', (e) => priceEvent(e, "decrement"))
 }
 const deleteButtons = document.getElementsByClassName("delete")
-for (const button of decrementButtons) {
+for (const button of deleteButtons) {
     button.addEventListener('click', deleteItem)
 }
 
+
+for (const node of amounts) {
+    node.innerHTML = addComas(node.innerHTML)
+}
 
 // pay Stack integration
 

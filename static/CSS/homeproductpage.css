@@ -130,6 +130,16 @@
     /* font-weight: bold; */
 }
 
+#filterInput {
+    /* margin: 0px auto; */
+    border: 1px solid black;
+    margin: 0px auto 30px auto;
+    border-radius: 50px;
+    padding: 10px;
+    height: 50px;
+    text-align: center;
+}
+
 
 /* table {
     counter-reset: tableCount;

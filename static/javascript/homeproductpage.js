@@ -220,3 +220,33 @@ const selectBoxDiv = document.querySelectorAll(".selectBox")
 selectBoxDiv.forEach(div => {
     div.addEventListener("click", showCheckboxes)
 })
+
+const amounts = document.getElementsByClassName('amount')
+
+for (const node of amounts) {
+    node.innerHTML = addComas(node.innerHTML)
+}
+
+
+function SearchFunction() {
+    var input, filter, product, contents, i;
+    input = document.getElementById("filterInput");
+    filter = input.value.toUpperCase();
+    product = document.getElementsByClassName("product");
+    for (i = 0; i < product.length; i++) {
+        contents = product[i].getElementsByTagName("h3")[0];
+        if (contents.innerHTML.toUpperCase().indexOf(filter) > -1) {
+            product[i].style.display = "block";
+        } else {
+            product[i].style.display = "none";
+
+        }
+    }
+}
+
+try {
+    const filterInput = document.getElementById('filterInput')
+    filterInput.addEventListener('keyup', SearchFunction)
+} catch (error) {
+
+}
