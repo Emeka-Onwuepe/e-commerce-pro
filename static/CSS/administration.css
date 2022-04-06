@@ -152,6 +152,24 @@ th {
     text-align: center;
 }
 
+.reset {
+    background-color: white;
+    color: green;
+    text-align: center;
+    font-weight: bold;
+    padding: 10px;
+}
+
+.resetform {
+    display: flex;
+    justify-content: center;
+}
+
+.resetform button {
+    margin-left: 124px;
+    padding: 5px;
+}
+
 
 /* th{
 

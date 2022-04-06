@@ -112,8 +112,8 @@ class Returned_Product(models.Model):
     size_instance = models.ForeignKey(Size, verbose_name="size_instance", on_delete=models.CASCADE,
                         related_name="returned_product_size_instance",null=True, blank=True)
     qty = models.IntegerField("qty",null=False,blank=False)
-    unit_price = models.DecimalField("unit_price", max_digits=6, decimal_places=2,null=False,blank=False)
-    total_price = models.DecimalField("total_price", max_digits=6, decimal_places=2,null=False,blank=False) 
+    unit_price = models.DecimalField("unit_price", max_digits=50, decimal_places=2,null=False,blank=False)
+    total_price = models.DecimalField("total_price", max_digits=50, decimal_places=2,null=False,blank=False) 
     date_of_purchase = models.DateField("date_of_purchase", auto_now=False, auto_now_add=False,null=False,blank=False)
     date_of_return = models.DateTimeField("date_of_return", auto_now=False, auto_now_add=False,null=False,blank=False)
 

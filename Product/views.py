@@ -248,8 +248,8 @@ def returnedProductView(request,returnedProductId,action):
             size = Size.objects.get(pk = int(sizeId))
             Returned_Product.objects.create(product=product,branch=request.user.branch,
                                        qty=int(data['qty']),size_instance=size,
-                                       unit_price =float(data['unit_price']),
-                                       total_price=float(data['total_price']),
+                                       unit_price =data['unit_price'],
+                                       total_price=data['total_price'],
                                        date_of_purchase = data['date_of_purchase'],
                                        date_of_return = data['date_of_return']
                                  )

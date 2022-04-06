@@ -1,28 +1,19 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="">
-    </head>
-    <body>
+{% extends 'sales/sales.html' %} {% block title %}
+<title>LOGIN</title>{% endblock title %} {% block main %} {% if message %} {{message}} {% endif %}
+<div class="resetform">
+    {% if request.GET.next %}
+    <form action="{% url 'user:loginRedirect' request.GET.next %}"
+     method="post" id="loginForm">
+        {% csrf_token %} {{form}}
+        <button type="submit" id="loginButton" class="addbutton">Login</button>
+    </form>
+    {% else %}
+    <form action="{% url 'user:loginView' %}"
+    method="post" id="loginForm">
+       {% csrf_token %} {{form}}
+       <button type="submit" id="loginButton" class="addbutton">Login</button>
+    </form>
+    {% endif %}
+</div>
 
-        {% if request.GET.next %}
-        <form action="{% url 'user:loginRedirect' request.GET.next %}"
-         method="post" id="loginForm">
-            {% csrf_token %} {{form}}
-            <input type="submit" id="loginButton" value="Login">
-        </form>
-        {% else %}
-        <form action="{% url 'user:loginView' %}"
-        method="post" id="loginForm">
-           {% csrf_token %} {{form}}
-           <input type="submit" id="loginButton" value="Login">
-       </form>
-        {% endif %}
-        <script src="" async defer></script>
-    </body>
-</html>
+{% endblock main %} {% block javascript %} {% endblock javascript %}

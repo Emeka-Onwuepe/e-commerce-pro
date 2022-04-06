@@ -38,20 +38,23 @@
                     <nav id="nav" class="nav">
                         {% block nav %} {% block log-control %}
                         <div class="logControl">
+                            {% if not request.user.is_anonymous %}
                             <form action="{% url 'user:logoutView' %}" method="post">
                                 {% csrf_token %}
                                 <button class="logout" type="submit">SIGN OUT</button>
                             </form>
+                            {% else %}
+                            <a href="{% url 'user:loginView' %}"><button class="logout login" type="submit">LOGIN</button></a> {% endif %}
                         </div>
                         {% endblock log-control %} {% endblock nav %}
                     </nav>
                 </div>
-
             </section>
         </header>
 
         <div class="adminWrapper">
             <aside>
+                {% if not request.user.is_anonymous %}
                 <div id="sideNav">
                     <nav>
                         <a href="{% url 'product:badProductView' 0 'view' %}">Bad Product</a>
@@ -76,6 +79,7 @@
 
                     </nav>
                 </div>
+                {% endif %}
             </aside>
             <main>
                 {% block main %}

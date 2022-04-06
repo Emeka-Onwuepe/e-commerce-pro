@@ -179,5 +179,6 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_SSL = True
 EMAIL_HOST = 'lotzcrocoz.com'
 EMAIL_HOST_USER = 'emekaonwuepe@lotzcrocoz.com'
+DEFAULT_FROM_EMAIL = 'emekaonwuepe@lotzcrocoz.com'
 EMAIL_HOST_PASSWORD = 'casper1959'
 EMAIL_PORT = 465

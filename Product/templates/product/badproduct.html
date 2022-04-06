@@ -22,11 +22,11 @@
   {% if product.multipleSIzes %}
          
   {% for size  in product.multipleSIzes.all  %}
-  <option value="{{product.id}}-{{size.id}}">{{product.product_type.name}} - {{product.color}} - &#8358 {{size.price}} - size:{{size.size}}</option>
+  <option value="{{product.id}}-{{size.id}}">{{product.product_type.name}} - {{product.color}} - &#8358 <span class="amount">{{size.price}}</span> - size:{{size.size}}</option>
   {% endfor %}    
      
  {% else %}
- <option value="{{product.id}}">{{product.product_type.name}} - {{product.color}} - &#8358 {{product.price}} - size:{{product.size}}</option>
+ <option value="{{product.id}}">{{product.product_type.name}} - {{product.color}} - &#8358 <span class="amount">{{product.price}}</span> - size:{{product.size}}</option>
  {% endif %}
   {% endfor %}
 </select>
@@ -52,11 +52,11 @@
         {% if product.multipleSIzes %}
                
         {% for size  in product.multipleSIzes.all  %}
-        <option value="{{product.id}}-{{size.id}}">{{product.product_type.name}} - {{product.color}} - &#8358 {{size.price}} - size:{{size.size}}</option>
+        <option value="{{product.id}}-{{size.id}}">{{product.product_type.name}} - {{product.color}} - &#8358  <span class="amount">{{size.price}}</span> - size:{{size.size}}</option>
         {% endfor %}    
            
        {% else %}
-       <option value="{{product.id}}">{{product.product_type.name}} - {{product.color}} - &#8358 {{product.price}} - size:{{product.size}}</option>
+       <option value="{{product.id}}">{{product.product_type.name}} - {{product.color}} - &#8358 <span class="amount">{{product.price}}</span> - size:{{product.size}}</option>
        {% endif %}
         {% endfor %}
       </select>
