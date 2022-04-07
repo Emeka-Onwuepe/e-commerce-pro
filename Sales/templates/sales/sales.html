@@ -8,7 +8,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" type="text/css" href="{% static 'CSS/administration.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'CSS/general.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'CSS/productpage.css' %}"> {% block styles %} {% endblock styles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'CSS/productpage.css' %}"> 
+    <link rel="stylesheet" type="text/css" href="{% static 'CSS/loader.css' %}">{% block styles %} {% endblock styles %}
     <link rel="shortcut icon" href="{% static 'CSS/logo.png' %}" type="image/png">
     <link rel="apple-touch-icon" href="{% static 'CSS/logo.png' %}">
     <link rel="icon" href="{% static 'CSS/logo4.png' %}" type="image/png"> {% block title %}
@@ -122,6 +123,15 @@
 
                 {% include "sales/salesform.html" %} {% endblock main %}
             </main>
+
+            <div id="loaderContainer" class="container">
+                <div class="loader">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+
         </div>
         <footer>
             {% block footer %}

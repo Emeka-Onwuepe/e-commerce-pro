@@ -1,4 +1,4 @@
- {% extends 'sales/sales.html' %} {% block title %}
+ {% extends 'sales/sales.html' %} {% load static %} {% block title %}
 <title>Credit</title>{% endblock title %} {% block main %}
 <form action="{% url 'credit_sales:creditSalesView' 0 'view' %}" method="post">
     {% csrf_token %}
@@ -44,9 +44,9 @@
                 <td>{{item.branch}}</td>
                 <td><a href="{% url 'sales:saleView' item.purchase_id 'credit' %}">
                     {{item.purchase_id}}</a></td>
-                <td>{{item.total_amount}}</td>
-                <td>{{item.total_payment}}</td>
-                <td>{{item.balance}}</td>
+                <td class='amount'>{{item.total_amount}}</td>
+                <td class="amount">{{item.total_payment}}</td>
+                <td class="amount">{{item.balance}}</td>
                 <td><a href="{% url 'credit_sales:paymentView' item.id 'view' %}">
                     Payments</a></td>
             </tr>
@@ -56,3 +56,7 @@
     </table>
 </div>
 {% endif %} {% endblock main %}
+{% block javascript %}
+<script src="{% static 'javascript/state.js' %}"></script>
+<script src="{% static 'javascript/creditsales.js' %}"></script>
+{% endblock javascript %}

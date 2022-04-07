@@ -3,7 +3,7 @@
         <h3>{{product.product_type.name}}</h3>
 
         {% if not product.multipleSIzes.all %}
-        <p>Price: <span>&#8358</span> {{product.price}}</p>
+        <p>Price: <span>&#8358</span> <span class="amount">{{product.price}}</span></p>
         <p>Size: {{product.size}}</p>
         <p style="display: none;" id='{{product.id}}productData'>{{product.id}};{{product.product_type.name}};{{product.size}};{{product.price}};{{product.color}};{{product.image}}</p>
         {% else %}
@@ -19,7 +19,7 @@
             {% for size in product.multipleSIzes.all %}
             <div class="multiple">
                 <input type="checkbox" name="{{product.id}}checkbox" id={{size.id}} data-data={{size.id}};{{size.price}};{{size.size}} />
-                <label for={{size.id}}>size: {{size.size}} - &#8358 {{size.price}}</label>
+                <label for={{size.id}}>size: {{size.size}} - &#8358 <span class="amount">{{size.price}}</span></label>
             </div>
             {% endfor %}
         </div>

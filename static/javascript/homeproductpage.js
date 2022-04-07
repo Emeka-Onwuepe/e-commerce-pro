@@ -154,56 +154,6 @@ const showOrderHistoryButton = (data = null) => {
 }
 showOrderHistoryButton(getState().customer.phone_number)
 
-const processOrder = (e) => {
-    e.preventDefault()
-    const date = Date.now().toString().slice(5)
-    const random = Math.floor(Math.random() * 100)
-    const OrderId = `smb${random}${date}`
-    const data = {
-        name: salesForm.elements.name.value,
-        phone_number: salesForm.elements.phone_number.value,
-        email: salesForm.elements.email.value,
-        address: salesForm.elements.address.value,
-        payment_method: salesForm.elements.payment_method.value,
-        remark: salesForm.elements.remark.value,
-        total_amount: grandtotal.innerHTML,
-        expected_amount: expectedGroundTotal.innerHTML,
-        purchase_id: OrderId,
-        orders: getState().user_cart
-    }
-    if (data.orders.length > 0) {
-        if (data.total_amount >= data.expected_amount) {
-            ProcessOrder(data, csrtoken).then(data => {
-                    setState(storeReducer(addLatestOrder(data)))
-                    manageLastSale(data)
-                    let rows = tbody.children
-                    grandtotal.innerHTML = ""
-                    salesForm.elements.name.value = ""
-                    salesForm.elements.phone_number.value = ""
-                    salesForm.elements.email.value = ""
-                    salesForm.elements.address.value = ""
-                    salesForm.elements.payment_method.value = ""
-                    salesForm.elements.remark.value = ""
-                    grandtotal.innerHTML = ""
-                    expectedGroundTotal.innerHTML = ""
-                    for (const row of rows) {
-                        row.remove()
-                    }
-                })
-                .catch((error) => {
-                    alert(error)
-                    setState(storeReducer(load(LOADED)))
-                });
-        } else {
-            alert("You are selling below the expected price")
-        }
-    } else {
-        alert("No product selected")
-    }
-
-    // console.log(JSON.stringify(data))
-}
-
 const setSalesCount = (data) => {
     let cartPara = document.getElementById("cart_count")
     cartPara.innerText = data.length

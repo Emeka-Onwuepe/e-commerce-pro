@@ -3,7 +3,7 @@ from django.urls import reverse
 import requests
 from django.conf import settings
 from django.http import HttpResponseRedirect, JsonResponse
-from django.core.mail import send_mail
+# from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404, render
 from Branch.models import Branch
 from Product.models import Category, Product, Product_Type, Size
@@ -12,8 +12,7 @@ from User.models import Customer
 
 # Create your views here.
 def homeView(request):
-    send_mail("Hello Guys", f"There is a new publisher at Illumpedia.", "emekaonwuepe@lotzcrocoz.com", [
-                'pascalemy2010@gmail.com'], fail_silently=False,)
+    
     return render(request,'frontview/home.html')
 
 def cartView(request): 

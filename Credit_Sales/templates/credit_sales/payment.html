@@ -1,4 +1,4 @@
-{% extends 'sales/sales.html' %} {% block title %}
+{% extends 'sales/sales.html' %} {% load static %} {% block title %}
 <title>Payment</title>{% endblock title %} {% block main %}
 <div>
     <a href="{% url 'credit_sales:creditSalesView' customer.id 'view' %}">{{customer.name}}</a>
@@ -6,7 +6,7 @@
 <ul>
 
     {% for previous_payment in previous_payments %}
-    <li>{{previous_payment.date}} {{previous_payment.amount}}</li>
+    <li>{{previous_payment.date}} <span class="amount">{{previous_payment.amount}}</span></li>
 
     <a href="{% url 'credit_sales:paymentView' previous_payment.id 'delete' %}"> DELETE</a>
     <a href="{% url 'credit_sales:paymentView' previous_payment.id 'edit' %}"> Edict</a> {% endfor %}
@@ -22,4 +22,7 @@
         {% endif %}</button>
     </form>
 </div>
-{% endblock main %}
+{% endblock main %} {% block javascript %}
+<script src="{% static 'javascript/state.js' %}"></script>
+<script src="{% static 'javascript/creditsales.js' %}"></script>
+{% endblock javascript %}

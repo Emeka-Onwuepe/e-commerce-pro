@@ -1,6 +1,7 @@
 const cartflex = document.getElementById("cartflex")
 const grand_total = document.getElementById('grand_total')
 const customerForm = document.forms.customerForm
+let tbody = document.querySelector("#tbody")
 
 // const csrtoken = document.getElementsByName("csrfmiddlewaretoken")[0].value
 
@@ -139,7 +140,7 @@ const public_key = document.getElementById("public_key").innerHTML
 const make_payment_button = document.getElementById("make_payment")
 
 function payWithPaystack() {
-
+    loaderContainer.style.display = 'block'
     const date = Date.now().toString().slice(5)
     const random = Math.floor(Math.random() * 100)
     const OrderId = `smb${random}${date}`
@@ -172,6 +173,7 @@ function payWithPaystack() {
             Total = 0
         })
         .catch((error) => {
+            loaderContainer.style.display = 'none'
             alert(error)
             setState(storeReducer(load(LOADED)))
         });
@@ -191,7 +193,7 @@ function payWithPaystack() {
         callback: function(response) {
             //this happens after the payment is completed successfully
             var reference = response.reference;
-            alert('Payment complete! Reference: ' + reference);
+            // alert('Payment complete! Reference: ' + reference);
 
             // Make an AJAX call to your server with the reference to verify the transaction
             const data = {
@@ -202,15 +204,19 @@ function payWithPaystack() {
             ProcessOrder(data, csrtoken, 'processorder').
             then(data => {
                     // wait here
+                    loaderContainer.style.display = 'none'
+                    alert("Payment Completed ")
+
                 })
                 .catch((error) => {
+                    loaderContainer.style.display = 'none'
                     alert(error)
                     setState(storeReducer(load(LOADED)))
                 });
         },
 
         onClose: function() {
-
+            loaderContainer.style.display = 'none'
             alert('Transaction was not completed, window closed.');
 
         },

@@ -4,7 +4,7 @@ const expectedGroundTotal = document.getElementById('expectedgroundtotal')
 const salesForm = document.forms.salesForm
 const csrtoken = document.getElementsByName("csrfmiddlewaretoken")[0].value
 const userPhoneNumber = document.getElementById("user_phone_number")
-
+const loaderContainer = document.getElementById("loaderContainer")
 const setCustomerData = (data) => {
     salesForm.elements.name.value = data.name
     salesForm.elements.phone_number.value = data.phone_number
@@ -13,14 +13,18 @@ const setCustomerData = (data) => {
 }
 
 const getCustomer = () => {
+    loaderContainer.style.display = 'block'
     GetCustomer({ phone_number: userPhoneNumber.value }, csrtoken)
         .then(data => {
             let storestate = storeReducer(addCustomer(data.data))
             setState(storestate)
             setCustomerData(data.data)
-
+            loaderContainer.style.display = 'none'
         })
-        .catch(error => alert(error))
+        .catch(error => {
+            loaderContainer.style.display = 'none'
+            alert(error)
+        })
 }
 
 const PriceEvent = (e) => {
@@ -31,12 +35,11 @@ const PriceEvent = (e) => {
     const expectedPrice = document.getElementById(`${Id}-expectedPrice`)
     const productTotal = document.getElementById(`${Id}-productTotal`)
 
-    const product_total = parseFloat(price.value) * parseFloat(qty.value)
-    const expected_price = parseFloat(miniPrice.innerHTML) * parseFloat(qty.value)
-
-    // const grandtotal = document.getElementById('grandtotal')
-    productTotal.innerHTML = product_total
-    expectedPrice.innerHTML = expected_price
+    const product_total = convertToFloat(price.value) * parseFloat(qty.value)
+    const expected_price = convertToFloat(miniPrice.innerHTML) * parseFloat(qty.value)
+        // const grandtotal = document.getElementById('grandtotal')
+    productTotal.innerHTML = addComas(product_total.toString())
+    expectedPrice.innerHTML = addComas(expected_price.toString())
 
     const previousCart = getState().cart
     let total = 0
@@ -51,8 +54,8 @@ const PriceEvent = (e) => {
         total += item.productTotal
         expectedTotal += item.expected
     })
-    grandtotal.innerHTML = total
-    expectedGroundTotal.innerHTML = expectedTotal
+    grandtotal.innerHTML = addComas(total.toString())
+    expectedGroundTotal.innerHTML = addComas(expectedTotal.toString())
     storestate = storeReducer(UpdateCart(previousCart))
     setState(storestate)
 
@@ -65,8 +68,8 @@ const deleteEvent = (e) => {
     const productTotal = document.getElementById(`${Id}-productTotal`).innerHTML
     const expectedPrice = document.getElementById(`${Id}-expectedPrice`).innerHTML
     let parentNode = target.parentNode.parentNode
-    grandtotal.innerHTML = parseFloat(grandtotal.innerHTML) - parseFloat(productTotal)
-    expectedGroundTotal.innerHTML = parseFloat(expectedGroundTotal.innerHTML) - parseFloat(expectedPrice)
+    grandtotal.innerHTML = addComas((convertToFloat(grandtotal.innerHTML) - convertToFloat(productTotal)).toString())
+    expectedGroundTotal.innerHTML = addComas((convertToFloat(expectedGroundTotal.innerHTML) - convertToFloat(expectedPrice)).toString())
     parentNode.remove()
     const filtered = previousCart.filter(item => item.Id != Id)
     storestate = storeReducer(UpdateCart(filtered))
@@ -183,7 +186,7 @@ const addOrder = (e) => {
             //const currentCart = getState().cart
             // setSalesCount(currentCart)
         appendOrderList(purelist)
-        handleDecisionBox()
+            // handleDecisionBox()
     }
 
 }
@@ -195,12 +198,14 @@ const manageLastSale = (data = null) => {
     if (latestOrder.purchase_id != "") {
         lastSale.lastChild.href = `/sales/sale/${latestOrder.purchase_id}/${latestOrder.type}`
     }
+
 }
 manageLastSale()
 
 
 
 const processOrder = (e) => {
+    loaderContainer.style.display = 'block'
     e.preventDefault()
     const date = Date.now().toString().slice(5)
     const random = Math.floor(Math.random() * 100)
@@ -212,8 +217,8 @@ const processOrder = (e) => {
         address: salesForm.elements.address.value,
         payment_method: salesForm.elements.payment_method.value,
         remark: salesForm.elements.remark.value,
-        total_amount: grandtotal.innerHTML,
-        expected_amount: expectedGroundTotal.innerHTML,
+        total_amount: convertToFloat(grandtotal.innerHTML),
+        expected_amount: convertToFloat(expectedGroundTotal.innerHTML),
         purchase_id: OrderId,
         orders: getState().cart
     }
@@ -222,7 +227,7 @@ const processOrder = (e) => {
             ProcessOrder(data, csrtoken).then(data => {
                     setState(storeReducer(addLatestOrder(data)))
                     manageLastSale(data)
-                    let rows = tbody.children
+                        // let rows = tbody.children
                     grandtotal.innerHTML = ""
                     salesForm.elements.name.value = ""
                     salesForm.elements.phone_number.value = ""
@@ -230,28 +235,33 @@ const processOrder = (e) => {
                     salesForm.elements.address.value = ""
                     salesForm.elements.payment_method.value = ""
                     salesForm.elements.remark.value = ""
-                    grandtotal.innerHTML = ""
-                    expectedGroundTotal.innerHTML = ""
-                    for (const row of rows) {
-                        row.remove()
-                    }
+                    grandtotal.innerHTML = 0
+                    expectedGroundTotal.innerHTML = 0
+
+                    // let new_tbody = document.createElement("tbody")
+                    // new_tbody.id = 'tbody'
+                    tbody.innerHTML = ""
+                    loaderContainer.style.display = 'none'
                 })
                 .catch((error) => {
+                    loaderContainer.style.display = 'none'
                     alert(error)
                     setState(storeReducer(load(LOADED)))
                 });
         } else {
+            loaderContainer.style.display = 'none'
             alert("You are selling below the expected price")
         }
     } else {
+        loaderContainer.style.display = 'none'
         alert("No product selected")
     }
 
     // console.log(JSON.stringify(data))
 }
 const appendOrderList = (data) => {
-    let total = parseFloat(grandtotal.innerHTML)
-    let expectTotal = parseFloat(expectedGroundTotal.innerHTML)
+    let total = convertToFloat(grandtotal.innerHTML)
+    let expectTotal = convertToFloat(expectedGroundTotal.innerHTML)
     for (let i = 0; i < data.length; i++) {
         total += data[i].productTotal
         expectTotal += data[i].expected
@@ -261,10 +271,10 @@ const appendOrderList = (data) => {
         <td>${data[i].color}</td>
         <td>${data[i].size}</td>
         <td><input type="text" name="price" value=${data[i].price} id="${data[i].Id}-price"></td>
-        <td id="${data[i].Id}-miniPrice">${data[i].mini}</td>
+        <td id="${data[i].Id}-miniPrice" class='amount'>${data[i].mini}</td>
         <td><input type="text" name="qty" value=${data[i].qty} id="${data[i].Id}-qty"></td>
-        <td id="${data[i].Id}-productTotal">${data[i].productTotal}</td>
-        <td id="${data[i].Id}-expectedPrice">${data[i].expected}</td>
+        <td id="${data[i].Id}-productTotal" class='amount'>${data[i].productTotal}</td>
+        <td id="${data[i].Id}-expectedPrice" class='amount'>${data[i].expected}</td>
         <td><button class="delete" id="${data[i].Id}-delete">Delete</button></td>`
 
         newrow.innerHTML = tds
@@ -272,11 +282,28 @@ const appendOrderList = (data) => {
         newrow.className = "salesrow"
     }
     addPriceEvent()
-    grandtotal.innerHTML = total
-    expectedGroundTotal.innerHTML = expectTotal
+    grandtotal.innerHTML = addComas(total.toString())
+    expectedGroundTotal.innerHTML = addComas(expectTotal.toString())
+    const amounts = document.getElementsByClassName('amount')
 
+    for (const node of amounts) {
+        node.innerHTML = addComas(node.innerHTML.replace(/,/g, ''))
+    }
 
 }
+
+
+try {
+    const amounts = document.getElementsByClassName('amount')
+
+    for (const node of amounts) {
+        node.innerHTML = addComas(node.innerHTML.replace(/,/g, ''))
+    }
+
+} catch (error) {
+
+}
+
 
 // const setSalesCount = (data) => {
 //     let cartPara = document.getElementById("sales")

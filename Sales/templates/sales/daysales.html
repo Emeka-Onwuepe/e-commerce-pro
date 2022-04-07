@@ -1,6 +1,4 @@
-{% extends 'sales/sales.html' %}
-{% load static %}
- {% block title %}
+{% extends 'sales/sales.html' %} {% load static %} {% block title %}
 <title>Day Sales</title>{% endblock title %} {% block main %}
 <form name="getsales" method="post">
     <label for="branch">Select Branch</label>
@@ -36,8 +34,8 @@
                 <td></td>
                 <td>{{item.product_type}}</td>
                 <td>{{item.qty}}</td>
-                <td>{{item.unit_price}}</td>
-                <td>{{item.total_price}}</td>
+                <td class="amount">{{item.unit_price}}</td>
+                <td class="amount">{{item.total_price}}</td>
                 {% for product in item.items.all %}
                 <td>{{product.payment_method}} </td>
                 <td><a href="{% url 'sales:saleView' product.purchase_id product.payment_method %}">
@@ -49,8 +47,8 @@
                 <td></td>
                 <td>{{item.product_type}}</td>
                 <td>{{item.qty}}</td>
-                <td>{{item.unit_price}}</td>
-                <td>{{item.total_price}}</td>
+                <td class="amount">{{item.unit_price}}</td>
+                <td class="amount">{{item.total_price}}</td>
                 <td>Credit</td>
                 {% for product in item.credit_sale_Items.all %}
                 <td><a href="{% url 'sales:saleView' product.purchase_id 'credit' %}">
@@ -62,8 +60,8 @@
                 <td></td>
                 <td>{{item.product_type}}</td>
                 <td>{{item.qty}}</td>
-                <td>{{item.unit_price}}</td>
-                <td>{{item.total_price}}</td>
+                <td class="amount">{{item.unit_price}}</td>
+                <td class="amount">{{item.total_price}}</td>
                 <td>Web</td>
                 {% for product in item.credit_sale_Items.all %}
                 <td>{{product.purchase_id}} </td>
@@ -165,7 +163,6 @@
         <tfoot></tfoot>
     </table>
 </div>
-{% endblock main %}
-{% block javascript %} 
+{% endblock main %} {% block javascript %}
 <script src="{% static 'javascript/daysales.js' %}"></script>
 {% endblock javascript %}
