@@ -5,7 +5,7 @@
     color: black;
     /* font-family: "sans-serif"; */
     font-family: "Roboto";
-    font-size: 18px;
+    font-size: 16px;
     line-height: 1.5;
 }
 
@@ -35,11 +35,16 @@ h3 {
 
 #logo-div {
     box-sizing: border-box;
-    width: 150px;
+    width: 130px;
 }
 
 .logo {
     margin-left: -15px;
+}
+
+.cart-shop {
+    width: 38px;
+    height: 38px;
 }
 
 #bigwrapper {
@@ -89,6 +94,14 @@ button {
     padding: 4px;
 }
 
+h1 {
+    margin-bottom: 30px;
+    text-align: center;
+    font-weight: bolder;
+    text-transform: uppercase;
+    letter-spacing: 1.8px;
+}
+
 footer {
     background-color: rgba(0, 0, 0, 0.9);
 }
@@ -99,4 +112,26 @@ footer span {
     text-align: center;
     color: rgba(230, 230, 230, 0.9);
     text-indent: 0px
+}
+
+@media screen and (min-width:481px) {
+    #logo-div {
+        width: 150px;
+    }
+    .cart-shop {
+        width: 48px;
+        height: 48px;
+    }
+}
+
+@media screen and (min-width:750px) {
+    * {
+        font-size: 18px;
+    }
+}
+
+@media screen and (min-width:1000px) {
+    h1 {
+        font-size: 27.05px;
+    }
 }

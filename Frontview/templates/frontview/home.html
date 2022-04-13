@@ -39,12 +39,12 @@
                     {% block nav %}
                     <div id="cart" class="cart">
                         <a href="{% url 'frontview:cartView' %}">
-                            <svg stroke="currentColor" fill="#D97C2B" stroke-width="0" viewBox="0 0 576 512" style="font-size: 50px;" class="cart-shop" height="48px" width="48px" xmlns="http://www.w3.org/2000/svg"><path d="M528.12 301.319l47.273-208C578.806 78.301 567.391 64 551.99 64H159.208l-9.166-44.81C147.758 8.021 137.93 0 126.529 0H24C10.745 0 0 10.745 0 24v16c0 13.255 10.745 24 24 24h69.883l70.248 343.435C147.325 417.1 136 435.222 136 456c0 30.928 25.072 56 56 56s56-25.072 56-56c0-15.674-6.447-29.835-16.824-40h209.647C430.447 426.165 424 440.326 424 456c0 30.928 25.072 56 56 56s56-25.072 56-56c0-22.172-12.888-41.332-31.579-50.405l5.517-24.276c3.413-15.018-8.002-29.319-23.403-29.319H218.117l-6.545-32h293.145c11.206 0 20.92-7.754 23.403-18.681z"></path></svg>
+                            <svg stroke="currentColor" fill="#D97C2B" stroke-width="0" viewBox="0 0 576 512" style="font-size: 50px;" class="cart-shop" xmlns="http://www.w3.org/2000/svg"><path d="M528.12 301.319l47.273-208C578.806 78.301 567.391 64 551.99 64H159.208l-9.166-44.81C147.758 8.021 137.93 0 126.529 0H24C10.745 0 0 10.745 0 24v16c0 13.255 10.745 24 24 24h69.883l70.248 343.435C147.325 417.1 136 435.222 136 456c0 30.928 25.072 56 56 56s56-25.072 56-56c0-15.674-6.447-29.835-16.824-40h209.647C430.447 426.165 424 440.326 424 456c0 30.928 25.072 56 56 56s56-25.072 56-56c0-22.172-12.888-41.332-31.579-50.405l5.517-24.276c3.413-15.018-8.002-29.319-23.403-29.319H218.117l-6.545-32h293.145c11.206 0 20.92-7.754 23.403-18.681z"></path></svg>
                             <span id="cart_count" class="cart_count">0</span>
                         </a>
                     </div>
 
-                    <a href="#contact_us">Contact</a> {% endblock nav %}
+                    <a href="/#contact_us">Contact</a> {% endblock nav %}
                 </nav>
 
             </section>
@@ -72,13 +72,12 @@
                     <div class="banneritems">
                         <h1>SMB Classic Wears Boutique</h1>
                         <p class="lesser">RC No: 3265823</p>
-                        <p class="lesser">Our physical shops are situated at Abuja but we deliver nations wide</p>
-                        <p>...your look, our priority</p>
+                        <p class="lesser">Our physical shops are situated at Abuja but we deliver nation wide</p>
+                        <p style="padding:0px 35px 0px 20px;font-weight:bold">...your look, our priority</p>
 
                     </div>
                     <div class="banneritems">
-                        <p class="less">We deal on different kinds of </p>
-                        <p class="less">Men and Woman Wears Suits | Shoes | Jeans | Chinos | Sneakers | T-Shirts | Under-wears | Night Wears | Jewelries and other accessories</p>
+                        <p class="less product_details">Men and Woman Wears Suits | Shoes | Jeans | Chinos | Sneakers | T-Shirts | Under-wears | Night Wears | Jewelries and other accessories</p>
 
 
                     </div>
@@ -104,10 +103,10 @@
 
                 <section class="list_items">
                     {% for category in sorted_categories %}
-                    <div class="items">
-                        <div class="inneritem">
+                    <div class="items" id='catgorylist'>
+                        <div class="inneritem ">
                             <a href="{% url 'frontview:categoryView' category.id %}"> {{category}}</a>
-                            <p> A nice Beginning</p>
+                            <p>{{category.description}}</p>
                         </div>
                     </div>
                     {% endfor %}
@@ -117,8 +116,8 @@
                     <h3 class="contact_head">Contact Us</h3>
                     <div class="contact_flex">
                         <div class="mapbox-iframe">
-                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3940.353919858236!2d7.469045414779783!3d9.0314431914374!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x104e0b59ebfc6a6b%3A0xdcb8bccf0378825b!2sSMB%20CLASSIC%20WEARS%20BOUTIQUE!5e0!3m2!1sen!2sng!4v1648198341328!5m2!1sen!2sng"
-                                width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                            <iframe class="map-frame" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3940.353919858236!2d7.469045414779783!3d9.0314431914374!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x104e0b59ebfc6a6b%3A0xdcb8bccf0378825b!2sSMB%20CLASSIC%20WEARS%20BOUTIQUE!5e0!3m2!1sen!2sng!4v1648198341328!5m2!1sen!2sng"
+                                 height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                         </div>
                         <div class="write_ups">
                             <div>

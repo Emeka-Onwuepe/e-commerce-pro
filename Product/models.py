@@ -8,7 +8,7 @@ class Category(models.Model):
 
     # TODO: Define fields here
     name = models.CharField("Category",max_length = 150,null=False,blank=False)
-    
+    description = models.CharField("description",max_length = 150,null=False,blank=False)
     class Meta:
         """Meta definition for Category."""
 

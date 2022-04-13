@@ -3,6 +3,7 @@
 <link rel="stylesheet" type="text/css" href="{% static 'CSS/general.css' %}"> {% endblock styles %} {% block title %}
 <title>Order history</title>
 {% endblock title %} {% block banner %} {% endblock banner %} {% block main %}
+<h1>ORDER HISTORY</h1>
 <section class="orderhistory">
     {% csrf_token %} {% for order in orders %}
     <div class="order">

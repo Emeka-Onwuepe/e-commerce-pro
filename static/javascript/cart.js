@@ -15,12 +15,12 @@ for (const product of user_cart) {
     let div = document.createElement("div")
     div.className = 'productDiv'
     div.id = product.Id
-    let productData = `<p>${product.product_type}</p>
+    let productData = `<h3>${product.product_type}</h3>
                         <p>Color: ${product.color}</p>
                         <p>Size: ${product.size}</p>
                         <p>Price:  &#8358 <span class="amount" id="price;${product.Id}">${product.price}</span></p>
                         <p>Qty: <span  id="qty;${product.Id}"> ${product.qty} </span> </p>
-                        <p>Total:  &#8358 <span class="amount" id="total;${product.Id}">${product.productTotal}</span></p>
+                        <p><strong>Total:  &#8358 <span class="amount" id="total;${product.Id}">${product.productTotal}</span></strong></p>
                         <button class="increment" id="incremet;${product.Id}">+</button>
                         <button class="decrement" id="decrement;${product.Id}">-</button>
                         <button class="delete" id="delete;${product.Id}">Delete</button>
@@ -30,6 +30,26 @@ for (const product of user_cart) {
     cartflex.appendChild(div)
 }
 grand_total.innerHTML = addComas(Total.toString())
+
+const manageCustomerDetails = (e, display) => {
+    const customerDetails = document.querySelector("#customerDetails")
+    if (display) {
+        customerDetails.style.display = 'block'
+        e.target.style.display = "none"
+    } else {
+        customerDetails.style.display = 'none'
+    }
+}
+const manageProcessOrderButton = () => {
+    const process_order = document.getElementById("process_order")
+    if (Total > 0) {
+        process_order.style.display = 'block'
+        process_order.addEventListener('click', (e) => manageCustomerDetails(e, true))
+    } else {
+        process_order.style.display = "none"
+    }
+}
+manageProcessOrderButton()
 
 const priceEvent = (e, action) => {
     const button = e.target
@@ -65,6 +85,7 @@ const priceEvent = (e, action) => {
                 product.productTotal = product.price * Qty
             }
         });
+        manageProcessOrderButton()
         storestate = storeReducer(UpdateCart(previousCart, 'user_cart'))
         setState(storestate)
     }
@@ -77,6 +98,8 @@ const deleteItem = (e) => {
     const div = document.getElementById(`${Id}`)
     const total = document.getElementById(`total;${Id}`)
     grand_total.innerHTML = Total - convertToFloat(total.innerHTML)
+    Total -= convertToFloat(total.innerHTML)
+    manageProcessOrderButton()
     div.remove()
     const previousCart = getState().user_cart
     const filtered = previousCart.filter(item => item.Id != Id)
@@ -139,7 +162,98 @@ for (const node of amounts) {
 const public_key = document.getElementById("public_key").innerHTML
 const make_payment_button = document.getElementById("make_payment")
 
+
+
+var contactInputs = document.querySelectorAll(".contactInput")
+let errorMessages = {
+    "name": "Only alphabets are allowed",
+    "email": "Invalid email",
+    "address": "Character not allowed",
+    "phone_number": "Invalid phone number"
+}
+
+let errorTest = {
+    "name": /[^a-z\s]/i,
+    "email": /^[a-z]+\d*[a-z]*@[a-z]+\.\w+\s*$/gi,
+    "address": /[^a-z\s.,;':@&)(0-9"#_-]/i,
+    "phone_number": /[^0-9+\s]/i
+}
+
+const checkerror = (e, elem = undefined) => {
+    let contactInput = elem ? elem : e.target
+    let fieldName = contactInput.name;
+    let fieldValue = contactInput.value;
+    let fieldLength = fieldValue.length
+    let selector = `${fieldName}er`;
+    let errP = document.querySelector(`#${selector}`);
+    errP.innerHTML = '';
+    if (fieldName != "email" && errorTest[fieldName].test(fieldValue)) {
+        errP.innerHTML = errorMessages[fieldName];
+        contactInput.style.marginBottom = "0px";
+    } else if (fieldName == "phone_number" && fieldLength < 11) {
+        errP.innerHTML = errorMessages[fieldName];
+        contactInput.style.marginBottom = "0px";
+
+    } else if (fieldName == "email" && !errorTest[fieldName].test(fieldValue)) {
+        errP.innerHTML = errorMessages[fieldName];
+        contactInput.style.marginBottom = "0px";
+
+    } else {
+        errP.innerHTML = "";
+        contactInput.style.marginBottom = "15px";
+    }
+
+    errP.style.color = 'red'
+    errP.style.fontSize = '16px'
+
+    if (fieldValue.length == 0) {
+        errP.innerHTML = "";
+        contactInput.style.marginBottom = "15px";
+    }
+
+    enableSubmitButton();
+
+}
+
+for (const contactInput of contactInputs) {
+    checkerror(undefined, contactInput)
+    contactInput.addEventListener("keyup", (e) => checkerror(e))
+    contactInput.addEventListener("change", (e) => checkerror(e))
+
+}
+
+
+function enableSubmitButton() {
+    let make_paymentbtn = document.getElementById("make_payment");
+    for (const contactInput of contactInputs) {
+        let fieldName = contactInput.name;
+        let fieldLength = contactInput.value.length
+        let selector = `${fieldName}er`;
+        let errP = document.querySelector(`#${selector}`);
+        if (fieldLength <= 0) {
+            make_paymentbtn.disabled = true
+            make_paymentbtn.style.backgroundColor = "gray";
+            errP.innerHTML = fieldName + " must not be empty"
+            errP.style.color = 'red'
+            errP.style.fontSize = '16px'
+            break;
+        } else if (errP.innerHTML.length > 0) {
+            make_paymentbtn.disabled = true
+            make_paymentbtn.style.backgroundColor = "gray";
+            break;
+        } else {
+            make_paymentbtn.disabled = false;
+            make_paymentbtn.style.backgroundColor = "#0089A6";
+            make_paymentbtn.style.color = "#ffffff";
+        }
+
+    }
+
+}
+
+
 function payWithPaystack() {
+
     loaderContainer.style.display = 'block'
     const date = Date.now().toString().slice(5)
     const random = Math.floor(Math.random() * 100)
@@ -171,6 +285,7 @@ function payWithPaystack() {
             }
             grand_total.innerHTML = 0
             Total = 0
+            manageCustomerDetails(undefined, false)
         })
         .catch((error) => {
             loaderContainer.style.display = 'none'
