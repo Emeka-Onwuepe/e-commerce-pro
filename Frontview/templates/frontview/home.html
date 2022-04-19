@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;700&family=Roboto:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{% static 'CSS/frontview.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'CSS/general.css' %}"> 
+    <link rel="stylesheet" type="text/css" href="{% static 'CSS/general.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'CSS/loader.css' %}">{% block styles %}
     <link rel="stylesheet" type="text/css" href="{% static 'CSS/slides.css' %}">{% endblock styles %}
     <link rel="shortcut icon" href="{% static 'CSS/logo.png' %}" type="image/png">
@@ -32,9 +32,15 @@
     <div id="bigwrapper">
         <header>
             <section class="menu">
+                <div id="toggle" class="toggle">
+                    <span></span>
+                    <span></span>
+                    <span class="last"></span>
+                </div>
                 <div id="logo-div">
                     <a href="{% url 'frontview:homeView' %}"> <img class="logo" src="{% static 'CSS/logo.png' %}" alt="logo" width="100%"></a>
                 </div>
+
                 <nav id="nav" class="nav">
                     {% block nav %}
                     <div id="cart" class="cart">
@@ -46,9 +52,7 @@
 
                     <a href="/#contact_us">Contact</a> {% endblock nav %}
                 </nav>
-
             </section>
-
         </header>
         <div class="seperator"></div>
         {% block banner %}
@@ -89,7 +93,8 @@
         {% endblock banner %}
         <div class="adminWrapper">
             <aside>
-                <div id="sideNav">
+                <div class="sideNav" id="sideNav">
+                    <a href="javascript:void(0)" id="close" class="close">&times;</a>
                     <nav>
                         {% for category in sorted_categories %}
 
@@ -106,7 +111,6 @@
                     <div class="items" id='catgorylist'>
                         <div class="inneritem ">
                             <a href="{% url 'frontview:categoryView' category.id %}"> {{category}}</a>
-                            <p>{{category.description}}</p>
                         </div>
                     </div>
                     {% endfor %}
@@ -117,7 +121,7 @@
                     <div class="contact_flex">
                         <div class="mapbox-iframe">
                             <iframe class="map-frame" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3940.353919858236!2d7.469045414779783!3d9.0314431914374!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x104e0b59ebfc6a6b%3A0xdcb8bccf0378825b!2sSMB%20CLASSIC%20WEARS%20BOUTIQUE!5e0!3m2!1sen!2sng!4v1648198341328!5m2!1sen!2sng"
-                                 height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                                height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                         </div>
                         <div class="write_ups">
                             <div>
@@ -129,16 +133,18 @@
                             <div>
                                 <h4>Call</h4>
                                 <p>Phone:
-                                    <a href="tel:+2348038559808"></a>
+                                    <a href="tel:+2348038559808">08038559808</a>
                                 </p>
                             </div>
 
                             <div>
                                 <h4>Visit Us</h4>
-                                <p>Shop No. G-002, Ground Floor, Area 1 Shopping Complex, Garki, Abuja</p>
+                                <p>Shop No. G-002, Ground Floor,
+                                    <br/> Area 1 Shopping Complex,
+                                    <br/> Garki, Abuja</p>
                             </div>
 
-                            <div>
+                            <div id='socials'>
                                 <a href=""><img class="facebook" src="{% static 'CSS/facebook.png' %}" alt="facebook" /></a>
                                 <a href=""><img class="instagram" src="{% static 'CSS/instagram.png' %}" alt="instagram" /></a>
                                 <a href=""><img class="twitter" src="{% static 'CSS/twitter.png' %}" alt="twitter" /></a>
@@ -151,7 +157,7 @@
 
                 {% endblock main %}
             </main>
-            
+
             <div id="loaderContainer" class="container">
                 <div class="loader">
                     <span></span>
@@ -159,13 +165,17 @@
                     <span></span>
                 </div>
             </div>
+
+            <div id="backToTop" class="backToTop">
+                <a href="#">&#10094;</a>
+            </div>
         </div>
         <footer>
             {% block footer %}
             <footer>
                 <p id="footer"> Copyright &copy;
                     <span id="footerdate" style="padding: 0%"></span>. All rights reserved. Smbclassicwears.com.ng
-                    <br /> Designed by Emeka Onwuepe. </p>
+                    <br /> Designed by <a href="">CashTech</a> </p>
             </footer>
             {% endblock footer %}
         </footer>

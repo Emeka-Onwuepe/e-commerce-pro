@@ -1,45 +1,47 @@
+<section class="salesform">
+    <p id="lastSale"> <a href="">View Recent Sale</a></p>
 
-                <section class="salesform">
-                    <p id="lastSale"> <a href="">View Recent Sale</a></p>
+    <form class="form" name="salesForm">
+        {% csrf_token %}
 
-                    <form class="form" name="salesForm">
-                        {% csrf_token %}
+        <div id='salesDetails'>
+            <div class="class_data">
+                {{customerForm}} {{saleForm}}
+            </div>
 
-                        <div id='salesDetails'>
-                            <div>
-                                {{customerForm}} {{saleForm}}
-                            </div>
+            <div id="salesList">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>SN</th>
+                            <th>Product Name</th>
+                            <th>Color</th>
+                            <th>Size</th>
+                            <th>Unit Price</th>
+                            <th>Mini Price</th>
+                            <th>Qty</th>
+                            <th>Total Price</th>
+                            <th>Expected Price</th>
 
-                            <div id="salesList">
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>SN</th>
-                                            <th>Product Name</th>
-                                            <th>Color</th>
-                                            <th>Size</th>
-                                            <th>Unit Price</th>
-                                            <th>Mini Price</th>
-                                            <th>Qty</th>
-                                            <th>Total Price</th>
-                                            <th>Expected Price</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody"></tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="7">Total</th>
 
-                                        </tr>
-                                    </thead>
-                                    <tbody id="tbody"></tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <th colspan="7">Total</th>
+                            <th id="grandtotal">0</th>
+                            <th id="expectedgroundtotal">0</th>
 
-                                            <th id="grandtotal">0</th>
-                                            <th id="expectedgroundtotal">0</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
 
-                                        </tr>
-                                    </tfoot>
-                                </table>
-                            </div>
+        </div>
+        <div id="buttondiv">
+            <button class="submit addbutton" type="submit">Submit</button>
+        </div>
 
-                        </div>
-                        <button class="submit addbutton" type="submit">Submit</button>
-                    </form>
-                </section>
+    </form>
+</section>

@@ -1,12 +1,14 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 from Branch.models import Branch
 from Product.form import  BadProductForm, CategoryForm, ProductForm, ProductTypeForm, ReturnedProductForm, SizeForm
 from Branch.helper import addBranchProduct
 from Product.models import Bad_Product, Category, Product, Product_Type, Returned_Product, Size
 
 # Create your views here.
+@login_required(login_url="user:loginView")
 def categoryView(request,categoryId,action):
     
     categories = Category.objects.all()
@@ -48,7 +50,7 @@ def categoryView(request,categoryId,action):
                   {"form":CategoryForm(),"categoryId":0, 'categories':categories,"action":"add"})
     
 
-
+@login_required(login_url="user:loginView")
 def productTypeView(request,productTypeId,action):
     
     productTypes = Product_Type.objects.all()
@@ -88,8 +90,9 @@ def productTypeView(request,productTypeId,action):
                  
     return render(request,"product/product_type.html",
                   {"form":ProductTypeForm(),"productTypeId":0, 'productTypes':productTypes,"action":"add"})
+  
     
-    
+@login_required(login_url="user:loginView")  
 def sizeView(request,sizeId,action):
     
     sizes = Size.objects.all()
@@ -131,7 +134,7 @@ def sizeView(request,sizeId,action):
                   {"form":SizeForm(),"sizeId":0, 'sizes':sizes,"action":"add"})
     
 
-
+@login_required(login_url="user:loginView")
 def productView(request,productId,action):
     print(request)
     products = Product.objects.all()
@@ -178,6 +181,7 @@ def productView(request,productId,action):
                   {"form":ProductForm(),"productId":0, 'products':products,"action":"add"})
 
 
+@login_required(login_url="user:loginView")
 def badProductView(request,badProductId,action):
     
     if badProductId != 0:   
@@ -233,7 +237,8 @@ def badProductView(request,badProductId,action):
                    "action":"add","products":products})
     
     
-    
+ 
+@login_required(login_url="user:loginView")    
 def returnedProductView(request,returnedProductId,action):
     
     if returnedProductId != 0:   

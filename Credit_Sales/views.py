@@ -2,13 +2,14 @@ from urllib import request
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 from Credit_Sales.forms import PaymentForm
 
 from Credit_Sales.models import Credit_Sale, Payment
 from User.models import Customer
 
 # Create your views here.
-
+@login_required(login_url="user:loginView")
 def creditSalesView(request,customerID,action):
     credits = []
     message =None
@@ -55,7 +56,7 @@ def creditSalesView(request,customerID,action):
                                                       "settled":settled,
                                                       'customerid':customerid}) 
 
-
+@login_required(login_url="user:loginView")
 def paymentView(request,creditId,action):
     
     previous_payments = None

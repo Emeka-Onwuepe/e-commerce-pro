@@ -1,34 +1,24 @@
 {% extends 'sales/sales.html' %} {% block title %}
-<title>Bad Product</title>{% endblock title %} {% block main %} {% if request.user.is_admin %} {% for branch in branches %}
-<p>{{branch}}</p>
-{% for badProduct in branch.bad_product_branch.all %}
-<p>{{badProduct.product}} - {{badProduct.qty}} - ({{badProduct.date}})</p>
-<a href="{% url 'product:badProductView' badProduct.id 'delete' %}"> Delete</a>
-<a href="{% url 'product:badProductView' badProduct.id 'edit' %}"> Edit</a> {% endfor %} {% endfor %} {% else %}
-<p>{{request.user.branch}}</p>
-{% for badProduct in request.user.branch.bad_product_branch.all %}
-<p>{{badProduct.product}} - {{badProduct.qty}} - ({{badProduct.date}})</p>
-<a href="{% url 'product:badProductView' badProduct.id 'delete' %}"> Delete</a>
-<a href="{% url 'product:badProductView' badProduct.id 'edit' %}"> Edit</a> {% endfor %} {% endif %}
+<title>Bad Product</title>{% endblock title %} {% block main %}
 
+<h1>Bad Products</h1>
 
-
-<form action="{% url 'product:badProductView' badProductId action %}" method="post">
+<form style="margin-bottom: 30px;" action="{% url 'product:badProductView' badProductId action %}" method="post">
     {% csrf_token %} {% if action == 'add' and not request.user.is_admin %}
     <label for="id_product">Product:</label><select name="product" required="" id="id_product">
-  <option value="" selected="">---------</option>
-  {% for product in products %}
- 
-  {% if product.multipleSIzes %}
-         
-  {% for size  in product.multipleSIzes.all  %}
-  <option value="{{product.id}}-{{size.id}}">{{product.product_type.name}} - {{product.color}} - &#8358 <span class="amount">{{size.price}}</span> - size:{{size.size}}</option>
-  {% endfor %}    
-     
- {% else %}
- <option value="{{product.id}}">{{product.product_type.name}} - {{product.color}} - &#8358 <span class="amount">{{product.price}}</span> - size:{{product.size}}</option>
- {% endif %}
-  {% endfor %}
+<option value="" selected="">---------</option>
+{% for product in products %}
+
+{% if product.multipleSIzes %}
+       
+{% for size  in product.multipleSIzes.all  %}
+<option value="{{product.id}}-{{size.id}}">{{product.product_type.name}} - {{product.color}} - &#8358 <span class="amount">{{size.price}}</span> - size:{{size.size}}</option>
+{% endfor %}    
+   
+{% else %}
+<option value="{{product.id}}">{{product.product_type.name}} - {{product.color}} - &#8358 <span class="amount">{{product.price}}</span> - size:{{product.size}}</option>
+{% endif %}
+{% endfor %}
 </select>
     <input type="hidden" name="branch" value={{request.user.branch_id}}>
     <label for="id_qty">Qty:</label><input type="number" name="qty" required="" id="id_qty"> {% elif action == "edit" %}
@@ -46,37 +36,65 @@
     <input type="number" name="qty" value="{{instance.qty}}" required="" id="id_qty"> {% else %}
 
     <label for="id_product">Product:</label><select name="product" required="" id="id_product">
-        <option value="" selected="">---------</option>
-        {% for product in products %}
-       
-        {% if product.multipleSIzes %}
-               
-        {% for size  in product.multipleSIzes.all  %}
-        <option value="{{product.id}}-{{size.id}}">{{product.product_type.name}} - {{product.color}} - &#8358  <span class="amount">{{size.price}}</span> - size:{{size.size}}</option>
-        {% endfor %}    
-           
-       {% else %}
-       <option value="{{product.id}}">{{product.product_type.name}} - {{product.color}} - &#8358 <span class="amount">{{product.price}}</span> - size:{{product.size}}</option>
-       {% endif %}
-        {% endfor %}
-      </select>
+      <option value="" selected="">---------</option>
+      {% for product in products %}
+     
+      {% if product.multipleSIzes %}
+             
+      {% for size  in product.multipleSIzes.all  %}
+      <option value="{{product.id}}-{{size.id}}">{{product.product_type.name}} - {{product.color}} - &#8358  <span class="amount">{{size.price}}</span> - size:{{size.size}}</option>
+      {% endfor %}    
+         
+     {% else %}
+     <option value="{{product.id}}">{{product.product_type.name}} - {{product.color}} - &#8358 <span class="amount">{{product.price}}</span> - size:{{product.size}}</option>
+     {% endif %}
+      {% endfor %}
+    </select>
     <label for="id_branch">Branches</label>
     <select name="branch" id="id_branch" required="">
-        <option value="" selected="">---------</option>
-        {% for branch in branches %}
-        <option value="{{branch.id}}">{{branch}}</option>
-        {% endfor%}
-      </select>
+      <option value="" selected="">---------</option>
+      {% for branch in branches %}
+      <option value="{{branch.id}}">{{branch}}</option>
+      {% endfor%}
+    </select>
     <label for="id_qty">Qty:</label><input type="number" name="qty" required="" id="id_qty"> {% endif %}
 
-    <button type="submit">
-            
-            {% if action == "add" %}
-                ADD
-            {% else %}
-                UPDATE
-            {% endif %}
-                
-        </button>
+    <button class="addbutton" type="submit">
+          
+          {% if action == "add" %}
+              ADD
+          {% else %}
+              UPDATE
+          {% endif %}
+              
+      </button>
 </form>
+
+
+{% if request.user.is_admin %} {% for branch in branches %}
+<h3 class="reduceMarginBottom">{{branch}} </h3>
+<section class="list_items">
+    {% for badProduct in branch.bad_product_branch.all|slice:":10" %}
+    <div class="items center">
+
+        <p class="description">{{badProduct.product}} - {{badProduct.qty}} - ({{badProduct.date}})</p>
+        <a class="delete" href="{% url 'product:badProductView' badProduct.id 'delete' %}"><button> Delete</button></a>
+        <a href="{% url 'product:badProductView' badProduct.id 'edit' %}"> <button> Edit</button></a>
+
+    </div>
+    {% endfor %}
+</section>
+{% endfor %} {% else %}
+<h3 class="reduceMarginBottom">{{request.user.branch}}</h3>
+<section style="text-align: center;" class="list_items">
+    {% for badProduct in request.user.branch.bad_product_branch.all %}
+    <div class="items">
+
+        <p class="description">{{badProduct.product}} - {{badProduct.qty}} - ({{badProduct.date}})</p>
+        <a class="delete" href="{% url 'product:badProductView' badProduct.id 'delete' %}"><button> Delete</button></a>
+        <a href="{% url 'product:badProductView' badProduct.id 'edit' %}"><button > Edit</button></a>
+    </div>
+
+    {% endfor %} {% endif %}
+</section>
 {% endblock main %}

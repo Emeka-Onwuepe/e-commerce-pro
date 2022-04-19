@@ -8,7 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" type="text/css" href="{% static 'CSS/administration.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'CSS/general.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'CSS/productpage.css' %}"> 
+    <link rel="stylesheet" type="text/css" href="{% static 'CSS/productpage.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'CSS/loader.css' %}">{% block styles %} {% endblock styles %}
     <link rel="shortcut icon" href="{% static 'CSS/logo.png' %}" type="image/png">
     <link rel="apple-touch-icon" href="{% static 'CSS/logo.png' %}">
@@ -29,6 +29,11 @@
     <div id="bigwrapper">
         <header>
             <section class="menu">
+                <div id="toggle" class="toggle">
+                    <span></span>
+                    <span></span>
+                    <span class="last"></span>
+                </div>
                 <div id="logo-div">
                     <a href="{% url 'sales:salesView' %}"> <img class="logo" src="{% static 'CSS/logo.png' %}" alt="logo" width="100%"></a>
                 </div>
@@ -42,7 +47,7 @@
                             {% if not request.user.is_anonymous %}
                             <form action="{% url 'user:logoutView' %}" method="post">
                                 {% csrf_token %}
-                                <button class="logout" type="submit">SIGN OUT</button>
+                                <button class="logout" type="submit">Logout</button>
                             </form>
                             {% else %}
                             <a href="{% url 'user:loginView' %}"><button class="logout login" type="submit">LOGIN</button></a> {% endif %}
@@ -56,7 +61,9 @@
         <div class="adminWrapper">
             <aside>
                 {% if not request.user.is_anonymous %}
-                <div id="sideNav">
+                
+                <div class="sideNav" id="sideNav">
+                    <a href="javascript:void(0)" id="close" class="close">&times;</a>
                     <nav>
                         <a href="{% url 'product:badProductView' 0 'view' %}">Bad Product</a>
                         <a href="{% url 'branch:branchView' 0 'view' %}">Branches</a>
@@ -84,6 +91,12 @@
             </aside>
             <main>
                 {% block main %}
+                
+                {% if not request.user.is_anonymous  %}
+                <div class="user2">
+                    {{request.user}}
+                </div>
+                {% endif %}
 
                 <div id="flex_container">
                     <form action="{% url 'sales:salesView' %}" method="post">
@@ -119,7 +132,7 @@
                         </div>
                     </div>
                     {% endfor %}
-                </section>
+                </section> 
 
                 {% include "sales/salesform.html" %} {% endblock main %}
             </main>
@@ -132,24 +145,27 @@
                 </div>
             </div>
 
+            <div id="backToTop" class="backToTop">
+                <a href="#">&#10094;</a>
+            </div>
+
         </div>
         <footer>
             {% block footer %}
             <footer>
                 <p id="footer"> Copyright &copy;
                     <span id="footerdate" style="padding: 0%"></span>. All rights reserved. Smbclassicwears.com.ng
-                    <br /> Designed by Emeka Onwuepe. </p>
+                    <br /> Designed by <a href="">CashTech</a>. </p>
             </footer>
             {% endblock footer %}
-        </footer>
+        </footer> 
     </div>
-
 
     {% block javascript %}
     <script src="{% static 'javascript/state.js' %}"></script>
     <script src="{% static 'javascript/productpage.js' %}"></script>
     {% endblock javascript %}
-
+    <script src="{% static 'javascript/generalAd.js' %}"></script>
 </body>
 
 </html>

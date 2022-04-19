@@ -1,6 +1,6 @@
 {% extends 'sales/sales.html' %} {% block title %}
 <title>Branches</title>{% endblock title %} {% block main %}
-
+<h1>Branches</h1>
 <form action="{% url 'branch:branchView' branchID action %}" method="post">
     {% csrf_token %} {{form}}
     <button type="submit" class="submit addbutton">

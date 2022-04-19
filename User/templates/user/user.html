@@ -1,15 +1,14 @@
 {% extends 'sales/sales.html' %} {% block title %}
-<title>User</title>{% endblock title %} {% block main %}
-{% for user in users %} {% if not user.is_super_admin %}
-    <p>{{user}}</p>
+<title>User</title>{% endblock title %} {% block main %} {% for user in users %} {% if not user.is_super_admin %}
+<p>{{user}}</p>
 
-    <a href="{% url 'user:userView' user.id 'delete' %}"> DELETE</a>
-    <a href="{% url 'user:userView' user.id 'edit' %}"> Edict</a> {% endif %} {% endfor %}
+<a href="{% url 'user:userView' user.id 'delete' %}"> DELETE</a>
+<a href="{% url 'user:userView' user.id 'edit' %}"> Edict</a> {% endif %} {% endfor %}
 
 
-    <form action="{% url 'user:userView' userId action %}" method="post">
-        {% csrf_token %} {{form}}
-        <button type="submit">
+<form action="{% url 'user:userView' userId action %}" method="post">
+    {% csrf_token %} {{form}}
+    <button type="submit">
             
             {% if action == "add" %}
                 ADD
@@ -18,7 +17,6 @@
             {% endif %}
                 
         </button>
-    </form>
-{% endblock main %}
-{% block javascript %}
+</form>
+{% endblock main %} {% block javascript %}
 {% endblock javascript %}

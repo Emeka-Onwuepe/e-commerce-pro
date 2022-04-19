@@ -5,6 +5,7 @@ const salesForm = document.forms.salesForm
 const csrtoken = document.getElementsByName("csrfmiddlewaretoken")[0].value
 const userPhoneNumber = document.getElementById("user_phone_number")
 const loaderContainer = document.getElementById("loaderContainer")
+
 const setCustomerData = (data) => {
     salesForm.elements.name.value = data.name
     salesForm.elements.phone_number.value = data.phone_number

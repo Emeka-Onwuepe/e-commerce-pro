@@ -40,16 +40,16 @@
         </button>
 </form>
 
-<div>
+<div style="border:2px solid red">
     {% for dic in stock_list %}
-    <div>
+    <div style="border:2px solid blue">
 
         {% if dic.size %}
         <p>{{dic.product.product_type.name}} - {{dic.product.color}} - {{dic.size.size}} </p>
         {% else %}
         <p>{{dic.product.product_type.name}} - {{dic.product.color}} - {{dic.product.size}} </p>
         {% endif %} {% for stock in dic.stock %}
-        <div>
+        <div style="border:2px solid green">
             <p>{{stock.date}} --- ({{stock.qty}}) </p>
             <a href="{% url 'stock:stockView' stock.id branch.id 'delete' %}"> Delete</a>
             <a href="{% url 'stock:stockView' stock.id branch.id 'edit' %}"> Edit</a>
@@ -60,62 +60,62 @@
     {% endfor %}
 </div>
 
+<div class="tablecontainer">
+    <table>
+        <thead>
+            <th>SN</th>
+            <th>Name</th>
+            <th>Color</th>
+            <th>Size</th>
+            <th>Current Qty</th>
+            <th>Returned Qty</th>
+            <th>Bad Qty</th>
+            <th>Add Stock</th>
+        </thead>
+        <tbody>
+            {% for branch_product in branch.branch_product_branch.all %} {% if branch_product.is_multiple_sized %} {% for multiple_size in branch_product.multiple_size_set.all%}
+            <tr>
+                <td></td>
+                <td>{{branch_product.product.product_type.name}}</td>
+                <td>{{branch_product.product.color}}</td>
+                <td>{{multiple_size.size.size}}</td>
+                <td>{{multiple_size.current_qty}}</td>
+                <td>{{multiple_size.returned_qty}}</td>
+                <td>{{multiple_size.bad_qty}}</td>
+                <td>
+                    <form action="{% url 'stock:stockView' stockId branch.id action %}" method="post">
+                        {% csrf_token %}
+                        <label for="id_qty">Qty:</label>
+                        <input type="number" name="qty" required="" id="id_qty">
+                        <input type="hidden" name="product" value="{{branch_product.product.id}}-{{multiple_size.size.id}}">
+                        <button type="submit"> Add</button>
+                    </form>
 
-<table>
-    <thead>
-        <th>SN</th>
-        <th>Name</th>
-        <th>Color</th>
-        <th>Size</th>
-        <th>Current Qty</th>
-        <th>Returned Qty</th>
-        <th>Bad Qty</th>
-        <th>Add Stock</th>
-    </thead>
-    <tbody>
-        {% for branch_product in branch.branch_product_branch.all %} {% if branch_product.is_multiple_sized %} {% for multiple_size in branch_product.multiple_size_set.all%}
-        <tr>
-            <td></td>
-            <td>{{branch_product.product.product_type.name}}</td>
-            <td>{{branch_product.product.color}}</td>
-            <td>{{multiple_size.size.size}}</td>
-            <td>{{multiple_size.current_qty}}</td>
-            <td>{{multiple_size.returned_qty}}</td>
-            <td>{{multiple_size.bad_qty}}</td>
-            <td>
-                <form action="{% url 'stock:stockView' stockId branch.id action %}" method="post">
-                    {% csrf_token %}
-                    <label for="id_qty">Qty:</label>
-                    <input type="number" name="qty" required="" id="id_qty">
-                    <input type="hidden" name="product" value="{{branch_product.product.id}}-{{multiple_size.size.id}}">
-                    <button type="submit"> Add</button>
-                </form>
+                </td>
+            </tr>
+            {% endfor %} {% else %}
+            <tr>
+                <td></td>
+                <td>{{branch_product.product.product_type.name}}</td>
+                <td>{{branch_product.product.color}}</td>
+                <td>{{branch_product.product.size}}</td>
+                <td>{{branch_product.current_qty}}</td>
+                <td>{{branch_product.returned_qty}}</td>
+                <td>{{branch_product.bad_qty}}</td>
+                <td>
+                    <form action="{% url 'stock:stockView' stockId branch.id action %}" method="post">
+                        {% csrf_token %}
+                        <label for="id_qty">Qty:</label>
+                        <input type="number" name="qty" required="" id="id_qty">
+                        <input type="hidden" name="product" value="{{branch_product.product.id}}">
+                        <button type="submit"> Add</button>
+                    </form>
 
-            </td>
-        </tr>
-        {% endfor %} {% else %}
-        <tr>
-            <td></td>
-            <td>{{branch_product.product.product_type.name}}</td>
-            <td>{{branch_product.product.color}}</td>
-            <td>{{branch_product.product.size}}</td>
-            <td>{{branch_product.current_qty}}</td>
-            <td>{{branch_product.returned_qty}}</td>
-            <td>{{branch_product.bad_qty}}</td>
-            <td>
-                <form action="{% url 'stock:stockView' stockId branch.id action %}" method="post">
-                    {% csrf_token %}
-                    <label for="id_qty">Qty:</label>
-                    <input type="number" name="qty" required="" id="id_qty">
-                    <input type="hidden" name="product" value="{{branch_product.product.id}}">
-                    <button type="submit"> Add</button>
-                </form>
-
-            </td>
-        </tr>
-        <p>{{branch_product}}</p>
-        {% endif %} {% endfor %}
-    </tbody>
-    <tfoot></tfoot>
-</table>
+                </td>
+            </tr>
+            {% endif %} {% endfor %}
+        </tbody>
+        <tfoot></tfoot>
+    </table>
+</div>
 {% endblock main %} {% block javascript %} {% endblock javascript %}

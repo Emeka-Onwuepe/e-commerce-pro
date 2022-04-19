@@ -45,15 +45,6 @@
     background-color: #1e90ff;
 }
 
-table {
-    counter-reset: tableCount;
-}
-
-.counterCell::before {
-    content: counter(tableCount);
-    counter-increment: tableCount;
-}
-
 .product_container {
     margin-top: 30px;
     display: flex;

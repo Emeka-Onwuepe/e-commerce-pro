@@ -1,6 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 from Branch.models import Branch, Branch_Product
 from Product.models import Product, Size
 from Stock.form import StockEditForm
@@ -9,7 +10,7 @@ from Stock.models import Stock
 
 # Create your views here.
 
-  
+@login_required(login_url="user:loginView")
 def stockView(request,stockId,branchId,action):
     
     branch = Branch.objects.get(pk=branchId)
@@ -25,16 +26,20 @@ def stockView(request,stockId,branchId,action):
                 stocks = Stock.objects.filter(product=product.id,
                                               branch = branch.id,
                                               size_instance = size.id)[0:1]
-                dic['stock'] = stocks
-                stock_list.append(dic)
+                if stocks:         
+                    dic['stock'] = stocks
+                    stock_list.append(dic)
                 dic = {}
         else:
             dic["product"] = product
             dic['size'] = None
             stocks = Stock.objects.filter(product=product.id,
                                               branch = branch.id)[0:1]
-            dic['stock'] = stocks
-            stock_list.append(dic)
+            
+            if stocks:
+                dic['stock'] = stocks
+                stock_list.append(dic)  
+            
             dic = {}
             
     

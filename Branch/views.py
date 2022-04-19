@@ -3,9 +3,10 @@ from django.shortcuts import render
 from django.urls import reverse
 from Branch.forms import BranchForm
 from Branch.models import Branch
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
-
+@login_required(login_url="user:loginView")
 def branchView(request,branchId,action):
   
     if branchId != 0:   

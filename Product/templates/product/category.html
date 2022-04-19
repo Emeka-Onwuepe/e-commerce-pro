@@ -1,8 +1,9 @@
 {% extends 'sales/sales.html' %} {% block title %}
 <title>Category</title>{% endblock title %} {% block main %}
-<form action="{% url 'product:categoryView' categoryId action %}" method="post">
+<h1>Category</h1>
+<form style="margin-bottom: 30px;" action="{% url 'product:categoryView' categoryId action %}" method="post">
     {% csrf_token %} {{form}}
-    <button type="submit">
+    <button class="addbutton" type="submit">
         
         {% if action == "add" %}
             ADD
@@ -12,13 +13,16 @@
             
     </button>
 </form>
-<ul>
+<section class="list_items">
 
     {% for category in categories %}
-    <li>{{category.name}}</li>
+    <div class="items center">
+        <li class="description">{{category.name}}</li>
 
-    <a href="{% url 'product:categoryView' category.id 'delete' %}"> Delete</a>
-    <a href="{% url 'product:categoryView' category.id 'edit' %}"> Edit</a> {% endfor %}
+        <a class="delete" href="{% url 'product:categoryView' category.id 'delete' %}"> <button>Delete</button></a>
+        <a href="{% url 'product:categoryView' category.id 'edit' %}"> <button>Edit</button></a>
+    </div>
+    {% endfor %}
 
-</ul>
+</section>
 {% endblock main %}

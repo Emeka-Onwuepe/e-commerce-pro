@@ -2,6 +2,7 @@ const cartflex = document.getElementById("cartflex")
 const grand_total = document.getElementById('grand_total')
 const customerForm = document.forms.customerForm
 let tbody = document.querySelector("#tbody")
+const emptycart = document.querySelector(".emptycart")
 
 // const csrtoken = document.getElementsByName("csrfmiddlewaretoken")[0].value
 
@@ -31,6 +32,15 @@ for (const product of user_cart) {
 }
 grand_total.innerHTML = addComas(Total.toString())
 
+const handleEmptycartPara = () => {
+    if (Total == 0) {
+        emptycart.style.display = "block"
+    } else {
+        emptycart.style.display = "none"
+    }
+}
+handleEmptycartPara()
+
 const manageCustomerDetails = (e, display) => {
     const customerDetails = document.querySelector("#customerDetails")
     if (display) {
@@ -44,6 +54,7 @@ const manageProcessOrderButton = () => {
     const process_order = document.getElementById("process_order")
     if (Total > 0) {
         process_order.style.display = 'block'
+        process_order.style.marginBottom = '30px'
         process_order.addEventListener('click', (e) => manageCustomerDetails(e, true))
     } else {
         process_order.style.display = "none"
@@ -101,6 +112,7 @@ const deleteItem = (e) => {
     Total -= convertToFloat(total.innerHTML)
     manageProcessOrderButton()
     div.remove()
+    handleEmptycartPara()
     const previousCart = getState().user_cart
     const filtered = previousCart.filter(item => item.Id != Id)
     storestate = storeReducer(UpdateCart(filtered, 'user_cart'))
@@ -285,6 +297,7 @@ function payWithPaystack() {
             }
             grand_total.innerHTML = 0
             Total = 0
+            handleEmptycartPara()
             manageCustomerDetails(undefined, false)
         })
         .catch((error) => {
@@ -293,52 +306,58 @@ function payWithPaystack() {
             setState(storeReducer(load(LOADED)))
         });
 
-    var handler = PaystackPop.setup({
+    try {
+        var handler = PaystackPop.setup({
 
-        key: public_key, // Replace with your public key
+            key: public_key, // Replace with your public key
 
-        email: customerForm.elements.email.value,
+            email: customerForm.elements.email.value,
 
-        amount: Total * 100, // the amount value is multiplied by 100 to convert to the lowest currency unit
+            amount: Total * 100, // the amount value is multiplied by 100 to convert to the lowest currency unit
 
-        currency: 'NGN', // Use GHS for Ghana Cedis or USD for US Dollars
+            currency: 'NGN', // Use GHS for Ghana Cedis or USD for US Dollars
 
-        ref: OrderId, // Replace with a reference you generated
+            ref: OrderId, // Replace with a reference you generated
 
-        callback: function(response) {
-            //this happens after the payment is completed successfully
-            var reference = response.reference;
-            // alert('Payment complete! Reference: ' + reference);
+            callback: function(response) {
+                //this happens after the payment is completed successfully
+                var reference = response.reference;
+                // alert('Payment complete! Reference: ' + reference);
 
-            // Make an AJAX call to your server with the reference to verify the transaction
-            const data = {
-                action: "payment",
-                purchase_id: OrderId,
+                // Make an AJAX call to your server with the reference to verify the transaction
+                const data = {
+                    action: "payment",
+                    purchase_id: OrderId,
 
-            }
-            ProcessOrder(data, csrtoken, 'processorder').
-            then(data => {
-                    // wait here
-                    loaderContainer.style.display = 'none'
-                    alert("Payment Completed ")
+                }
+                ProcessOrder(data, csrtoken, 'processorder').
+                then(data => {
+                        // wait here
+                        loaderContainer.style.display = 'none'
+                        alert("Payment Completed ")
 
-                })
-                .catch((error) => {
-                    loaderContainer.style.display = 'none'
-                    alert(error)
-                    setState(storeReducer(load(LOADED)))
-                });
-        },
+                    })
+                    .catch((error) => {
+                        loaderContainer.style.display = 'none'
+                        alert(error)
+                        setState(storeReducer(load(LOADED)))
+                    });
+            },
 
-        onClose: function() {
-            loaderContainer.style.display = 'none'
-            alert('Transaction was not completed, window closed.');
+            onClose: function() {
+                loaderContainer.style.display = 'none'
+                alert('Transaction was not completed, window closed.');
 
-        },
+            },
 
-    });
+        });
 
-    handler.openIframe();
+        handler.openIframe();
+    } catch (error) {
+        error.name == 'ReferenceError' ? alert("Your are offline," +
+            " please go to your order history page to complete your order") : alert(error)
+        loaderContainer.style.display = 'none'
+    }
 
     // if ()
 

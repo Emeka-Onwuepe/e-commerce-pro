@@ -1,13 +1,14 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-
+from django.contrib.auth.decorators import login_required
 from Pre_Order.form import PreOrderForm,PreOrder_Form
 from Pre_Order.models import Pre_Order
 from Product.models import Product
 
 # Create your views here.
 
+@login_required(login_url="user:loginView")
 def preOrderView(request,preOrderId,action):
     
     preorders = None

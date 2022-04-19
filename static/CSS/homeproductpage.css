@@ -21,16 +21,17 @@
 
 .checkboxes {
     display: none;
-    background-color: #B36624;
+    background-color: #8080803d;
     padding: 3px;
-    margin-top: -9px;
+    margin-top: -10px;
     margin-bottom: 10px;
 }
 
 .checkboxes label {
     display: inline-block;
-    padding: 0px;
-    color: white;
+    padding: 3px;
+    margin-bottom: 5px;
+    /* color: white; */
 }
 
 .checkboxes input {
@@ -42,13 +43,13 @@
 }
 
 .checkboxes label:hover {
-    background-color: #1e90ff;
+    background-color: gray;
 }
 
 #product {
     padding: 10px;
-    width: 300px;
-    margin-right: 20px;
+    width: 270px;
+    /* margin-right: 20px; */
     margin-bottom: 20px;
     box-shadow: grey 2px 2px 5px;
 }
@@ -95,12 +96,18 @@
 }
 
 #product img {
-    width: 280px;
+    width: 250px;
     height: auto;
 }
 
 #product button {
-    margin-left: 93.55px;
+    margin-left: 83.55px;
+    margin-top: 7px;
+}
+
+#product p,
+#product h3 {
+    margin-bottom: 7px;
 }
 
 #decisionBox {
@@ -111,7 +118,7 @@
     padding: 15px 20px 20px 20px;
     margin: 50px 35%;
     display: none;
-    /* width: 310px */
+    width: 275px
 }
 
 #decisionBox p {
@@ -137,6 +144,7 @@
     border-radius: 50px;
     padding: 10px;
     height: 50px;
+    width: 270px;
     text-align: center;
 }
 
@@ -163,3 +171,9 @@
 }
 
  */
+
+@media screen and (min-width:750px) {
+    #decisionBox {
+        width: 300px
+    }
+}

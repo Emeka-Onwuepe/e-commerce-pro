@@ -4,6 +4,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login,logout,authenticate
 from django.http import Http404, HttpResponseRedirect, JsonResponse
 from django.contrib.auth import get_user_model
+from django.contrib.auth.decorators import login_required
 
 from User.models import Customer
 from User.serializer import CustomerSerializer
@@ -45,7 +46,7 @@ def logoutView(request):
 #     branch_instance = Branch.objects.get(id=1)
 #     return render(request,"user/dashboard.html",{"userform": UserForm})
 
-
+@login_required(login_url="user:loginView")
 def userView(request,userId,action):
     users = User.objects.all()
     if userId != 0:   
@@ -85,7 +86,7 @@ def userView(request,userId,action):
                   {"form":UserForm(),"userId":0,"action":"add","users":users})
     
     
-    
+@login_required(login_url="user:loginView")   
 def customerView(request,customerId,action):
     
     if request.method == "POST" and action == "get":

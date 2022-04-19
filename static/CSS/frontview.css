@@ -8,7 +8,7 @@ body {
     /* border: 2px solid red; */
     justify-content: space-between;
     align-items: center;
-    padding: 10px 20px;
+    padding: 10px;
     background-color: #FEF2E7;
     position: fixed;
     width: 100%;
@@ -31,8 +31,8 @@ body {
     color: #1C0B01;
     padding: 1px 7px;
     border-radius: 50%;
-    top: 10px;
-    right: 100px;
+    top: 3px;
+    right: 86px;
 }
 
 
@@ -45,26 +45,47 @@ body {
 }
 
 .seperator {
-    margin-top: 100px;
+    margin-top: 75px;
 }
 
 #sideNav {
-    padding: 10px 10px 5px 20px;
-    background-color: #B36624;
-    min-width: 150px;
-    min-height: 300px;
     display: none;
-    /* border: 2px solid green; */
 }
 
-#sideNav a {
+#mobile {
+    padding: 10px 30px 10px 10px;
+    background-color: #B36624;
+    width: 230px;
+    height: 85vh;
     display: block;
-    margin-bottom: 10px;
+    position: fixed;
+    top: 75px;
+    z-index: 9;
+    overflow-y: scroll;
+}
+
+.close {
+    position: absolute;
+    top: 0px;
+    left: 198px;
+    font-size: 35px;
+    display: none;
+    margin-bottom: 0px;
+}
+
+#sideNav a,
+#mobile a {
+    display: block;
     color: whitesmoke;
+    padding: 5px;
+}
+
+#sideNav a:hover,
+#mobile a:hover {
+    background-color: #d3721d;
 }
 
 main {
-    /* border: 2px solid black; */
     padding: 30px 20px 0px 20px;
     flex-grow: 1;
 }
@@ -72,7 +93,6 @@ main {
 .list_items {
     display: flex;
     flex-wrap: wrap;
-    /* border: 2px solid yellow; */
     margin-bottom: 10px;
 }
 
@@ -160,16 +180,23 @@ main {
 }
 
 .mapbox-iframe {
-    border: 5px dotted white;
+    border: 2px dotted white;
     height: 310px;
+    margin: 0px 10px 30px 10px;
 }
 
 .map-frame {
     width: 100%;
+    height: 100%;
 }
 
 .write_ups div {
     margin-bottom: 20px;
+    margin-right: 10px;
+}
+
+#socials {
+    text-align: center;
 }
 
 a {
@@ -177,7 +204,7 @@ a {
 }
 
 .delete button {
-    background-color: red;
+    background-color: darkred;
     color: white;
 }
 
@@ -269,11 +296,49 @@ legend {
     margin: 0px auto;
 }
 
+@media screen and (min-width:360px) {
+    .menu {
+        padding: 10px 20px;
+    }
+    .cart span {
+        top: 10px;
+        right: 100px;
+    }
+    .seperator {
+        margin-top: 90px;
+    }
+    #mobile {
+        top: 90px;
+    }
+}
+
 @media screen and (min-width:481px) {
     .cart span {
         padding: 3px 10px;
     }
     .map-frame {
         width: 400px;
+    }
+    .seperator {
+        margin-top: 99px;
+    }
+    #mobile {
+        top: 99px;
+    }
+}
+
+@media screen and (min-width:1000px) {
+    .seperator {
+        margin-top: 100px;
+    }
+    #sideNav {
+        padding: 10px;
+        background-color: #B36624;
+        width: 210px;
+        /* height: calc(100vh - 474px); */
+        height: 72vh;
+        display: block;
+        overflow-y: scroll;
+        /* border: 2px solid green; */
     }
 }

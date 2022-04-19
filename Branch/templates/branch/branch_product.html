@@ -1,5 +1,6 @@
 {% extends 'sales/sales.html' %} {% block title %}
 <title>Branch Product</title>{% endblock title %} {% block main %}
+<h1>Branch Product</h1>
 <ul>
 
     {% for branchProduct in branchProducts %}
@@ -11,7 +12,7 @@
 </ul>
 <form action="{% url 'branch:branchProductView' branchProductId action %}" method="post">
     {% csrf_token %} {{form}}
-    <button type="submit">
+    <button class="addbutton" type="submit">
         
         {% if action == "add" %}
             ADD

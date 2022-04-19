@@ -1,4 +1,22 @@
 let csrtoken = undefined
+const toggle = document.getElementById("toggle")
+const closeButton = document.getElementById("close")
+
+
+copyRightDate(2020)
+
+function copyRightDate(x) {
+    var d = new Date;
+    var year = d.getFullYear();
+    var footerDate = document.getElementById("footerdate");
+    if (year == x) {
+        footerDate.innerHTML = year;
+    } else {
+        footerDate.innerHTML = x + "-" +
+            year;
+    }
+}
+
 try {
     csrtoken = document.getElementsByName("csrfmiddlewaretoken")[0].value
 } catch (error) {
@@ -17,6 +35,77 @@ function showCheckboxes(e) {
         expanded = false;
     }
 }
+
+let display = false
+const handleToggle = () => {
+    const sideNav = document.querySelector('.sideNav')
+    display = !display
+    if (display) {
+        sideNav.id = 'mobile'
+        closeButton.style.display = 'block'
+    } else {
+        sideNav.id = 'sideNav'
+        closeButton.style.display = 'none'
+    }
+}
+
+toggle.addEventListener("click", handleToggle)
+closeButton.addEventListener("click", handleToggle)
+
+
+const backToTop = () => {
+    let y_axis_offset = window.pageYOffset ||
+        document.documentElement.scrollTop ||
+        document.body.scrollTop;
+    x = "300";
+    let backToTopButton = document.getElementById("backToTop");
+    if (y_axis_offset >= x) {
+        backToTopButton.style.display = "block";
+    } else {
+        backToTopButton.style.display = "none";
+    }
+}
+
+
+let SafariDetector = !/function/.test(window.HTMLElement)
+
+const myResize = () => {
+    const sideNav = document.querySelector('.sideNav')
+        // let x_axis = window.innerWidth;
+    sideNav.id = 'sideNav'
+    closeButton.style.display = 'none'
+    display = false
+
+}
+
+
+// const myResizeSafari = () => {
+//     const sideNav = document.querySelector('.sideNav')
+//     let x_axis = document.documentElement.clientWidth ||
+//         document.body.clientWidth;
+//     if (x_axis <= 999) {
+//         sideNav.id = 'mobile'
+//     } else {
+//         sideNav.id = 'sideNav'
+//     }
+// }
+
+document.getElementsByTagName("BODY")[0].onscroll = function() {
+    backToTop()
+};
+document.getElementsByTagName("BODY")[0].onresize = function() {
+    myResize()
+};
+
+window.addEventListener('scroll', function() {
+    backToTop()
+});
+// window.addEventListener('resize', function() {
+//     myResizeSafari()
+// });
+
+
+
 
 const handleDecisionBox = () => {
     const decisionBox = document.getElementById('decisionBox')
