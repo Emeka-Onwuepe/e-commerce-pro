@@ -170,6 +170,10 @@ main {
     justify-content: space-between;
 }
 
+.customerData p {
+    margin-bottom: 5px;
+}
+
 a {
     color: white;
 }
@@ -261,6 +265,11 @@ th {
     border: 1px solid #FEF2E7;
     text-align: center;
 }
+
+
+/* .errorlist li {
+    color: red;
+} */
 
 
 /* .tablecontainer input {

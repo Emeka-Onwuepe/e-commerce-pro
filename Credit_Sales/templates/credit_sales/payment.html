@@ -1,27 +1,36 @@
 {% extends 'sales/sales.html' %} {% load static %} {% block title %}
 <title>Payment</title>{% endblock title %} {% block main %}
-<div>
-    <a href="{% url 'credit_sales:creditSalesView' customer.id 'view' %}">{{customer.name}}</a>
+<h1>Payment</h1>
+<div style="margin-bottom:20px" class="list_items">
+    <p class="items"><a href="{% url 'credit_sales:creditSalesView' customer.id 'view' %}">{{customer.name}}</a></p>
+    <p class="items"><label style="display: inline;">Amount: </label > <span>&#8358</span> <span class="amount">{{credit_sale.total_amount}}</span></p>
+    <p class="items"><label style="display: inline;">Total Payment: </label> <span>&#8358</span> <span class="amount">{{credit_sale.total_payment}}</span></p>
+    <p class="items"><label style="display: inline;">Balance: </label> <span>&#8358</span> <span class="amount">{{credit_sale.balance}}</span></p>
 </div>
-<ul>
 
-    {% for previous_payment in previous_payments %}
-    <li>{{previous_payment.date}} <span class="amount">{{previous_payment.amount}}</span></li>
-
-    <a href="{% url 'credit_sales:paymentView' previous_payment.id 'delete' %}"> DELETE</a>
-    <a href="{% url 'credit_sales:paymentView' previous_payment.id 'edit' %}"> Edict</a> {% endfor %}
-
-</ul>
 <div>
     <form action="{% url 'credit_sales:paymentView' creditId action %}" method="post">
         {% csrf_token %} {{form}}
-        <button type="submit">{% if action == "add" %}
+        <button type="submit" class="addbutton">{% if action == "add" %}
             ADD
         {% else %}
             UPDATE
         {% endif %}</button>
     </form>
 </div>
+
+<section class="list_items">
+
+    {% for previous_payment in previous_payments %}
+    <div class="items center">
+        <p class="description">{{previous_payment.date}} - &#8358<span class="amount">{{previous_payment.amount}}</span></p>
+
+        <a class="delete" href="{% url 'credit_sales:paymentView' previous_payment.id 'delete' %}"><button>Delete</button></a>
+        <a href="{% url 'credit_sales:paymentView' previous_payment.id 'edit' %}"> <button>Edit</button></a>
+    </div>
+    {% endfor %}
+
+</section>
 {% endblock main %} {% block javascript %}
 <script src="{% static 'javascript/state.js' %}"></script>
 <script src="{% static 'javascript/creditsales.js' %}"></script>

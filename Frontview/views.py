@@ -102,8 +102,9 @@ def processPaymentView(request):
 def customerOrderHistoryView(request):
     if request.method == "POST":
         phone_number = request.POST["phone_number"]
-        sales = Sales.objects.filter(customer__phone_number = phone_number)
-        
+        sales=[]
+        if phone_number:
+            sales = Sales.objects.filter(customer__phone_number = phone_number)
         return render(request,"frontview/orderhistory.html",{"orders":sales,"public_key":settings.PAYSTACT_PUBLIC_KEY})      
     return HttpResponseRedirect(reverse('frontview:cartView'))
         

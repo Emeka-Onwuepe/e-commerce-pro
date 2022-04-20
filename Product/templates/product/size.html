@@ -1,17 +1,11 @@
 {% extends 'sales/sales.html' %} {% block title %}
 <title>Sizes</title>{% endblock title %} {% block main %}
-<ul>
 
-    {% for size in sizes %}
-    <li>{{size}}</li>
+<h1>Sizes</h1>
 
-    <a href="{% url 'product:sizeView' size.id 'delete' %}"> DELETE</a>
-    <a href="{% url 'product:sizeView' size.id 'edit' %}"> Edict</a> {% endfor %}
-
-</ul>
 <form action="{% url 'product:sizeView' sizeId action %}" method="post">
     {% csrf_token %} {{form}}
-    <button type="submit">
+    <button type="submit" class='addbutton'>
         
         {% if action == "add" %}
             ADD
@@ -22,5 +16,15 @@
     </button>
 </form>
 
+<section class="list_items">
+    {% for size in sizes %}
+    <div class="items center">
+        <p class="description">{{size}}</p class="description">
+
+        <a class="delete" href="{% url 'product:sizeView' size.id 'delete' %}"><button>Delete</button></a>
+        <a href="{% url 'product:sizeView' size.id 'edit' %}"><button>Edit</button></a>
+    </div>
+    {% endfor %}
+</section>
 
 {% endblock main %}

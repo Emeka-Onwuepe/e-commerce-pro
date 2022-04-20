@@ -18,14 +18,14 @@
     {% for branch in branches %}
     <div class="items">
         <div class="innerItem">
-            <p>{{branch.name}}</p>
-            <a class="delete" href="{% url 'branch:branchView' branch.id 'delete' %}">
+            <p style="margin-right:20px;">{{branch.name}}</p>
+            {% comment %} <a class="delete" href="{% url 'branch:branchView' branch.id 'delete' %}">
                 <button>
                     Delete
                     </button>
-            </a>
+            </a> {% endcomment %}
             <a href="{% url 'branch:branchView' branch.id 'edit' %}">
-                <button class="editButton">
+                <button >
                     Edit
                     </button>
             </a>

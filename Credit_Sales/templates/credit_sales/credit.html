@@ -1,19 +1,29 @@
  {% extends 'sales/sales.html' %} {% load static %} {% block title %}
 <title>Credit</title>{% endblock title %} {% block main %}
+<h1>Credit Sales</h1>
 <form action="{% url 'credit_sales:creditSalesView' 0 'view' %}" method="post">
     {% csrf_token %}
     <label for="phone_number">Phone Number</label>
     <input type="text" name="phone_number" id="phone_number">
-    <button type="submit"> Get Credit Details </button>
+    <button type="submit" class="addbutton"> Get Credit Details </button>
 </form>
 
 <div>
-    <p>{{credits.0.customer}}</p>
+    <p style="margin:10px 0px">{{credits.0.customer}}</p>
 </div>
-{% if settled %}
-<a href="{% url 'credit_sales:creditSalesView' customerid 'view' %}">Debts</a> {% endif %} {% if not settled and customerid != 0 %}
 
-<a href="{% url 'credit_sales:creditSalesView' customerid 'settled' %}">Settled Payments</a> {% endif %}
+
+<div class="direction" style="margin: 0px 0px 10px 0px">
+    {% if settled %}
+    <a href="{% url 'credit_sales:creditSalesView' customerid 'view' %}">View Debts</a>
+    <h3>Settled Debts</h3>
+    {% endif %} {% if not settled and customerid != 0 %}
+    <a href="{% url 'credit_sales:creditSalesView' customerid 'settled' %}">View Settled Payments</a>
+    <h3>Debits</h3>
+    {% endif %}
+
+</div>
+
 <div>
 
     {% if message %}
@@ -25,7 +35,7 @@
 {% if credits %}
 
 
-<div>
+<div id="salesList" style="margin: 0px auto;">
     <table>
         <thead>
             <th>SN</th>
@@ -39,7 +49,7 @@
         <tbody>
             {% for item in credits %}
             <tr>
-                <td></td>
+                <td class="counterCell"></td>
                 <td>{{item.date}}</td>
                 <td>{{item.branch}}</td>
                 <td><a href="{% url 'sales:saleView' item.purchase_id 'credit' %}">
@@ -55,8 +65,7 @@
         <tfoot></tfoot>
     </table>
 </div>
-{% endif %} {% endblock main %}
-{% block javascript %}
+{% endif %} {% endblock main %} {% block javascript %}
 <script src="{% static 'javascript/state.js' %}"></script>
 <script src="{% static 'javascript/creditsales.js' %}"></script>
 {% endblock javascript %}

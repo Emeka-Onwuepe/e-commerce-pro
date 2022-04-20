@@ -1,4 +1,4 @@
-{% extends 'sales/sales.html' %} {% block title %}
+{% extends 'sales/sales.html' %} {% load static %} {% block title %}
 <title>Stock</title>{% endblock title %} {% block main %}
 <h3>{{branch}}</h3>
 
@@ -45,9 +45,9 @@
     <div style="border:2px solid blue">
 
         {% if dic.size %}
-        <p>{{dic.product.product_type.name}} - {{dic.product.color}} - {{dic.size.size}} </p>
+        <p>{{dic.product.product_type.category}} - {{dic.product.product_type.name}} - {{dic.product.color}} - {{dic.size.size}} </p>
         {% else %}
-        <p>{{dic.product.product_type.name}} - {{dic.product.color}} - {{dic.product.size}} </p>
+        <p>{{dic.product.product_type.category}} - {{dic.product.product_type.name}} - {{dic.product.color}} - {{dic.product.size}} </p>
         {% endif %} {% for stock in dic.stock %}
         <div style="border:2px solid green">
             <p>{{stock.date}} --- ({{stock.qty}}) </p>
@@ -61,9 +61,10 @@
 </div>
 
 <div class="tablecontainer">
-    <table>
+    <table id="stock-table">
         <thead>
             <th>SN</th>
+            <th>Category</th>
             <th>Name</th>
             <th>Color</th>
             <th>Size</th>
@@ -75,7 +76,8 @@
         <tbody>
             {% for branch_product in branch.branch_product_branch.all %} {% if branch_product.is_multiple_sized %} {% for multiple_size in branch_product.multiple_size_set.all%}
             <tr>
-                <td></td>
+                <td class="sn"></td>
+                <td>{{branch_product.product.product_type.category}}</td>
                 <td>{{branch_product.product.product_type.name}}</td>
                 <td>{{branch_product.product.color}}</td>
                 <td>{{multiple_size.size.size}}</td>
@@ -95,7 +97,8 @@
             </tr>
             {% endfor %} {% else %}
             <tr>
-                <td></td>
+                <td class="sn"></td>
+                <td>{{branch_product.product.product_type.category}}</td>
                 <td>{{branch_product.product.product_type.name}}</td>
                 <td>{{branch_product.product.color}}</td>
                 <td>{{branch_product.product.size}}</td>
@@ -118,4 +121,6 @@
         <tfoot></tfoot>
     </table>
 </div>
-{% endblock main %} {% block javascript %} {% endblock javascript %}
+{% endblock main %} {% block javascript %}
+<script src="{% static 'javascript/stock.js' %}"></script>
+{% endblock javascript %}

@@ -12,10 +12,12 @@ from Product.models import Product
 def preOrderView(request,preOrderId,action):
     
     preorders = None
+    archiveView = False
     if action == "view":
         preorders = Pre_Order.objects.filter(archive=False)
     elif action == "getarchive":
         preorders = Pre_Order.objects.filter(archive=True)
+        archiveView = True
     products = Product.objects.all()
            
     if preOrderId != 0:   
@@ -54,13 +56,13 @@ def preOrderView(request,preOrderId,action):
                 return render(request,"Pre_Order/preOrder.html",
                   {"form":form,"preOrderId":pre_order_instance.id,"action":"edit",
                    "preorders":preorders,'products':products,
-                   'instance':pre_order_instance})
+                   'instance':pre_order_instance,'archiveView':archiveView})
         else:
             return render(request,"Pre_Order/preOrder.html",
                   {"form":PreOrder_Form(instance=pre_order_instance),
                    "preOrderId":pre_order_instance.id,"action":"edit",
                    "preorders":preorders,'products':products,
-                   'instance':pre_order_instance})
+                   'instance':pre_order_instance,'archiveView':archiveView})
     
     if action == "delete":
         pre_order_instance.delete()
@@ -70,4 +72,4 @@ def preOrderView(request,preOrderId,action):
     return render(request,"Pre_Order/preOrder.html",
                   {"form":PreOrder_Form(),"preOrderId":0,
                    "action":"add","preorders":preorders,
-                   'products':products})
+                   'products':products,'archiveView':archiveView})

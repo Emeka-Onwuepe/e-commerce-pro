@@ -16,11 +16,13 @@
 <section class="list_items">
 
     {% for category in categories %}
-    <div class="items center">
-        <li class="description">{{category.name}}</li>
+    <div class="items ">
+        <div class="innerItem">
+        <p class="description" style="margin-right:20px;">{{category.name}}</p>
 
-        <a class="delete" href="{% url 'product:categoryView' category.id 'delete' %}"> <button>Delete</button></a>
+        {% comment %} <a class="delete" href="{% url 'product:categoryView' category.id 'delete' %}"> <button>Delete</button></a> {% endcomment %}
         <a href="{% url 'product:categoryView' category.id 'edit' %}"> <button>Edit</button></a>
+        </div>
     </div>
     {% endfor %}
 

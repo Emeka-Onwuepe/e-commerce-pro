@@ -1,17 +1,9 @@
 {% extends 'sales/sales.html' %} {% block title %}
 <title>Product Type</title>{% endblock title %} {% block main %}
-<ul>
-
-    {% for productType in productTypes %}
-    <li>{{productType}}</li>
-
-    <a href="{% url 'product:productTypeView' productType.id 'delete' %}"> DELETE</a>
-    <a href="{% url 'product:productTypeView' productType.id 'edit' %}"> Edict</a> {% endfor %}
-
-</ul>
+<h1>Product Type</h1>
 <form action="{% url 'product:productTypeView' productTypeId action %}" method="post">
     {% csrf_token %} {{form}}
-    <button type="submit">
+    <button type="submit" class="addbutton">
         
         {% if action == "add" %}
             ADD
@@ -21,4 +13,18 @@
             
     </button>
 </form>
+
+<section class="list_items">
+    {% for productType in productTypes %}
+    <div class="items ">
+        <div class="innerItem">
+        <p class="description" style="margin-right:20px;">{{productType}}</p>
+
+        {% comment %} <a class="delete" href="{% url 'product:productTypeView' productType.id 'delete' %}"><button>Delete</button></a> {% endcomment %}
+        <a href="{% url 'product:productTypeView' productType.id 'edit' %}"><button>Edit</button></a>
+        </div>
+    </div>
+    {% endfor %}
+
+</section>
 {% endblock main %}

@@ -199,6 +199,31 @@ main {
     text-align: center;
 }
 
+.customerData p {
+    margin-bottom: 5px;
+}
+
+#salesList input {
+    width: 110px;
+}
+
+#salesList {
+    width: calc(100vw - 57px);
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    display: contents;
+}
+
+td,
+th {
+    padding: 5px;
+    border: 1px solid black;
+    text-align: center;
+}
+
 a {
     color: #ffffff;
 }
@@ -340,5 +365,9 @@ legend {
         display: block;
         overflow-y: scroll;
         /* border: 2px solid green; */
+    }
+    #salesList {
+        width: unset;
+        overflow-x: auto;
     }
 }

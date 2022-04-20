@@ -1,4 +1,5 @@
 from urllib import request
+from coreapi import Object
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
@@ -63,6 +64,11 @@ def paymentView(request,creditId,action):
     customer = None
     paymentId= None
     payment_instance = None
+    credit_sale = None
+    try:
+        credit_sale = Credit_Sale.objects.get(id= creditId)
+    except Credit_Sale.DoesNotExist:
+        pass
     
     if action =="add" or action =='view':
         customer = Customer.objects.get(credit_sale_customer__id = creditId)
@@ -98,12 +104,14 @@ def paymentView(request,creditId,action):
             else:
                 return render(request,"credit_sales/payment.html",
                   {"form":form,"creditId":payment_instance.id,
-                   'customer':customer,"previous_payments":previous_payments})
+                   'customer':customer,"previous_payments":previous_payments,
+                   "credit_sale":credit_sale})
         else:
             return render(request,"credit_sales/payment.html",
                   {"form":PaymentForm(instance=payment_instance),
                    "creditId":payment_instance.id,"action":"edit",
-                   'customer':customer,"previous_payments":previous_payments})
+                   'customer':customer,"previous_payments":previous_payments,
+                   "credit_sale":credit_sale})
     
     if action == "delete":
         payment_instance.delete()
@@ -113,5 +121,5 @@ def paymentView(request,creditId,action):
     return render(request,"credit_sales/payment.html",
                       {"previous_payments":previous_payments,
                        "form":PaymentForm(),'creditId':creditId,"action":"add",
-                       'customer':customer})
+                       'customer':customer,"credit_sale":credit_sale})
         

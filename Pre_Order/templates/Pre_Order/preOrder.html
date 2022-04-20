@@ -1,18 +1,7 @@
 {% extends 'sales/sales.html' %} {% block title %}
 <title>Pre Order</title>{% endblock title %} {% block main %}
-<ul>
-    <a href="{% url 'preOrder:preOrderView' 0 'getarchive' %}"> Archives</a> {% for preOrder in preorders %}
-    <li>{{preOrder}}</li>
+<h1>Pre-Order</h1>
 
-    {% if not preOrder.archive %}
-    <a href="{% url 'preOrder:preOrderView' preOrder.id 'archive' %}"> Archive</a> {% endif %}
-
-
-    <a href="{% url 'preOrder:preOrderView' preOrder.id 'delete' %}"> Delete</a> {% if not preOrder.archive %}
-    <a href="{% url 'preOrder:preOrderView' preOrder.id 'edit' %}"> Edit</a> {% endif %} {% endfor %}
-
-
-</ul>
 <form action="{% url 'preOrder:preOrderView' preOrderId action %}" method="post">
     {% csrf_token %} {% if action == "add" %}
     <label for="id_product">Product:</label>
@@ -46,4 +35,31 @@
             
     </button>
 </form>
+
+{% if archiveView %}
+<p style="margin-top: 30px;"><a href="{% url 'preOrder:preOrderView' 0 'view' %}">Pre Orders</a></p>
+<h3 class="reduceMarginBottom">Archives</h3>
+{% else %}
+<p style="margin-top: 30px;"><a href="{% url 'preOrder:preOrderView' 0 'getarchive' %}"> Archives</a></p>
+<h3 class="reduceMarginBottom">Pre Orders</h3>
+{% endif %}
+
+
+<section class="list_items">
+
+    {% for preOrder in preorders %}
+    <div class="items center">
+        {% if preOrder.size_instance %}
+        <p class="description">{{preOrder.customer}} - {{preOrder.product.product_type}} -{{preOrder.product.color}} - {{preOrder.size_instance.size}} - ({{preOrder.date}}) - {{preOrder.qty}}</p>
+        {% else %}
+        <p class="description">{{preOrder.customer}} - {{preOrder.product}} - ({{preOrder.date}}) - {{preOrder.qty}}</p>
+        {% endif %} {% if not preOrder.archive %}
+        <a href="{% url 'preOrder:preOrderView' preOrder.id 'archive' %}"><button>Archive</button></a> {% endif %}
+        <a class="delete" href="{% url 'preOrder:preOrderView' preOrder.id 'delete' %}"><button> Delete</button></a> {% if not preOrder.archive %}
+        <a href="{% url 'preOrder:preOrderView' preOrder.id 'edit' %}"><button> Edit</button></a> {% endif %}
+    </div>
+    {% endfor %}
+
+
+</section>
 {% endblock main %}

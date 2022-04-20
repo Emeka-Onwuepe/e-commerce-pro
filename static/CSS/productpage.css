@@ -41,6 +41,38 @@
     height: 20px;
 }
 
+#id_image {
+    padding: unset;
+}
+
+#id_multipleSIzes input,
+#id_branches input {
+    display: inline-block;
+    width: 20px;
+    margin: 0px;
+    height: 18px;
+}
+
+#id_multipleSIzes label,
+#id_branches label {
+    padding: 0px;
+    margin-bottom: 10px;
+    display: block;
+}
+
+label[for=id_publish] {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+#id_publish {
+    display: inline;
+    padding: 0px;
+    margin: 0px;
+    height: 18px;
+    width: 20px;
+}
+
 .checkboxes label:hover {
     background-color: #1e90ff;
 }

@@ -1,11 +1,6 @@
 {% extends 'sales/sales.html' %} {% load static %} {% block title %}
-<title>Returned Product</title>{% endblock title %} {% block main %} {% for branch in branches %}
-<p>{{branch}}</p>
-{% for returnedProduct in branch.returned_product_branch.all %}
-<p>{{returnedProduct.branch}} - {{returnedProduct.product}} - &#8358 <span class="amount">{{returnedProduct.total_price}}</span></p>
-<a href="{% url 'product:returnedProductView' returnedProduct.id 'delete' %}"> DELETE</a>
-<a href="{% url 'product:returnedProductView' returnedProduct.id 'edit' %}"> Edit</a> {% endfor %} {% endfor %}
-
+<title>Returned Product</title>{% endblock title %} {% block main %}
+<h1>Returned Products</h1>
 
 <form name="Form" action="{% url 'product:returnedProductView' returnedProductId action %}" method="post">
     {% csrf_token %} {% if action == "add" %}
@@ -43,7 +38,7 @@
     <input type="date" name="date_of_purchase" required="" id="id_date_of_purchase" value="{{instance.date_of_purchase|date:'Y-m-d'}}">
     <label for="id_date_of_return">Date_of_return: </label>
     <input type="date" name="date_of_return" required="" id="id_date_of_return" value="{{instance.date_of_return|date:'Y-m-d'}}">
-    <button id="button" type="submit">
+    <button id="button" class='addbutton' type="submit">
         
         {% if action == "add" %}
             ADD
@@ -53,6 +48,24 @@
             
     </button>
 </form>
-{% endblock main %} {% block javascript %}
+
+{% for branch in branches %}
+<h3 class="reduceMarginBottom">{{branch}}</h3>
+<section class="list_items">
+    {% for returnedProduct in branch.returned_product_branch.all %}
+    <div class="items center">
+        {% if returnedProduct.size_instance %}
+        <p class="description">{{returnedProduct.branch}} - {{returnedProduct.product.product_type}} - {{returnedProduct.product.color}} - {{returnedProduct.size_instance.size}} - ({{returnedProduct.date_of_return|date:'Y-m-d'}}) - {{returnedProduct.qty}} - &#8358 <span class="amount">{{returnedProduct.total_price}}</span>
+        </p>
+        {% else %}
+        <p class="description">{{returnedProduct.branch}} - {{returnedProduct.product}} - ({{returnedProduct.date_of_return|date:'Y-m-d'}}) - {{returnedProduct.qty}} - &#8358
+            <span class="amount">{{returnedProduct.total_price}}</span></p>
+        {% endif %}
+        <a class="delete" href="{% url 'product:returnedProductView' returnedProduct.id 'delete' %}"><button>Delete</button></a>
+        <a href="{% url 'product:returnedProductView' returnedProduct.id 'edit' %}"><button>Edit</button></a>
+    </div>
+    {% endfor %}
+</section>
+{% endfor %} {% endblock main %} {% block javascript %}
 <script src="{% static 'javascript/returnedProduct.js' %}"></script>
 {% endblock javascript %}

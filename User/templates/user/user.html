@@ -1,14 +1,10 @@
 {% extends 'sales/sales.html' %} {% block title %}
-<title>User</title>{% endblock title %} {% block main %} {% for user in users %} {% if not user.is_super_admin %}
-<p>{{user}}</p>
-
-<a href="{% url 'user:userView' user.id 'delete' %}"> DELETE</a>
-<a href="{% url 'user:userView' user.id 'edit' %}"> Edict</a> {% endif %} {% endfor %}
-
+<title>User</title>{% endblock title %} {% block main %}
+<h1>Users</h1>
 
 <form action="{% url 'user:userView' userId action %}" method="post">
     {% csrf_token %} {{form}}
-    <button type="submit">
+    <button type="submit" style="display:block; margin:10px 0px 0px 0px" class='addbutton'>
             
             {% if action == "add" %}
                 ADD
@@ -18,5 +14,15 @@
                 
         </button>
 </form>
-{% endblock main %} {% block javascript %}
-{% endblock javascript %}
+
+<section class="list_items">
+    {% for user in users %} {% if not user.is_super_admin %}
+    <div class="items center">
+        <p class="description">{{user}}</p>
+        <a class="delete" href="{% url 'user:userView' user.id 'delete' %}"><button>Delete</button></a>
+        <a href="{% url 'user:userView' user.id 'edit' %}"><button>Edit</button></a>
+    </div>
+    {% endif %} {% endfor %}
+</section>
+
+{% endblock main %} {% block javascript %} {% endblock javascript %}

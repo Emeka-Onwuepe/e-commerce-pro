@@ -90,14 +90,13 @@
                 {% endif %}
             </aside>
             <main>
-                {% block main %}
-                
                 {% if not request.user.is_anonymous  %}
                 <div class="user2">
                     {{request.user}}
                 </div>
                 {% endif %}
-
+                {% block main %}
+    
                 <div id="flex_container">
                     <form action="{% url 'sales:salesView' %}" method="post">
                         {% csrf_token %}

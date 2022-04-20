@@ -76,8 +76,15 @@
 <section class="list_items">
     {% for badProduct in branch.bad_product_branch.all|slice:":10" %}
     <div class="items center">
-
-        <p class="description">{{badProduct.product}} - {{badProduct.qty}} - ({{badProduct.date}})</p>
+        {% if badProduct.size_instance %}
+        <p class="description">{{badProduct.branch}} - 
+            {{badProduct.product.product_type}} -{{badProduct.product.color}} - 
+            {{badProduct.size_instance.size}} - ({{badProduct.date}}) -
+             {{badProduct.qty}}</p>
+        {% else %}
+        <p class="description">{{badProduct.branch}} - {{badProduct.product}} - 
+            ({{badProduct.date}}) - {{badProduct.qty}}</p>
+        {% endif %}
         <a class="delete" href="{% url 'product:badProductView' badProduct.id 'delete' %}"><button> Delete</button></a>
         <a href="{% url 'product:badProductView' badProduct.id 'edit' %}"> <button> Edit</button></a>
 

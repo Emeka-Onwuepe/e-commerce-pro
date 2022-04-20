@@ -17,25 +17,50 @@ def stockView(request,stockId,branchId,action):
     
     stock_list = []
     
-    for product in branch.products_branches.all():
-        dic = {}
-        if product.size:
-            for size in product.multipleSIzes.all():
-                dic["product"] = product
-                dic['size'] = size
-                stocks = Stock.objects.filter(product=product.id,
-                                              branch = branch.id,
-                                              size_instance = size.id)[0:1]
+    # for product in branch.products_branches.all():
+       
+    #     dic = {}
+        # if product.size == '0':
+        #     for size in product.multipleSIzes.all():
+        #         dic["product"] = product
+        #         dic['size'] = size
+        #         stocks = Stock.objects.filter(product=product.id,
+        #                                       branch = branch.id,
+        #                                       size_instance = size.id)[0:1]
+        #         if stocks:         
+        #             dic['stock'] = stocks
+        #             stock_list.append(dic)
+        #         dic = {}
+        # else:
+        #     dic["product"] = product
+        #     dic['size'] = None
+        #     stocks = Stock.objects.filter(product=product.id,
+        #                                       branch = branch.id)[0:1]
+        #     if stocks:
+        #         dic['stock'] = stocks
+        #         stock_list.append(dic)  
+            
+        #     dic = {}
+        
+    for branch_product in branch.branch_product_branch.all():
+           
+        dic = {}    
+        if branch_product.is_multiple_sized:
+            for multiple_size in branch_product.multiple_size_set.all():
+                dic["product"] = branch_product.product
+                dic['size'] = multiple_size.size
+                stocks = Stock.objects.filter(product= branch_product.product.id,
+                                              branch = branch_product.branch.id,
+                                              size_instance = multiple_size.size.id)[0:1]
                 if stocks:         
                     dic['stock'] = stocks
                     stock_list.append(dic)
                 dic = {}
         else:
-            dic["product"] = product
+            dic["product"] =branch_product.product
             dic['size'] = None
-            stocks = Stock.objects.filter(product=product.id,
-                                              branch = branch.id)[0:1]
-            
+            stocks = Stock.objects.filter(product= branch_product.product.id,
+                                              branch = branch_product.branch.id)[0:1]
             if stocks:
                 dic['stock'] = stocks
                 stock_list.append(dic)  

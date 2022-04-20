@@ -137,6 +137,7 @@ const updateUserState = (e) => {
     customer[target.name] = target.value
     let storestate = storeReducer(addCustomer(customer))
     setState(storestate)
+    showOrderHistoryButton(storestate.customer.phone_number)
 
 }
 
