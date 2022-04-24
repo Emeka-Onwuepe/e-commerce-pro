@@ -1,8 +1,89 @@
 {% extends 'sales/sales.html' %} {% block title %}
 <title>Product</title>{% endblock title %} {% block main %}
 <h1>Product</h1>
+
 <form action="{% url 'product:productView' productId action %}" enctype="multipart/form-data" method="post">
-    {% csrf_token %} {{form}}
+    {% csrf_token %}
+
+    <label for="id_product_type">Product type:</label>
+    <select name="product_type" required="" id="id_product_type">
+  
+  {% if product_instance %}
+  <option value="{{product_instance.product_type_id}}">{{product_instance.product_type}}</option>
+  {% else %}
+  <option value="" selected="">---------</option>
+  {% for product_type  in product_types %}
+  <option value="{{product_type.id}}">{{product_type}}</option>
+  
+  {% endfor %}  
+  {% endif %}
+</select> {% if product_instance %} {% if product_instance.size != '0' %}
+    <label for="id_size">Size:</label>
+    <input type="text" name="size" value='{{product_instance.size}}' maxlength="150" id="id_size"> {% endif %} {% else %}
+    <label for="id_size">Size:</label>
+    <input type="text" name="size" maxlength="150" id="id_size"> {% endif %}
+
+    <label for="id_description">Description:</label>
+    <textarea name="description" cols="40" rows="10" maxlength="150" required="" id="id_description">{{product_instance.description}}</textarea>
+
+
+    <div id="id_multipleSIzes">
+        {% if product_instance %} {% if product_instance.multipleSIzes.all %}
+        <label style="margin: 0px;">Multiplesizes:</label> {% for size in product_instance.multipleSIzes.all %}
+        <div>
+            <input type="checkbox" checked name="multipleSIzes" value="{{size.id}}" id="id_multipleSIzes_{{forloop.counter}}">
+            <label for="_{{forloop.counter}}">{{size}}</label>
+        </div>
+        {% endfor %} {% for size in not_selected %}
+        <div>
+            <input type="checkbox" name="multipleSIzes" value="{{size.id}}" id="id_multipleSIzes_{{forloop.counter}}">
+            <label for="_{{forloop.counter}}">{{size}}</label>
+        </div>
+        {% endfor %} {% endif %} {% else %}
+        <label style="margin: 0px;">Multiplesizes:</label> {% for size in sizes %}
+        <div>
+            <input type="checkbox" name="multipleSIzes" value="{{size.id}}" id="id_multipleSIzes_{{forloop.counter}}">
+            <label for="_{{forloop.counter}}">{{size}}</label>
+        </div>
+        {% endfor %} {% endif %}
+    </div>
+    <label for="id_color">Color:</label>
+    <input type="text" name="color" value="{{product_instance.color}}" maxlength="200" required="" id="id_color">
+    <label for="id_image">Image:</label> {% if product_instance.image and product_instance.image != "image" %}
+    <p style="margin: 5px 0px;">Currently: <a href="{{product_instance.image.url}}">{{product_instance.image}}</a></p>
+
+    {% endif %}
+
+    <input type="file" name="image" accept="image/*" id="id_image"> {% if product_instance %} {% if product_instance.price > 0 %}
+    <label style="margin: 0px;" for="id_price">Price:</label>
+    <input type="number" name="price" value="{{product_instance.price}}" step="0.01" id="id_price"> {% endif %} {% else %}
+    <label style="margin: 0px;" for="id_price">Price:</label>
+    <input type="number" name="price" value="0" step="0.01" id="id_price"> {% endif %} {% if product_instance.publish %}
+    <input type="checkbox" name="publish" id="id_publish" checked> {% else %}
+    <input type="checkbox" name="publish" id="id_publish"> {% endif %}
+    <label for="id_publish">Publish:</label>
+    <label>Branches:</label> {% if product_instance %}
+    <div id="id_branches">
+        {% for branch in product_instance.branches.all %}
+        <div>
+            <input type="checkbox" checked name="branches" value="{{branch.id}}" id="id_branches_{{forloop.counter}}">
+            <label for="id_branches{{forloop.counter}}">{{branch}}</label>
+        </div> {% endfor %} {% for branch in not_selected_branch %}
+        <div>
+            <input type="checkbox" name="branches" value="{{branch.id}}" id="id_branches_{{forloop.counter}}">
+            <label for="id_branches{{forloop.counter}}">{{branch}}</label>
+        </div> {% endfor %}
+    </div>
+    {% else %}
+    <div id="id_branches">
+        {% for branch in branches %}
+        <div>
+            <input type="checkbox" name="branches" value="{{branch.id}}" id="id_branches_{{forloop.counter}}">
+            <label for="id_branches{{forloop.counter}}">{{branch}}</label>
+        </div> {% endfor %}
+    </div>
+    {% endif %}
+
     <button type="submit" class='addbutton'>
         
         {% if action == "add" %}
@@ -13,6 +94,11 @@
             
     </button>
 </form>
+
+<form action="/product/product/0/add" enctype="multipart/form-data" method="post">
+
+</form>
+
 
 
 <section class="list_items">

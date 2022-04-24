@@ -2,7 +2,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-from Branch.models import Branch
+from Branch.models import Branch, Multiple_Size
 from Product.form import  BadProductForm, CategoryForm, ProductForm, ProductTypeForm, ReturnedProductForm, SizeForm
 from Branch.helper import addBranchProduct
 from Product.models import Bad_Product, Category, Product, Product_Type, Returned_Product, Size
@@ -122,7 +122,7 @@ def sizeView(request,sizeId,action):
                   {"form":form,"sizeId":size_instance.id,"action":"edit",'sizes':sizes})
         else:
             return render(request,"product/size.html",
-                  {"form":SizeForm(instance=size_instance),
+                  {"instance":size_instance,
                    "sizeId":size_instance.id,"action":"edit",'sizes':sizes})
     
     if action == "delete":
@@ -136,8 +136,9 @@ def sizeView(request,sizeId,action):
 
 @login_required(login_url="user:loginView")
 def productView(request,productId,action):
-    print(request)
     products = Product.objects.all()
+    sizes = Size.objects.all()
+    product_types = Product_Type.objects.all()
     
     if productId != 0:   
         product_instance = Product.objects.get(id=productId)
@@ -149,16 +150,26 @@ def productView(request,productId,action):
             return HttpResponseRedirect(reverse('product:productView',
             kwargs={"action":"view","productId":0}))
         else:
+            print(form)
             return render(request,"product/product.html",
-                  {"form":form,"productId":0,"action":"view"})  
+                  {"form":form,"productId":0,"action":"add",
+                   "sizes":sizes,'product_types':product_types})  
             
     if action == "edit":
+        is_multiple = False
+        multiple = product_instance.multipleSIzes.all()
+        not_selected_branch = Branch.objects.exclude(id__in = product_instance.branches.all() )
+        not_selected = None
+        if multiple:
+            is_multiple = True
+            not_selected = sizes.exclude(id__in = product_instance.multipleSIzes.all())
+            
         if request.method == "POST":
             form = ProductForm(data= request.POST,files=request.FILES,instance=product_instance)
             if form.is_valid():
                 multipleSIzes = form.cleaned_data["multipleSIzes"]
                 if len(multipleSIzes) > 0:
-                    form.cleaned_data['size'] = 0
+                    form.cleaned_data['size'] = "0"
                     form.cleaned_data['price'] = 0   
                 saved = form.save()
                 addBranchProduct(saved)
@@ -166,11 +177,16 @@ def productView(request,productId,action):
                         kwargs={"action":"view","productId":0}))
             else:
                 return render(request,"product/product.html",
-                  {"form":form,"productId":product_instance.id,"action":"edit",'products':products})
+                  {"form":form,"productId":product_instance.id,
+                   "action":"edit",'products':products})
         else:
             return render(request,"product/product.html",
-                  {"form":ProductForm(instance=product_instance),
-                   "productId":product_instance.id,"action":"edit",'products':products})
+                  {"product_instance":product_instance,
+                   "productId":product_instance.id,"action":"edit",
+                   'products':products,"sizes":sizes,
+                   'product_types':product_types,
+                   "not_selected":not_selected,
+                   'not_selected_branch':not_selected_branch})
     
     if action == "delete":
         product_instance.delete()
@@ -178,7 +194,10 @@ def productView(request,productId,action):
             kwargs={"action":"view","productId":0}))
                  
     return render(request,"product/product.html",
-                  {"form":ProductForm(),"productId":0, 'products':products,"action":"add"})
+                  {"productId":0, 
+                   'products':products,"action":"add",
+                   "sizes":sizes,
+                   'product_types':product_types})
 
 
 @login_required(login_url="user:loginView")

@@ -4,7 +4,18 @@
 <h1>Sizes</h1>
 
 <form action="{% url 'product:sizeView' sizeId action %}" method="post">
-    {% csrf_token %} {{form}}
+    {% csrf_token %} 
+    <label for="id_size">Size:</label>
+    
+    {% if instance %}
+    <input type="text" name="size"  value="{{instance.size}}" maxlength="150" required="" id="id_size" readonly>
+    {% else %}
+    <input type="text" name="size"  value="{{instance.size}}" maxlength="150" required="" id="id_size">
+    {% endif %}
+    <label for="id_price">Price:</label>
+    <input type="number" name="price" value="{{instance.price}}" required="" id="id_price">
+<label for="id_description">Description:</label>
+<input type="text" name="description" value='{{instance.description}}' maxlength="150" required="" id="id_description">
     <button type="submit" class='addbutton'>
         
         {% if action == "add" %}
@@ -18,11 +29,13 @@
 
 <section class="list_items">
     {% for size in sizes %}
-    <div class="items center">
-        <p class="description">{{size}}</p class="description">
+    <div class="items">
+        <div class="innerItem">
+        <p class="description" style="margin-right:20px;">{{size}}</p class="description">
 
-        <a class="delete" href="{% url 'product:sizeView' size.id 'delete' %}"><button>Delete</button></a>
+        {% comment %} <a class="delete" href="{% url 'product:sizeView' size.id 'delete' %}"><button>Delete</button></a> {% endcomment %}
         <a href="{% url 'product:sizeView' size.id 'edit' %}"><button>Edit</button></a>
+        </div>
     </div>
     {% endfor %}
 </section>

@@ -22,6 +22,7 @@ class Stock(models.Model):
 
         verbose_name = 'Stock'
         verbose_name_plural = 'Stocks'
+        ordering = ['-date']
 
     def __str__(self):
         """Unicode representation of Stock."""

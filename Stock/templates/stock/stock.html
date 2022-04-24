@@ -1,5 +1,6 @@
 {% extends 'sales/sales.html' %} {% load static %} {% block title %}
 <title>Stock</title>{% endblock title %} {% block main %}
+<h1>Stock</h1>
 <h3>{{branch}}</h3>
 
 <form action="{% url 'stock:stockView' stockId branch.id action %}" method="post">
@@ -40,27 +41,8 @@
         </button>
 </form>
 
-<div style="border:2px solid red">
-    {% for dic in stock_list %}
-    <div style="border:2px solid blue">
 
-        {% if dic.size %}
-        <p>{{dic.product.product_type.category}} - {{dic.product.product_type.name}} - {{dic.product.color}} - {{dic.size.size}} </p>
-        {% else %}
-        <p>{{dic.product.product_type.category}} - {{dic.product.product_type.name}} - {{dic.product.color}} - {{dic.product.size}} </p>
-        {% endif %} {% for stock in dic.stock %}
-        <div style="border:2px solid green">
-            <p>{{stock.date}} --- ({{stock.qty}}) </p>
-            <a href="{% url 'stock:stockView' stock.id branch.id 'delete' %}"> Delete</a>
-            <a href="{% url 'stock:stockView' stock.id branch.id 'edit' %}"> Edit</a>
-        </div>
-        {% endfor %}
-
-    </div>
-    {% endfor %}
-</div>
-
-<div class="tablecontainer">
+<div style="margin-top: 30px;" id="salesList" class="tablecontainer">
     <table id="stock-table">
         <thead>
             <th>SN</th>
@@ -120,6 +102,27 @@
         </tbody>
         <tfoot></tfoot>
     </table>
+</div>
+
+
+<div class="list_items">
+    {% for dic in stock_list %}
+    <div class="items center">
+
+        {% if dic.size %}
+        <p>{{dic.product.product_type.category}} - {{dic.product.product_type.name}} - {{dic.product.color}} - {{dic.size.size}} </p>
+        {% else %}
+        <p>{{dic.product.product_type.category}} - {{dic.product.product_type.name}} - {{dic.product.color}} - {{dic.product.size}} </p>
+        {% endif %} {% for stock in dic.stock %}
+        <div>
+            <p class="description">{{stock.date}} --- ({{stock.qty}}) </p>
+            <a class="delete" href="{% url 'stock:stockView' stock.id branch.id 'delete' %}"><button>Delete</button></a>
+            <a href="{% url 'stock:stockView' stock.id branch.id 'edit' %}"><button>Edit</button></a>
+        </div>
+        {% endfor %}
+
+    </div>
+    {% endfor %}
 </div>
 {% endblock main %} {% block javascript %}
 <script src="{% static 'javascript/stock.js' %}"></script>

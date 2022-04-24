@@ -1,98 +1,117 @@
-{% extends 'sales/sales.html' %} {% block title %}
+{% extends 'sales/sales.html' %} {% load static %} {% block title %}
 <title>Range Sales</title>{% endblock title %} {% block main %}
+<h1>{{title}}</h1>
 <div>
-
-    <table>
-        <thead>
-            <tr>
-                <th>SN</th>
-                <th>Date</th>
-                <th>Product</th>
-                <th>Total Quantity</th>
-                <th>Total Amount</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for item in store_sales.summary %}
-            <tr>
-                <td></td>
-                <td><a href="{% url 'sales:salesAnalysisView' item.items__date branch.id %}">
+    <div style="margin-top: 30px;" id="salesList">
+        <table>
+            <thead>
+                <tr>
+                    <th colspan="5">Store Sales Summary</th>
+                </tr>
+                <tr>
+                    <th>SN</th>
+                    <th>Date</th>
+                    <th>Product</th>
+                    <th>Total Quantity</th>
+                    <th>Total Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in store_sales.summary %}
+                <tr>
+                    <td class="sn"></td>
+                    <td><a href="{% url 'sales:salesAnalysisView' branch.id item.items__date  %}">
                     {{item.items__date}}</a></td>
-                <td>{{item.product_type}}</td>
-                <td>{{item.total_qty}}</td>
-                <td> {{item.total_amount}}</td>
+                    <td>{{item.product_type}}</td>
+                    <td>{{item.total_qty}}</td>
+                    <td class="amount"> {{item.total_amount}}</td>
 
-            </tr>
-            {% endfor %}
-            <tr>
-                <td colspan="3">Grand Total</td>
-                <td>{{store_sales.total_amount.total}}</td>
-            </tr>
-        </tbody>
-        <tfoot></tfoot>
-    </table>
+                </tr>
+                {% endfor %}
 
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th colspan="4">Grand Total</th>
+                    <th class="amount">{{store_sales.total_amount.total}}</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
 
-    <table>
-        <thead>
-            <tr>
-                <th>SN</th>
-                <th>Date</th>
-                <th>Product</th>
-                <th>Total Quantity</th>
-                <th>Total Amount</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for item in credit_sales.summary %}
-            <tr>
-                <td></td>
-                <td>{{item.items__date}}</td>
-                <td>{{item.product_type}}</td>
-                <td>{{item.total_qty}}</td>
-                <td>{{item.total_amount}}</td>
+    <div style="margin-top: 30px;" id="salesList">
+        <table>
+            <thead>
+                <tr>
+                    <th colspan="5">Credit Sales Summary</th>
+                </tr>
+                <tr>
+                    <th>SN</th>
+                    <th>Date</th>
+                    <th>Product</th>
+                    <th>Total Quantity</th>
+                    <th>Total Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in credit_sales.summary %}
+                <tr>
+                    <td class="sn1"></td>
+                    <td><a href="{% url 'sales:salesAnalysisView' branch.id item.credit_sale_Items__date  %}">{{item.credit_sale_Items__date}}</a></td>
+                    <td>{{item.product_type}}</td>
+                    <td>{{item.total_qty}}</td>
+                    <td class="amount">{{item.total_amount}}</td>
 
-            </tr>
-            {% endfor %}
-
-            <tr>
-                <td colspan="3">Total</td>
-                <td>{{credit_sales.total_amount.total}}</td>
-            </tr>
-        </tbody>
-        <tfoot></tfoot>
-    </table>
+                </tr>
+                {% endfor %}
 
 
-    <table>
-        <thead>
-            <tr>
-                <th>SN</th>
-                <th>Date</th>
-                <th>Product</th>
-                <th>Total Quantity</th>
-                <th>Total Amount</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for item in online_sales.summary %}
-            <tr>
-                <td></td>
-                <td>{{item.items__date}}</td>
-                <td>{{item.product_type}}</td>
-                <td>{{item.total_qty}}</td>
-                <td>{{item.total_amount}}</td>
-            </tr>
-            {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th colspan="4">Total</th>
+                    <th class="amount">{{credit_sales.total_amount.total}}</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
 
-            <tr>
-                <td colspan="3">Total</td>
-                <td>{{online_sales.total_amount.total}}</td>
-            </tr>
-        </tbody>
-        <tfoot></tfoot>
-    </table>
+    <div style="margin-top: 30px;" id="salesList">
+        <table>
+            <thead>
+                <tr>
+                    <th colspan="5">Online Sales Summary</th>
+                </tr>
+                <tr>
+                    <th>SN</th>
+                    <th>Date</th>
+                    <th>Product</th>
+                    <th>Total Quantity</th>
+                    <th>Total Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in online_sales.summary %}
+                <tr>
+                    <td class="sn2"></td>
+                    <td>{{item.items__date}}</td>
+                    <td>{{item.product_type}}</td>
+                    <td>{{item.total_qty}}</td>
+                    <td class="amount">{{item.total_amount}}</td>
+                </tr>
+                {% endfor %}
+
+
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="4">Total</td>
+                    <td class="amount">{{online_sales.total_amount.total}}</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
 </div>
-{% endblock main %}
-{% block javascript %}
+{% endblock main %} {% block javascript %}
+<script src="{% static 'javascript/daysales.js' %}"></script>
 {% endblock javascript %}

@@ -1,5 +1,23 @@
 {% extends 'sales/sales.html' %} {% load static %} {% block title %}
 <title>Sale</title>{% endblock title %} {% block main %}
+
+<div style="margin-bottom:30px">
+    <label for="sale_id">Sale Id</label>
+    <input type="text" name="order_id" id="order_id">
+    <label for="transaction_mode">Mode of Transaction</label>
+    <select name="payment_method" id="payment_method">
+        <option value="">------</option>
+        <option value="credit">Credit</option>
+        <option value="cash">Cash</option>
+        <option value="transfer">Transfer</option>
+        <option value="online">Online</option>
+    </select>
+    <button id="get_sale" class="addbutton">Get Sale</button>
+</div>
+
+{% if not_found %}
+<p>No data found. Please, make sure that you enter a correct sale id and mode of transaction</p>
+{% else %}
 <div>
     <div class="customerData">
         <p><strong>Name:</strong> <a href="{% url 'credit_sales:creditSalesView' customer.id 'view' %}">{{customer.name}}</a></p>
@@ -55,7 +73,6 @@
         </table>
     </div>
 </div>
-{% endblock main %} {% block javascript %}
-<script src="{% static 'javascript/state.js' %}"></script>
+{% endif %} {% endblock main %} {% block javascript %}
 <script src="{% static 'javascript/creditsales.js' %}"></script>
 {% endblock javascript %}

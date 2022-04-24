@@ -20,7 +20,7 @@
     <div class="items center">
         <p class="description">{{customer}}</p>
 
-        <a class="delete" href="{% url 'user:customerView' customer.id 'delete' %}"> <button> Delete</button></a>
+        {% comment %} <a class="delete" href="{% url 'user:customerView' customer.id 'delete' %}"> <button> Delete</button></a> {% endcomment %}
         <a href="{% url 'user:customerView' customer.id 'edit' %}"> </a> <button> Edit</button>
     </div>
     {% endif %} {% endfor %}

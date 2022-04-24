@@ -36,11 +36,23 @@ def salesView(request):
 @login_required(login_url="user:loginView")
 def saleView(request,purchaseId,type):
     sale = None
-    if type == 'credit':
-        sale = Credit_Sale.objects.get(purchase_id= purchaseId)
-    else:
-        sale = Sales.objects.get(purchase_id= purchaseId)
-    return render(request,"sales/sale.html",{"sale":sale,"customer":sale.customer})
+    customer = None
+    not_found = False
+    try:
+        if type == 'credit':
+            sale = Credit_Sale.objects.get(purchase_id= purchaseId)
+            customer = sale.customer
+        else:
+            sale = Sales.objects.get(purchase_id= purchaseId)
+            customer = sale.customer
+    except Credit_Sale.DoesNotExist:
+        not_found = True
+    except Sales.DoesNotExist:
+        not_found = True
+    
+    
+    return render(request,"sales/sale.html",{"sale":sale,
+                                             "customer":customer,'not_found':not_found})
 
 @login_required(login_url="user:loginView")
 def salesProductView(request,productTypeId):
@@ -166,10 +178,7 @@ def salesAnalysisView(request,date,branchID):
 
 @login_required(login_url="user:loginView")
 def rangeSalesView(request,start_date,end_date,branchID):
-    
-    # start_date ='2022-02-18'
-    # end_date = '2022-02-22'
-    
+
     selected_branch = request.user.branch.id
     
     if branchID != 0 and request.user.is_admin:
@@ -191,7 +200,7 @@ def rangeSalesView(request,start_date,end_date,branchID):
             "total_amount":store.aggregate(total=Sum("total_price"))
         },
         "credit_sales":{
-            "summary": credit.values('items__date',"product_type").annotate(
+            "summary": credit.values('credit_sale_Items__date',"product_type").annotate(
                         total_amount=Sum("total_price"),total_qty =Count("qty")),
             "total_amount":credit.aggregate(total=Sum("total_price")),
         }
@@ -207,5 +216,5 @@ def rangeSalesView(request,start_date,end_date,branchID):
         data["online_sales"] = online
     
     data["branch"] = branch_instance
-        
+    data['title'] = f'Range Sales: {start_date} -- {end_date}  '     
     return render(request,"sales/rangesales.html",data)      

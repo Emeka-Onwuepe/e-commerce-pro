@@ -13,6 +13,21 @@ const setCustomerData = (data) => {
     salesForm.elements.address.value = data.address
 }
 
+
+const setNumbering = () => {
+    const sn = document.getElementsByClassName("sn")
+    let num = 1
+    for (const td of sn) {
+        td.innerHTML = num++
+    }
+}
+
+try {
+    setNumbering()
+} catch (error) {
+
+}
+
 const getCustomer = () => {
     loaderContainer.style.display = 'block'
     GetCustomer({ phone_number: userPhoneNumber.value }, csrtoken)
@@ -72,10 +87,12 @@ const deleteEvent = (e) => {
     grandtotal.innerHTML = addComas((convertToFloat(grandtotal.innerHTML) - convertToFloat(productTotal)).toString())
     expectedGroundTotal.innerHTML = addComas((convertToFloat(expectedGroundTotal.innerHTML) - convertToFloat(expectedPrice)).toString())
     parentNode.remove()
+    setNumbering()
     const filtered = previousCart.filter(item => item.Id != Id)
     storestate = storeReducer(UpdateCart(filtered))
     setState(storestate)
 }
+
 
 const addPriceEvent = () => {
     const priceInput = document.getElementsByName("price")
@@ -187,7 +204,9 @@ const addOrder = (e) => {
             //const currentCart = getState().cart
             // setSalesCount(currentCart)
         appendOrderList(purelist)
-            // handleDecisionBox()
+        setNumbering()
+
+        // handleDecisionBox()
     }
 
 }
@@ -267,7 +286,7 @@ const appendOrderList = (data) => {
         total += data[i].productTotal
         expectTotal += data[i].expected
         let newrow = tbody.insertRow()
-        let tds = ` <td class="counterCell"></td>
+        let tds = ` <td class="sn"></td>
         <td>${data[i].product_type}</td>
         <td>${data[i].color}</td>
         <td>${data[i].size}</td>
@@ -314,6 +333,7 @@ try {
 const state = getState()
     // setSalesCount(state)
 appendOrderList(state.cart)
+setNumbering()
 setCustomerData(state.customer)
 
 const addToCartButtons = document.querySelectorAll(".addToCartButton")

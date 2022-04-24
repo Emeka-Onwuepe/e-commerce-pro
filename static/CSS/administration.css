@@ -90,7 +90,7 @@ body {
 .close {
     position: absolute;
     top: 0px;
-    left: 198px;
+    left: 185px;
     font-size: 35px;
     display: none;
     margin-bottom: 0px;
@@ -114,7 +114,8 @@ main {
     flex-grow: 1;
 }
 
-.get_user {
+.get_user,
+.get_order {
     margin-top: 10px;
 }
 
@@ -321,7 +322,8 @@ th {
 }
 
 @media screen and (min-width:481px) {
-    .get_user {
+    .get_user,
+    .get_order {
         margin-top: 0px;
     }
 }
