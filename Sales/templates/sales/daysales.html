@@ -3,13 +3,15 @@
 <h1>Daily Sales</h1>
 <div id="flex_container">
     <form name="getsales" method="post">
+        {% if request.user.is_admin %}
         <label for="branch">Select Branch</label>
         <select name="branch">
         <option value="0" selected>Select Branch</option>
         {% for branch in branches %}
         <option value="{{branch.id}}">{{branch.name}}</option>
         {% endfor %}
-    </select>
+    </select> {% else %}
+        <input type="hidden" name="branch" value="{{request.user.branch_id}}"> {% endif %}
         <label for="start_date">Start Date</label>
         <input type="date" name="start_date" id="start_date" required>
         <label for="end_date">End Date</label>
@@ -85,18 +87,6 @@
                     {{product.purchase_id}}</a> </td>
                     {% endfor %}
                 </tr>
-                {% endfor %} {% for item in online_sales.sales %}
-                <tr>
-                    <td class="sn"></td>
-                    <td>{{item.product_type}}</td>
-                    <td>{{item.qty}}</td>
-                    <td class="amount">{{item.unit_price}}</td>
-                    <td class="amount">{{item.total_price}}</td>
-                    <td>Web</td>
-                    {% for product in item.credit_sale_Items.all %}
-                    <td>{{product.purchase_id}} </td>
-                    {% endfor %}
-                </tr>
                 {% endfor %}
 
             </tbody>
@@ -126,20 +116,22 @@
                     <td class="amount">{{item.total_amount}}</td>
                 </tr>
                 {% endfor %}
-                <tr>
-                    <td colspan="3">Total Payment by Transfer</td>
-                    <td class="amount">{{store_sales.transfer.total}}</td>
-                </tr>
-                <tr>
-                    <td colspan="3">Total Payment in Cash</td>
-                    <td class="amount">{{store_sales.cash.total}}</td>
-                </tr>
-                <tr>
-                    <td colspan="3">Grand Total</td>
-                    <td class="amount">{{store_sales.total_amount.total}}</td>
-                </tr>
+
             </tbody>
-            <tfoot></tfoot>
+            <tfoot>
+                <tr>
+                    <th colspan="3">Total Payment by Transfer</th>
+                    <th class="amount">{{store_sales.transfer.total}}</th>
+                </tr>
+                <tr>
+                    <th colspan="3">Total Payment in Cash</th>
+                    <th class="amount">{{store_sales.cash.total}}</th>
+                </tr>
+                <tr>
+                    <th colspan="3">Grand Total</th>
+                    <th class="amount">{{store_sales.total_amount.total}}</th>
+                </tr>
+            </tfoot>
         </table>
     </div>
 
@@ -166,47 +158,97 @@
                 </tr>
                 {% endfor %}
 
-                <tr>
-                    <td colspan="3">Total</td>
-                    <td class="amount">{{credit_sales.total_amount.total}}</td>
-                </tr>
+
             </tbody>
-            <tfoot></tfoot>
+            <tfoot>
+                <tr>
+                    <th colspan="3">Total</th>
+                    <th class="amount">{{credit_sales.total_amount.total}}</th>
+                </tr>
+            </tfoot>
         </table>
     </div>
 
-    <div style="margin-top: 30px;" id="salesList" class="tablecontainer">
-        <table>
-            <thead>
-                <tr>
-                    <th colspan="7">Online Sales</th>
-                </tr>
-                <tr>
-                    <th>SN</th>
-                    <th>Product</th>
-                    <th>Total Quantity</th>
-                    <th>Total Amount</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in online_sales.summary %}
-                <tr>
-                    <td class="sn3"></td>
-                    <td>{{item.product_type}}</td>
-                    <td>{{item.total_qty}}</td>
-                    <td class="amount">{{item.total_amount}}</td>
-                </tr>
-                {% endfor %}
+    {% if request.user.is_admin %}
 
-                <tr>
-                    <td colspan="3">Total</td>
-                    <td class="amount">{{online_sales.total_amount.total}}</td>
-                </tr>
-            </tbody>
-            <tfoot></tfoot>
-        </table>
+    <div>
+        <div style="margin-top: 30px;" id="salesList" class="tablecontainer">
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="10">Online Sales</th>
+                    </tr>
+                    <tr>
+                        <th>SN</th>
+                        <th>Category</th>
+                        <th>Product</th>
+                        <th>size</th>
+                        <th>Color</th>
+                        <th>Qty</th>
+                        <th>Unity Price</th>
+                        <th>Total Price</th>
+                        <th>Mode of Transaction</th>
+                        <th>Purchase ID</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in online_sales.sales %}
+                    <tr>
+                        <td class="sn3"></td>
+                        <td>{{item.product.product_type.category}}</td>
+                        <td>{{item.product_type}}</td>
+                        <td>{{item.size}}</td>
+                        <td>{{item.color}}</td>
+                        <td>{{item.qty}}</td>
+                        <td class="amount">{{item.unit_price}}</td>
+                        <td class="amount">{{item.total_price}}</td>
+                        {% for product in item.items.all %}
+                        <td>{{product.payment_method}} </td>
+                        <td><a href="{% url 'sales:saleView' product.purchase_id product.payment_method %}">
+                        {{product.purchase_id}}</a> </td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+                <tfoot></tfoot>
+            </table>
+        </div>
+
+        <div style="margin-top: 30px;" id="salesList" class="tablecontainer">
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="7">Online Sales Summary</th>
+                    </tr>
+                    <tr>
+                        <th>SN</th>
+                        <th>Product</th>
+                        <th>Total Quantity</th>
+                        <th>Total Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in online_sales.summary %}
+                    <tr>
+                        <td class="sn4"></td>
+                        <td>{{item.product_type}}</td>
+                        <td>{{item.total_qty}}</td>
+                        <td class="amount">{{item.total_amount}}</td>
+                    </tr>
+                    {% endfor %}
+
+
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="3">Total</th>
+                        <th class="amount">{{online_sales.total_amount.total}}</th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
     </div>
-</div>
-{% endblock main %} {% block javascript %}
-<script src="{% static 'javascript/daysales.js' %}"></script>
-{% endblock javascript %}
+    {% endif %} {% endblock main %} {% block javascript %}
+    <script src="{% static 'javascript/daysales.js' %}"></script>
+    {% endblock javascript %}

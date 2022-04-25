@@ -94,7 +94,7 @@
                 {% for item in online_sales.summary %}
                 <tr>
                     <td class="sn2"></td>
-                    <td>{{item.items__date}}</td>
+                    <td><a href="{% url 'sales:salesAnalysisView' branch.id item.items__date  %}">{{item.items__date}}</a></td>
                     <td>{{item.product_type}}</td>
                     <td>{{item.total_qty}}</td>
                     <td class="amount">{{item.total_amount}}</td>

@@ -68,3 +68,23 @@ document.getElementsByTagName("BODY")[0].onresize = function() {
 window.addEventListener('scroll', function() {
     backToTop()
 });
+
+try {
+    const deleteButtons = document.getElementsByClassName('delete')
+
+    const ConfirmDelete = (e) => {
+        e.preventDefault()
+        const check = confirm("Are you Sure you want to delete")
+        if (check) {
+            window.location.href = e.target.parentNode.href
+        }
+    }
+
+    for (const button of deleteButtons) {
+        button.addEventListener("click", ConfirmDelete)
+
+    }
+
+} catch (error) {
+
+}

@@ -104,20 +104,24 @@ const priceEvent = (e, action) => {
 }
 
 const deleteItem = (e) => {
-    const button = e.target
-    const Id = button.id.split(";")[1]
-    const div = document.getElementById(`${Id}`)
-    const total = document.getElementById(`total;${Id}`)
-    grand_total.innerHTML = Total - convertToFloat(total.innerHTML)
-    Total -= convertToFloat(total.innerHTML)
-    manageProcessOrderButton()
-    div.remove()
-    handleEmptycartPara()
-    const previousCart = getState().user_cart
-    const filtered = previousCart.filter(item => item.Id != Id)
-    storestate = storeReducer(UpdateCart(filtered, 'user_cart'))
-    setState(storestate)
-    setSalesCount(storestate.user_cart)
+    const check = confirm("Are you Sure you want to delete")
+    if (check) {
+        const button = e.target
+        const Id = button.id.split(";")[1]
+        const div = document.getElementById(`${Id}`)
+        const total = document.getElementById(`total;${Id}`)
+        grand_total.innerHTML = Total - convertToFloat(total.innerHTML)
+        Total -= convertToFloat(total.innerHTML)
+        manageProcessOrderButton()
+        div.remove()
+        handleEmptycartPara()
+        const previousCart = getState().user_cart
+        const filtered = previousCart.filter(item => item.Id != Id)
+        storestate = storeReducer(UpdateCart(filtered, 'user_cart'))
+        setState(storestate)
+        setSalesCount(storestate.user_cart)
+
+    }
 }
 
 
@@ -169,6 +173,7 @@ for (const button of deleteButtons) {
 for (const node of amounts) {
     node.innerHTML = addComas(node.innerHTML)
 }
+
 
 // pay Stack integration
 
@@ -292,10 +297,11 @@ function payWithPaystack() {
             setState(storestate)
             setSalesCount(storestate.user_cart)
 
-            const childNodes = cartflex.children
-            for (const div of childNodes) {
-                div.remove()
-            }
+            // const childNodes = cartflex.children
+            // for (const div of childNodes) {
+            //     div.remove()
+            // }
+            cartflex.innerHTML = ""
             grand_total.innerHTML = 0
             Total = 0
             handleEmptycartPara()

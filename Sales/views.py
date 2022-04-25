@@ -45,10 +45,9 @@ def saleView(request,purchaseId,type):
         else:
             sale = Sales.objects.get(purchase_id= purchaseId)
             customer = sale.customer
-    except Credit_Sale.DoesNotExist:
+    except (Credit_Sale.DoesNotExist,Sales.DoesNotExist):
         not_found = True
-    except Sales.DoesNotExist:
-        not_found = True
+  
     
     
     return render(request,"sales/sale.html",{"sale":sale,
@@ -164,7 +163,7 @@ def salesAnalysisView(request,date,branchID):
     if request.user.is_admin:
         online = {
             "sales": online,
-            "summary": online.annotate(
+            "summary": online.values("product_type").annotate(
                         total_amount=Sum("total_price"),total_qty =Count("qty")),
             "total_amount":online.aggregate(total=Sum("total_price")),
         }

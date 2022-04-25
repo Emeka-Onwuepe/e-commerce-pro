@@ -109,6 +109,15 @@ window.addEventListener('scroll', function() {
 
 const handleDecisionBox = () => {
     const decisionBox = document.getElementById('decisionBox')
+    let x_axis = document.documentElement.clientWidth ||
+        document.body.clientWidth;
+    if (x_axis >= 1000) {
+        let num = (x_axis - 770) / 2
+        decisionBox.style.marginLeft = `${num}px`
+    } else {
+        let num = (x_axis - 320) / 2
+        decisionBox.style.marginLeft = `${num}px`
+    }
     decisionBox.style.display = 'block'
 }
 
@@ -217,7 +226,7 @@ const addOrder = (e) => {
 
     // UpdateCart
     if (productList.length > 0) {
-        handleDecisionBox('show')
+        handleDecisionBox()
         storestate = storeReducer(addToCart(purelist, "user_cart"))
         setState(storestate)
             //const currentCart = getState().cart

@@ -65,26 +65,30 @@
                 <div class="sideNav" id="sideNav">
                     <a href="javascript:void(0)" id="close" class="close">&times;</a>
                     <nav>
+                        {% if request.user.is_admin %}
                         <a href="{% url 'product:badProductView' 0 'view' %}">Bad Product</a>
                         <a href="{% url 'branch:branchView' 0 'view' %}">Branches</a>
                         <a href="{% url 'product:categoryView' 0 'view' %}">Category</a>
+                        {% endif %}
                         <a href="{% url 'credit_sales:creditSalesView' 0 'view' %}">Credit Sales</a>
                         <a href="{% url 'user:customerView' 0 'view' %}">Customers</a>
                         <a href="{% url 'preOrder:preOrderView' 0 'view' %}">Pre Order</a>
+                        {% if request.user.is_admin %}
                         <a href="{% url 'product:productTypeView' 0 'view' %}">Product Type</a>
                         <a href="{% url 'product:productView' 0 'view' %}">Product</a>
+                        {% endif %}
                         <a href="{% url 'product:returnedProductView' 0 'view' %}">Returned Product</a>
                         <a href="{% url 'sales:salesView' %}">Sales</a>
                         <a href="{% url 'sales:salesAnalysisView' 0 'default' %}">Sales Analysis</a>
+                        {% if request.user.is_admin %}
                         <a href="{% url 'product:sizeView' 0 'view' %}">Size</a>
                         <div class="stock_branches">
                             <p>STOCK</p>
                             {% for branch in branches %}
                             <a href="{% url 'stock:stockView' 0 branch.id 'view' %}">{{branch}}</a> {% endfor %}
                         </div>
-
                         <a href="{% url 'user:userView' 0 'view' %}">Users</a>
-
+                        {% endif %}
                     </nav>
                 </div>
                 {% endif %}
