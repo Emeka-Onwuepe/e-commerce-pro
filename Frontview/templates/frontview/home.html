@@ -16,16 +16,18 @@
     <link rel="shortcut icon" href="{% static 'CSS/logo.png' %}" type="image/png">
     <link rel="apple-touch-icon" href="{% static 'CSS/logo.png' %}">
     <link rel="icon" href="{% static 'CSS/logo4.png' %}" type="image/png"> {% block title %}
-    <title>Home</title>
+    <title>Home | SMB Classic Wears Boutique</title>
     {% endblock title %}
     <meta name="author" content="Emeka Casper Onwuepe " />
-    <meta name="description" content="" />
-    <meta name="keywords" content=" " />
+    <meta name="description" content="A unisex boutique that is committed to making you look unique, classic, and smart at a very affordable price" />
+    {% block keywords %}
+    <meta name="keywords" content="Men and Woman Wears,suede,classic corporate wear,Suits,Shoes,Jeans,Chinos,Sneakers,T-Shirts,Under-wears,Night Wears,anax shoes,pam,pams,suspenders,Jewelries,accessories" />
+    {% endblock keywords %}
     <meta name="author" content="Emeka Casper Onwuepe " />
     <meta property="og:url" content="{{request.build_absolute_uri}}" />
-    <meta property="og:type" content="" />
-    <meta property="og:title" content="" />
-    <meta property="og:description" content="" />
+    <meta property="og:type" content="product" />
+    <meta property="og:title" content="SMB Classic Wears Boutique" />
+    <meta property="og:description" content="A unisex boutique that is committed to making you look unique, classic, and smart at a very affordable price" />
 </head>
 
 <body>

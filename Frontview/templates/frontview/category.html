@@ -2,8 +2,11 @@
 <link rel="stylesheet" type="text/css" href="{% static 'CSS/homeproductpage.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'CSS/general.css' %}"> {% endblock styles %} {% block title %}
 
-<title>{{category.name}} Category</title>{% endblock title %}{% block banner %}{% endblock banner %} {% block main %}
-
+<title>{{category.name}} Category</title>{% endblock title %}
+{% block keywords %}
+<meta name="keywords" content="{%  for product_type in sorted_product_types%}{{product_type.name}},{% endfor %}" />
+{% endblock keywords %}
+{% block banner %}{% endblock banner %} {% block main %}
 <h1>{{category.name}}</h1>
 
 <input type="text" placeholder="Filter products by name" id="filterInput">
