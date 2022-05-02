@@ -6,6 +6,14 @@
 
 <h1>CART</h1>
 
+<div id="confirmBox">
+    <p>Are you Sure you want to delete?</p>
+    <div style="text-align: center;">
+        <a href="" class="cancelDelete">Cancel</a>
+        <a href="" class="confirmDelete">Delete</a>
+    </div>
+</div>
+
 <div class="historyDiv">
     <form action="{% url 'frontview:csales'%}" method="post">
         {% csrf_token %}

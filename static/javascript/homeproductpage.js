@@ -121,6 +121,29 @@ const handleDecisionBox = () => {
     decisionBox.style.display = 'block'
 }
 
+const Alert = (text) => {
+    const alertBox = document.getElementById('alertBox')
+    const displayText = document.getElementById('displayText')
+    let x_axis = document.documentElement.clientWidth ||
+        document.body.clientWidth;
+    if (x_axis >= 1000) {
+        let num = (x_axis - 780) / 2
+        alertBox.style.marginLeft = `${num}px`
+    } else {
+        let num = (x_axis - 332) / 2
+        alertBox.style.marginLeft = `${num}px`
+    }
+    alertBox.style.display = 'block'
+    displayText.innerHTML = text
+}
+
+
+const handleCloseAlert = () => {
+    const alertBox = document.getElementById('alertBox')
+    alertBox.style.display = 'none'
+
+}
+
 const handleCheckout = (e) => {
     e.preventDefault()
     const decisionBox = document.getElementById('decisionBox')
@@ -130,8 +153,11 @@ const handleCheckout = (e) => {
 }
 
 try {
+    const closeAlert = document.querySelector('#closeAlert')
+    closeAlert.addEventListener("click", handleCloseAlert)
     const checkout = document.querySelector('.checkout')
     checkout.addEventListener('click', (e) => handleCheckout(e))
+
 } catch (error) {
 
 }
@@ -188,7 +214,7 @@ const addOrder = (e) => {
         selected.style.display = "none";
         expanded = false;
         if (!selectionFound) {
-            alert("No selection made, please make a selection.")
+            Alert("No selection made, please make a selection.")
         }
     } else {
         let product = {}
@@ -216,7 +242,7 @@ const addOrder = (e) => {
             if (check.length == 0) {
                 purelist.push(product)
             } else {
-                alert(`${product.product_type} ${product.color} ${product.size} already added `)
+                Alert(`${product.product_type} ${product.color} ${product.size} already added `)
             }
         });
     } else {

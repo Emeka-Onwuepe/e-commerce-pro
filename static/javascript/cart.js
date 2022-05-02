@@ -139,31 +139,67 @@ const resetcart = () => {
     customerDetails.style.display = 'none'
 }
 
-const deleteItem = (e) => {
-    const check = confirm("Are you Sure you want to delete")
-    if (check) {
-        const button = e.target
-        const Id = button.id.split(";")[1]
-        const div = document.getElementById(`${Id}`)
-        const total = document.getElementById(`total;${Id}`)
-        grand_total.innerHTML = addComas((Total - convertToFloat(total.innerHTML)).toString())
-        Total -= convertToFloat(total.innerHTML)
-        manageProcessOrderButton()
-        div.remove()
-        if (cartflex.children.length == 0) {
-            resetcart()
-        }
-
-        handleEmptycartPara()
-        const previousCart = getState().user_cart
-        const filtered = previousCart.filter(item => item.Id != Id)
-        storestate = storeReducer(UpdateCart(filtered, 'user_cart'))
-        setState(storestate)
-        setSalesCount(storestate.user_cart)
-
+const Confirm = (Id) => {
+    const confirmBox = document.getElementById('confirmBox')
+    const confirmDelete = document.querySelector(".confirmDelete")
+    confirmDelete.id = Id + ";none"
+    let x_axis = document.documentElement.clientWidth ||
+        document.body.clientWidth;
+    if (x_axis >= 1000) {
+        let num = (x_axis - 780) / 2
+        confirmBox.style.marginLeft = `${num}px`
+    } else {
+        let num = (x_axis - 332) / 2
+        confirmBox.style.marginLeft = `${num}px`
     }
+    confirmBox.style.display = 'block'
 }
 
+const handleCancelDelete = (e) => {
+    e.preventDefault()
+    const confirmBox = document.getElementById('confirmBox')
+    confirmBox.style.display = 'none'
+
+}
+
+const handleConfirmDelete = (e) => {
+    e.preventDefault()
+    const Id = e.target.id.split(";")[0]
+    const div = document.getElementById(`${Id}`)
+    const total = document.getElementById(`total;${Id}`)
+    grand_total.innerHTML = addComas((Total - convertToFloat(total.innerHTML)).toString())
+    Total -= convertToFloat(total.innerHTML)
+    manageProcessOrderButton()
+    div.remove()
+    if (cartflex.children.length == 0) {
+        resetcart()
+    }
+
+    handleEmptycartPara()
+    const confirmBox = document.getElementById('confirmBox')
+    confirmBox.style.display = 'none'
+    const previousCart = getState().user_cart
+    const filtered = previousCart.filter(item => item.Id != Id)
+    storestate = storeReducer(UpdateCart(filtered, 'user_cart'))
+    setState(storestate)
+    setSalesCount(storestate.user_cart)
+
+}
+
+const deleteItem = (e) => {
+    const button = e.target
+    const Id = button.id.split(";")[1]
+    Confirm(Id)
+}
+
+try {
+    const confirmDelete = document.querySelector('.confirmDelete')
+    const cancelDelete = document.querySelector(".cancelDelete")
+    confirmDelete.addEventListener("click", (e) => handleConfirmDelete(e))
+    cancelDelete.addEventListener('click', (e) => handleCancelDelete(e))
+} catch (error) {
+
+}
 
 const setCustomerData = (data) => {
     customerForm.elements.name.value = data.name
@@ -189,7 +225,7 @@ const updateUserState = (e) => {
 //     .then(data => {
 //         console.log(data)
 //     })
-//     .catch(error => alert(error))
+//     .catch(error => Alert(error))
 
 customerForm.elements.name.addEventListener('change', updateUserState)
 customerForm.elements.phone_number.addEventListener('change', updateUserState)
@@ -351,7 +387,7 @@ function payWithPaystack() {
         })
         .catch((error) => {
             loaderContainer.style.display = 'none'
-            alert(error)
+            Alert(error)
             setState(storeReducer(load(LOADED)))
         });
 
@@ -371,7 +407,7 @@ function payWithPaystack() {
             callback: function(response) {
                 //this happens after the payment is completed successfully
                 var reference = response.reference;
-                // alert('Payment complete! Reference: ' + reference);
+                // Alert('Payment complete! Reference: ' + reference);
 
                 // Make an AJAX call to your server with the reference to verify the transaction
                 const data = {
@@ -383,19 +419,19 @@ function payWithPaystack() {
                 then(data => {
                         // wait here
                         loaderContainer.style.display = 'none'
-                        alert("Payment Completed ")
+                        Alert("Payment Completed ")
 
                     })
                     .catch((error) => {
                         loaderContainer.style.display = 'none'
-                        alert(error)
+                        Alert(error)
                         setState(storeReducer(load(LOADED)))
                     });
             },
 
             onClose: function() {
                 loaderContainer.style.display = 'none'
-                alert('Transaction was not completed, window closed.');
+                Alert('Transaction was not completed, window closed.');
 
             },
 
@@ -403,8 +439,8 @@ function payWithPaystack() {
 
         handler.openIframe();
     } catch (error) {
-        error.name == 'ReferenceError' ? alert("Your are offline," +
-            " please go to your order history page to complete your order") : alert(error)
+        error.name == 'ReferenceError' ? Alert("Your are offline," +
+            " please go to your order history page to complete your order") : Alert(error)
         loaderContainer.style.display = 'none'
     }
 
