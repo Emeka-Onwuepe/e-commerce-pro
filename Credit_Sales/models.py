@@ -25,6 +25,7 @@ class Credit_Sale(models.Model):
 
         verbose_name = 'Credit_Sale'
         verbose_name_plural = 'Credit_Sales'
+        ordering = ["-date"]
 
     def __str__(self):
         """Unicode representation of Credit_Sale."""

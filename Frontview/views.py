@@ -1,14 +1,16 @@
 import json
-from django.urls import reverse
 import requests
+from django.urls import reverse
 from django.conf import settings
 from django.http import HttpResponseRedirect, JsonResponse
-# from django.core.mail import send_mail
+from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404, render
 from Branch.models import Branch
+from Logistics.models import Location
 from Product.models import Category, Product, Product_Type, Size
 from Sales.models import Items, Sales
 from User.models import Customer
+from SMBCLASSIC.variables import official_email,rootUrl,admin_staff
 
 # Create your views here.
 def homeView(request):
@@ -16,7 +18,9 @@ def homeView(request):
     return render(request,'frontview/home.html')
 
 def cartView(request): 
-    return render(request,'frontview/cart.html',{"public_key":settings.PAYSTACT_PUBLIC_KEY})
+    locations = Location.objects.all()
+    return render(request,'frontview/cart.html',{"public_key":settings.PAYSTACT_PUBLIC_KEY,
+                                                 "locations":locations})
 
 def categoryView(request,catId):
     category = get_object_or_404(Category,pk=catId)
@@ -48,10 +52,13 @@ def processPaymentView(request):
                response = requests.get(url,headers=headers)
                 
                if response.status_code == 200:
-                   response_data = response.json()
+                #    response_data = response.json()
                    sales = Sales.objects.get(purchase_id=data["purchase_id"])
                    sales.paid = True
                    sales.save()
+                   email_body = (f"There is a new online sale with ID:{sales.purchase_id}. Please, view " +
+                        f"sales details on {rootUrl}/sales/sale/{sales.purchase_id}/{sales.payment_method} ")
+                   send_mail('A new order',email_body,official_email,[admin_staff])
                    return JsonResponse({"message":'success'})
                         
            if data['action'] == "create":
@@ -74,6 +81,8 @@ def processPaymentView(request):
                 sales = Sales.objects.create(branch=branch,
                                                     total_amount=data['total_amount'],
                                                     expected_amount=data['expected_amount'],
+                                                    logistics=data['logistics'],
+                                                    destination=data['address'],
                                                     remark = data['remark'],
                                                     channel ="web",
                                                     customer = customer_instance,
@@ -110,4 +119,4 @@ def customerOrderHistoryView(request):
         
 def saleView(request,purchaseId):
     sale = get_object_or_404(Sales,purchase_id= purchaseId)
-    return render(request,"frontview/saledetails.html",{"sale":sale,"customer":sale.customer})        
+    return render(request,"frontview/saledetails.html",{"sale":sale,"customer":sale.customer})       

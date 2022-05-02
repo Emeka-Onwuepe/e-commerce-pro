@@ -1,0 +1,30 @@
+{% extends 'sales/sales.html' %} {% block title %}
+<title>Locations</title>{% endblock title %} {% block main %}
+<h1>Locations</h1>
+
+<form action="{% url 'logistics:locationView' locationId action %}" method="post">
+    {% csrf_token %} {{form}}
+    <button type="submit" class="addbutton">
+        
+        {% if action == "add" %}
+            ADD
+        {% else %}
+            UPDATE
+        {% endif %}
+            
+    </button>
+</form>
+
+<section class="list_items">
+    {% for location in locations %} {% if not location.is_super_admin %}
+    <div class="items center">
+        <p class="description">{{location}}</p>
+
+        <a class="delete" href="{% url 'logistics:locationView' location.id 'delete' %}"> <button> Delete</button></a>
+        <a href="{% url 'logistics:locationView' location.id 'edit' %}"> </a> <button> Edit</button>
+    </div>
+    {% endif %} {% endfor %}
+
+
+</section>
+{% endblock main %} {% block javascript %} {% endblock javascript %}

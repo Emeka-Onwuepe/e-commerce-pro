@@ -72,6 +72,9 @@
                         {% endif %}
                         <a href="{% url 'credit_sales:creditSalesView' 0 'view' %}">Credit Sales</a>
                         <a href="{% url 'user:customerView' 0 'view' %}">Customers</a>
+                        {% if request.user.is_admin %}
+                        <a href="{% url 'logistics:locationView' 0 'view' %}">Locations</a>
+                        {% endif %}
                         <a href="{% url 'preOrder:preOrderView' 0 'view' %}">Pre Order</a>
                         {% if request.user.is_admin %}
                         <a href="{% url 'product:productTypeView' 0 'view' %}">Product Type</a>

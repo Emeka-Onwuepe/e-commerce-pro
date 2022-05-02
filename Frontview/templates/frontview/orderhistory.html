@@ -8,13 +8,13 @@
     {% csrf_token %} {% for order in orders %}
     <div class="order">
         <p class="center"> <a style="color: blue;" href="{% url 'frontview:saledetailsView' order.purchase_id %}">{{order.purchase_id}}</a></p>
-        <p>Total: &#8358 <span class="amount"> {{order.total_amount}}</span></p>
+        <p>Total: &#8358 <span class="amount"> {{order.total_amount|add:order.logistics}}</span></p>
         <p>{{order.date}}</p>
         <p>Channel: {{order.channel}}</p>
         {% if order.paid %}
         <p class="center">Paid</p>
         {% else %}
-        <p id="data{{order.id}}" style="display: none;">{{order.purchase_id}};{{order.total_amount}};{{order.customer.email}}</p>
+        <p id="data{{order.id}}" style="display: none;">{{order.purchase_id}};{{order.total_amount|add:order.logistics}};{{order.customer.email}}</p>
         <button id="{{order.id}}" class="make_payment center">Pay Now</button> {% endif %}
 
     </div>

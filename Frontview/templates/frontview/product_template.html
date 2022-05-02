@@ -1,10 +1,10 @@
 <div id="product" class="product">
-    <img src="{{product.image.url}}" alt="{{product.product_type.name}} image">
     <h3>{{product.product_type.name}}</h3>
-    {% if not product.multipleSIzes.all %}
+    <img src="{{product.image.url}}" alt="{{product.product_type.name}} image"> {% if not product.multipleSIzes.all %}
 
-    <p>Price: <span>&#8358</span> <span class="amount">{{product.price}}</span></p>
-    <p>Size: {{product.size}}</p>
+    <p style='text-align:center;font-weight:bold'><span>&#8358</span> <span class="amount">{{product.price}}</span></p>
+
+    <p style="display:inline">Size: {{product.size}}</p>
     <p style="display: none;" id='{{product.id}}productData'>{{product.id}};{{product.product_type.name}};{{product.size}};{{product.price}};{{product.color}};{{product.image}}</p>
     {% else %}
 
@@ -25,6 +25,7 @@
     </div>
     <p style="display: none;" id='{{product.id}}productData'>{{product.id}};{{product.product_type.name}};{{product.color}};{{product.image}}</p>
     {% endif %}
+    <p style="text-transform:capitalize;">Color: {{product.color}} </p>
     <p>{{product.description}}</p>
     <button class="addToCartButton addbutton" id={{product.id}}>Add to Cart</button>
 </div>

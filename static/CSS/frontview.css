@@ -310,6 +310,7 @@ a {
 
 .customerDetails input {
     border: 2px double #FCA877;
+    width: 230px;
 }
 
 fieldset {
@@ -322,6 +323,9 @@ legend {
 }
 
 @media screen and (min-width:360px) {
+    .customerDetails input {
+        width: 280px;
+    }
     .menu {
         padding: 10px 20px;
     }

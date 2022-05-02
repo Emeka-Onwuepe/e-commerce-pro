@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     "Frontview.apps.FrontviewConfig",
     "Pre_Order.apps.PreOrderConfig",
     "errortemplate.apps.ErrortemplateConfig",
+    "Logistics.apps.LogisticsConfig"
 ]
 
 REST_FRAMEWORK = {

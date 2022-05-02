@@ -176,7 +176,7 @@
             <table>
                 <thead>
                     <tr>
-                        <th colspan="10">Online Sales</th>
+                        <th colspan="12">Online Sales</th>
                     </tr>
                     <tr>
                         <th>SN</th>
@@ -187,6 +187,8 @@
                         <th>Qty</th>
                         <th>Unity Price</th>
                         <th>Total Price</th>
+                        <th>Logistics</th>
+                        <th>Grand Total</th>
                         <th>Mode of Transaction</th>
                         <th>Purchase ID</th>
                     </tr>
@@ -203,6 +205,8 @@
                         <td class="amount">{{item.unit_price}}</td>
                         <td class="amount">{{item.total_price}}</td>
                         {% for product in item.items.all %}
+                        <td class="amount">{{product.logistics}}</td>
+                        <td class="amount">{{item.total_price|add:product.logistics}}</td>
                         <td>{{product.payment_method}} </td>
                         <td><a href="{% url 'sales:saleView' product.purchase_id product.payment_method %}">
                         {{product.purchase_id}}</a> </td>
@@ -226,6 +230,7 @@
                         <th>Product</th>
                         <th>Total Quantity</th>
                         <th>Total Amount</th>
+                        <th>Total Logistics</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -235,6 +240,7 @@
                         <td>{{item.product_type}}</td>
                         <td>{{item.total_qty}}</td>
                         <td class="amount">{{item.total_amount}}</td>
+                        <td></td>
                     </tr>
                     {% endfor %}
 
@@ -244,6 +250,11 @@
                     <tr>
                         <th colspan="3">Total</th>
                         <th class="amount">{{online_sales.total_amount.total}}</th>
+                        <th class="amount">{{online_sales.total_amount.logistics}}</th>
+                    </tr>
+                    <tr>
+                        <th colspan="3">Grand Total</th>
+                        <th  colspan="2" class="amount">{{online_sales.total_amount.logistics|add:online_sales.total_amount.total}}</th>
                     </tr>
                 </tfoot>
             </table>

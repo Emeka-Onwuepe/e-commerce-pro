@@ -1,5 +1,5 @@
 from datetime import datetime
-from django.db.models import Sum,Count
+from django.db.models import Sum
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
@@ -19,7 +19,7 @@ def salesView(request):
         products=[]
         found = False
         data = request.POST['data']
-        product_type = Product_Type.objects.filter(name =data)
+        product_type = Product_Type.objects.filter(name__icontains =data)
         for item in product_type:   
             product = Product.objects.filter(branches=request.user.branch,
                                              product_type = item.id)
@@ -147,7 +147,7 @@ def salesAnalysisView(request,date,branchID):
             # "cashData":cash,
             "sales": store,
             "summary":store.values("product_type").annotate(
-                        total_amount=Sum("total_price"),total_qty =Count("qty")),
+                        total_amount=Sum("total_price"),total_qty =Sum("qty")),
             "transfer":transfer_total,
             "cash": cash_total,
             "total_amount":store.aggregate(total=Sum("total_price"))
@@ -155,7 +155,7 @@ def salesAnalysisView(request,date,branchID):
         "credit_sales":{
             "sales": credit,
             "summary": credit.values("product_type").annotate(
-                        total_amount=Sum("total_price"),total_qty =Count("qty")),
+                        total_amount=Sum("total_price"),total_qty =Sum("qty")),
             "total_amount":credit.aggregate(total=Sum("total_price")),
         }
     }
@@ -164,8 +164,8 @@ def salesAnalysisView(request,date,branchID):
         online = {
             "sales": online,
             "summary": online.values("product_type").annotate(
-                        total_amount=Sum("total_price"),total_qty =Count("qty")),
-            "total_amount":online.aggregate(total=Sum("total_price")),
+                        total_amount=Sum("total_price"),total_qty =Sum("qty")),
+            "total_amount":online.aggregate(total=Sum("total_price"),logistics=Sum('items__logistics')),
         }
         
         branches = Branch.objects.all()
@@ -195,12 +195,12 @@ def rangeSalesView(request,start_date,end_date,branchID):
     data ={
         "store_sales":{
             "summary":store.values('items__date',"product_type").annotate(
-                        total_amount=Sum("total_price"),total_qty =Count("qty")),
+                        total_amount=Sum("total_price"),total_qty =Sum("qty")),
             "total_amount":store.aggregate(total=Sum("total_price"))
         },
         "credit_sales":{
             "summary": credit.values('credit_sale_Items__date',"product_type").annotate(
-                        total_amount=Sum("total_price"),total_qty =Count("qty")),
+                        total_amount=Sum("total_price"),total_qty =Sum("qty")),
             "total_amount":credit.aggregate(total=Sum("total_price")),
         }
     }
@@ -208,8 +208,8 @@ def rangeSalesView(request,start_date,end_date,branchID):
     if request.user.is_admin:
         online = {
             "summary": online.values('items__date',"product_type").annotate(
-                        total_amount=Sum("total_price"),total_qty =Count("qty")),
-            "total_amount":online.aggregate(total=Sum("total_price")),
+                        total_amount=Sum("total_price"),total_qty =Sum("qty")),
+            "total_amount":online.aggregate(total=Sum("total_price"),logistics=Sum("items__logistics")),
         }
     
         data["online_sales"] = online

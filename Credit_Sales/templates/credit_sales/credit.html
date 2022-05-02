@@ -49,7 +49,7 @@
         <tbody>
             {% for item in credits %}
             <tr>
-                <td class="counterCell"></td>
+                <td class="sn"></td>
                 <td>{{item.date}}</td>
                 <td>{{item.branch}}</td>
                 <td><a href="{% url 'sales:saleView' item.purchase_id 'credit' %}">

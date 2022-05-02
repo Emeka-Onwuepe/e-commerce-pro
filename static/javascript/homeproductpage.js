@@ -112,10 +112,10 @@ const handleDecisionBox = () => {
     let x_axis = document.documentElement.clientWidth ||
         document.body.clientWidth;
     if (x_axis >= 1000) {
-        let num = (x_axis - 770) / 2
+        let num = (x_axis - 780) / 2
         decisionBox.style.marginLeft = `${num}px`
     } else {
-        let num = (x_axis - 320) / 2
+        let num = (x_axis - 332) / 2
         decisionBox.style.marginLeft = `${num}px`
     }
     decisionBox.style.display = 'block'

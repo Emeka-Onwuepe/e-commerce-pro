@@ -243,7 +243,12 @@ const processOrder = (e) => {
         orders: getState().cart
     }
     if (data.orders.length > 0) {
-        if (data.total_amount >= data.expected_amount) {
+        let verified = data.total_amount >= data.expected_amount ? true : false
+        if (!verified) {
+            verified = confirm("You are selling below the expected price." +
+                " Are you sure you want to go ahead with this transaction?")
+        }
+        if (verified) {
             ProcessOrder(data, csrtoken).then(data => {
                     setState(storeReducer(addLatestOrder(data)))
                     manageLastSale(data)
@@ -270,7 +275,7 @@ const processOrder = (e) => {
                 });
         } else {
             loaderContainer.style.display = 'none'
-            alert("You are selling below the expected price")
+
         }
     } else {
         loaderContainer.style.display = 'none'

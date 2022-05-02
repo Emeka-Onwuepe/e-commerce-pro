@@ -19,10 +19,8 @@
     <title>Home | SMB Classic Wears Boutique</title>
     {% endblock title %}
     <meta name="author" content="Emeka Casper Onwuepe " />
-    <meta name="description" content="A unisex boutique that is committed to making you look unique, classic, and smart at a very affordable price" />
-    {% block keywords %}
-    <meta name="keywords" content="Men and Woman Wears,suede,classic corporate wear,Suits,Shoes,Jeans,Chinos,Sneakers,T-Shirts,Under-wears,Night Wears,anax shoes,pam,pams,suspenders,Jewelries,accessories" />
-    {% endblock keywords %}
+    <meta name="description" content="A unisex boutique that is committed to making you look unique, classic, and smart at a very affordable price" /> {% block keywords %}
+    <meta name="keywords" content="Men and Women Wears,suede,classic corporate wear,Suits,Shoes,Jeans,Chinos,Sneakers,T-Shirts,Under-wears,Night Wears,anax shoes,pam,pams,suspenders,Jewelries,accessories" /> {% endblock keywords %}
     <meta name="author" content="Emeka Casper Onwuepe " />
     <meta property="og:url" content="{{request.build_absolute_uri}}" />
     <meta property="og:type" content="product" />
@@ -83,7 +81,7 @@
 
                     </div>
                     <div class="banneritems">
-                        <p class="less product_details">Men and Woman Wears Suits | Shoes | Jeans | Chinos | Sneakers | T-Shirts | Under-wears | Night Wears | Jewelries and other accessories</p>
+                        <p class="less product_details">Men and Women Wears Suits | Shoes | Jeans | Chinos | Sneakers | T-Shirts | Under-wears | Night Wears | Jewelries and other accessories</p>
 
 
                     </div>
@@ -188,3 +186,22 @@
     <script src="{% static 'javascript/state.js' %}"></script>
     <script src="{% static 'javascript/homeproductpage.js' %}"></script>
     {% endblock javascript %}
+
+    <script type="text/javascript">
+        const setChartCounter = () => {
+
+            const localdata = localStorage.getItem("storestate");
+            let num = 0
+            if (localdata) {
+                const data = JSON.parse(localdata)
+                num = data.user_cart.length
+            }
+            document.getElementById("cart_count").innerHTML = num
+
+        }
+        window.addEventListener('pageshow', setChartCounter)
+    </script>
+
+</body>
+
+</html>

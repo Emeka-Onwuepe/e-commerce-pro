@@ -2,7 +2,7 @@
 <link rel="stylesheet" type="text/css" href="{% static 'CSS/homeproductpage.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'CSS/general.css' %}"> {% endblock styles %} {% block title %}
 
-<title>Category</title>{% endblock title %}{% block banner %}{% endblock banner %} {% block main %}
+<title>Cart</title>{% endblock title %}{% block banner %}{% endblock banner %} {% block main %}
 
 <h1>CART</h1>
 
@@ -19,9 +19,23 @@
     <div id="cartflex">
 
     </div>
-    <p style="margin: 30px auto;"><strong> Grand Total: &#8358 <span id="grand_total"></span></strong></p>
+    <div style="margin: 30px auto; display:flex;justify-content: space-around;flex-wrap: wrap;">
+        <p style="display:none;padding:0px 10px 5px 10px;"><strong>Total: &#8358 <span id="total"></span></strong></p>
+        <p style="display:none;padding:0px 10px 5px 10px;"><strong>Logistics: &#8358 <span id="ltotal"></span></strong></p>
+        <p><strong> Grand Total: &#8358 <span id="grand_total"></span></strong></p>
+    </div>
+
     <button id="process_order" class="addbutton">Process Order</button>
     <div id="customerDetails">
+        <div>
+            <label for="logistics">Delivery Logistics</label>
+            <select style="padding: 5px;text-align:center" name="logistics" id="logistics">
+            <option  value="0">---Please Select---</option>
+            {% for location in locations  %}
+            <option value="{{location.price}}">{{location.location}} -- &#8358 <span class="amount">{{location.price}}</span></option>  
+            {% endfor %}
+        </select>
+        </div>
         <div class="customerDetails">
             <form name="customerForm" action="" method="post">
                 {% csrf_token %}

@@ -18,8 +18,27 @@ try {
 
 }
 
+const setNumbering = (id = undefined) => {
+    let sn = undefined
+    if (id) {
+        sn = document.getElementsByClassName("sn" + id)
+    } else {
+        sn = document.getElementsByClassName("sn")
+    }
 
-const addComas = (input) => {
+    let num = 1
+    for (const td of sn) {
+        td.innerHTML = num++
+    }
+}
+
+try {
+    setNumbering()
+} catch (error) {
+
+}
+
+const add_Comas = (input) => {
 
     const mutate = (array, result = []) => {
         if (array.length < 3) {
@@ -57,7 +76,7 @@ try {
 
     for (const node of amounts) {
         if (node.innerHTML.toLowerCase() != 'none') {
-            node.innerHTML = addComas(node.innerHTML.replace(/,/g, ''))
+            node.innerHTML = add_Comas(node.innerHTML.replace(/,/g, ''))
         }
 
     }

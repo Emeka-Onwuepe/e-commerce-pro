@@ -21,13 +21,14 @@
 <div>
     <div class="customerData">
         <p><strong>Name:</strong> <a href="{% url 'credit_sales:creditSalesView' customer.id 'view' %}">{{customer.name}}</a></p>
-        <p><strong>Phone Number:</strong> {{customer.phone_number}}</p>
+        <p><strong>Phone Number:</strong>  <a href="tel:{{customer.phone_number}}">{{customer.phone_number}}</a> </p>
         <p><strong>Email:</strong> {{customer.email}}</p>
         <p><strong>Address:</strong> {{customer.address}}</p>
         <p><strong>Purchase_id:</strong> {{sale.purchase_id}}</p>
         <p><strong>Payment_method:</strong> {% if sale.payment_method %} {{sale.payment_method}}{% else %} Credit {% endif %}</p>
         <p><strong>Remark: </strong>{{sale.remark}}</p>
         <p><strong>Date:</strong> {{sale.date}}</p>
+        <p><strong>Paid: </strong> {{sale.paid}} </p>
     </div>
 
     <div id="salesList">
@@ -41,6 +42,7 @@
                     <th>Unit Price</th>
                     <th>Qty</th>
                     <th>Total Price</th>
+                    <th>Logistics</th>
 
                 </tr>
             </thead>
@@ -54,6 +56,7 @@
                     <td class="amount">{{item.unit_price}}</td>
                     <td>{{item.qty}} </td>
                     <td class="amount">{{item.total_price}}</td>
+                    <td></td>
                 </tr>
 
                 {% endfor %}
@@ -67,7 +70,11 @@
                     <td></td>
                     <td></td>
                     <td id="grandtotal" class="amount">{{sale.total_amount}}</td>
-
+                    <td id="logistics" class="amount">{{sale.logistics}}</td>
+                </tr>
+                <tr>
+                    <td colspan="6">Grand Total</td>
+                    <td colspan="2" id="logistics" class="amount">{{sale.logistics|add:sale.total_amount}}</td>
                 </tr>
             </tfoot>
         </table>

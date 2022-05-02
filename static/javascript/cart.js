@@ -1,8 +1,12 @@
 const cartflex = document.getElementById("cartflex")
 const grand_total = document.getElementById('grand_total')
+const total_node = document.getElementById('total')
+const ltotal = document.getElementById('ltotal')
 const customerForm = document.forms.customerForm
 let tbody = document.querySelector("#tbody")
 const emptycart = document.querySelector(".emptycart")
+const logistics = document.getElementById("logistics")
+    // const amounts = document.querySelectorAll(".amount")
 
 // const csrtoken = document.getElementsByName("csrfmiddlewaretoken")[0].value
 
@@ -11,6 +15,7 @@ const emptycart = document.querySelector(".emptycart")
 const state = getState()
 user_cart = state.user_cart
 let Total = 0
+let previousLog = 0
 for (const product of user_cart) {
     Total += product.productTotal
     let div = document.createElement("div")
@@ -103,6 +108,37 @@ const priceEvent = (e, action) => {
 
 }
 
+
+const addLogistics = () => {
+    Total = (Total - previousLog) + parseFloat(logistics.value)
+    grand_total.innerHTML = addComas(Total.toString())
+    previousLog = parseFloat(logistics.value)
+    if (previousLog > 0) {
+        total_node.innerHTML = addComas((Total - previousLog).toString())
+        total_node.parentNode.parentNode.style.display = "block"
+        ltotal.innerHTML = addComas(previousLog.toString())
+        ltotal.parentNode.parentNode.style.display = "block"
+    } else {
+        total_node.parentNode.parentNode.style.display = "none"
+        ltotal.parentNode.parentNode.style.display = "none"
+    }
+}
+
+addLogistics()
+logistics.addEventListener('change', addLogistics)
+
+const resetcart = () => {
+    Total = 0
+    previousLog = 0
+    logistics.value = 0
+    grand_total.innerHTML = 0
+    total_node.innerHTML = 0
+    ltotal.innerHTML = 0
+    total_node.parentNode.parentNode.style.display = "none"
+    ltotal.parentNode.parentNode.style.display = "none"
+    customerDetails.style.display = 'none'
+}
+
 const deleteItem = (e) => {
     const check = confirm("Are you Sure you want to delete")
     if (check) {
@@ -110,10 +146,14 @@ const deleteItem = (e) => {
         const Id = button.id.split(";")[1]
         const div = document.getElementById(`${Id}`)
         const total = document.getElementById(`total;${Id}`)
-        grand_total.innerHTML = Total - convertToFloat(total.innerHTML)
+        grand_total.innerHTML = addComas((Total - convertToFloat(total.innerHTML)).toString())
         Total -= convertToFloat(total.innerHTML)
         manageProcessOrderButton()
         div.remove()
+        if (cartflex.children.length == 0) {
+            resetcart()
+        }
+
         handleEmptycartPara()
         const previousCart = getState().user_cart
         const filtered = previousCart.filter(item => item.Id != Id)
@@ -285,12 +325,13 @@ function payWithPaystack() {
         address: customerForm.elements.address.value,
         payment_method: 'online',
         remark: "Website Sales",
-        total_amount: Total,
-        expected_amount: Total,
+        total_amount: Total - previousLog,
+        expected_amount: Total - previousLog,
+        logistics: previousLog,
         purchase_id: OrderId,
         orders: getState().user_cart
     }
-
+    console.log(data)
     ProcessOrder(data, csrtoken, 'processorder').
     then(data => {
             storestate = storeReducer(clearCart("user_cart"))
@@ -302,8 +343,9 @@ function payWithPaystack() {
             //     div.remove()
             // }
             cartflex.innerHTML = ""
-            grand_total.innerHTML = 0
-            Total = 0
+            resetcart()
+                // grand_total.innerHTML = 0
+                // Total = 0
             handleEmptycartPara()
             manageCustomerDetails(undefined, false)
         })

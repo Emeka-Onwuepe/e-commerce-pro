@@ -76,11 +76,12 @@
         </table>
     </div>
 
+    {% if request.user.is_admin %}
     <div style="margin-top: 30px;" id="salesList">
         <table>
             <thead>
                 <tr>
-                    <th colspan="5">Online Sales Summary</th>
+                    <th colspan="6">Online Sales Summary</th>
                 </tr>
                 <tr>
                     <th>SN</th>
@@ -88,6 +89,7 @@
                     <th>Product</th>
                     <th>Total Quantity</th>
                     <th>Total Amount</th>
+                    <th>Logistics</th>
                 </tr>
             </thead>
             <tbody>
@@ -98,6 +100,7 @@
                     <td>{{item.product_type}}</td>
                     <td>{{item.total_qty}}</td>
                     <td class="amount">{{item.total_amount}}</td>
+                    <td></td>
                 </tr>
                 {% endfor %}
 
@@ -105,12 +108,18 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="4">Total</td>
-                    <td class="amount">{{online_sales.total_amount.total}}</td>
+                    <th colspan="4">Total</th>
+                    <th class="amount">{{online_sales.total_amount.total}}</th>
+                    <th class="amount">{{online_sales.total_amount.logistics}}</th>
+                </tr>
+                <tr>
+                    <th colspan="4">Grand Total</th>
+                    <th colspan='2' class="amount">{{online_sales.total_amount.total|add:online_sales.total_amount.logistics}}</th>
                 </tr>
             </tfoot>
         </table>
     </div>
+    {% endif %}
 </div>
 {% endblock main %} {% block javascript %}
 <script src="{% static 'javascript/daysales.js' %}"></script>

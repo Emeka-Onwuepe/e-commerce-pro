@@ -50,6 +50,8 @@ class Sales(models.Model):
     branch = models.ForeignKey(Branch,related_name="sales_branch", verbose_name="branch", on_delete=models.CASCADE)
     total_amount = models.DecimalField("total_amount", max_digits=10, decimal_places=2)
     expected_amount = models.DecimalField("expected_amount", max_digits=10, decimal_places=2)
+    logistics = models.DecimalField("logistics", max_digits=10, decimal_places=2,default=0.00)
+    destination = models.CharField("destination", max_length=256,default="not set",blank=True)
     remark = models.CharField("remark", max_length=200)
     channel = models.CharField("channel", max_length=5, choices=CHANNEL_CHOICES)
     payment_method = models.CharField("payment_method", max_length=8, choices=PAYMENT_CHOICES)
@@ -58,16 +60,13 @@ class Sales(models.Model):
     items = models.ManyToManyField(Items, verbose_name="items",related_name="items")
     purchase_id = models.CharField("purchase_id", max_length=150)
     paid = models.BooleanField("paid",default=True)
-    paid = models.BooleanField("paid",default=True)
-
     
-    
-
     class Meta:
         """Meta definition for Sales."""
 
         verbose_name = 'Sales'
         verbose_name_plural = 'Sales'
+        ordering = ["-date"]
 
     def __str__(self):
         """Unicode representation of Sales."""
