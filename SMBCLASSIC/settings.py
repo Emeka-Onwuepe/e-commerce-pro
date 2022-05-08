@@ -199,4 +199,4 @@ AWS_S3_OBJECT_PARAMETERS = {
 # STATICFILES_STORAGE = "SMBCLASSIC.aws_storage.StaticStorage"
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-django_heroku.settings(locals())
+django_heroku.settings(locals()) 
