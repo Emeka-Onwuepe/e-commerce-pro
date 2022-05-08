@@ -1,0 +1,346 @@
+body {
+    background-color: #F28B30;
+}
+
+.menu {
+    display: flex;
+    flex-wrap: wrap;
+    /* border: 2px solid red; */
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #FEF2E7;
+    position: fixed;
+    width: 100%;
+    z-index: 10;
+}
+
+
+/* .nav_and_user {
+    display: flex;
+    align-items: center;
+} */
+
+
+/* .user {
+    margin-right: 20px;
+    color: #003B4A;
+    padding: 3px;
+} */
+
+
+/* 
+.logout {
+    border: 0px;
+    padding: 5px;
+    color: #003B4A;
+    background-color: #FFA04D;
+} */
+
+.nav_and_user {
+    display: flex;
+    align-items: end;
+    /* flex-direction: column; */
+}
+
+.user {
+    color: #003B4A;
+    padding: 3px;
+    display: none;
+}
+
+.user2 {
+    position: absolute;
+    right: 10px;
+    top: 92px;
+}
+
+.logout {
+    border: 0px;
+    /* padding: 5px; */
+    color: white;
+    background-color: #824007;
+}
+
+
+/* #nav {} */
+
+.adminWrapper {
+    display: flex;
+    flex-grow: 1;
+    margin-top: 100px;
+}
+
+#sideNav {
+    display: none;
+}
+
+#mobile {
+    padding: 10px 30px 10px 10px;
+    background-color: #B36624;
+    width: 230px;
+    height: 85vh;
+    display: block;
+    position: fixed;
+    top: 75px;
+    z-index: 9;
+    overflow-y: scroll;
+}
+
+.close {
+    position: absolute;
+    top: 0px;
+    left: 185px;
+    font-size: 35px;
+    display: none;
+    margin-bottom: 0px;
+}
+
+#sideNav a,
+#mobile a {
+    display: block;
+    color: whitesmoke;
+    padding: 5px;
+}
+
+#sideNav a:hover,
+#mobile a:hover {
+    background-color: #d3721d;
+}
+
+main {
+    /* border: 2px solid black; */
+    padding: 30px 20px 0px 20px;
+    flex-grow: 1;
+}
+
+.get_user,
+.get_order {
+    margin-top: 10px;
+}
+
+.list_items {
+    display: flex;
+    flex-wrap: wrap;
+    /* border: 2px solid yellow; */
+    margin: 30px 0px;
+}
+
+#list_items {
+    margin: 0px;
+}
+
+.categories,
+.items {
+    padding: 5px;
+    flex-grow: 1;
+    /* background-color: #734217; */
+    border: 1px solid #FFA04D;
+    /* background-color: #734217; */
+    background-color: #D97C2B;
+    color: white;
+    /* border: 2px solid green; */
+}
+
+.content {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    /* border: 2px solid red; */
+}
+
+.innerItem {
+    flex-grow: 1;
+    /* border: 2px solid red; */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 5px;
+    align-items: center;
+}
+
+.innerItem p {
+    font-weight: bolder;
+    color: #003B4A;
+}
+
+#salesDetails,
+#flex_container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.customerData p {
+    margin-bottom: 5px;
+}
+
+a {
+    color: white;
+}
+
+.center {
+    text-align: center;
+    padding: 10px;
+}
+
+.reduceMarginBottom {
+    margin-bottom: -20px;
+}
+
+.description {
+    margin-bottom: 10px;
+}
+
+.delete {
+    margin: 0px 10px;
+}
+
+.delete button {
+    background-color: darkred;
+    color: white;
+}
+
+.editButton {
+    background-color: #30D0F2;
+    color: white;
+}
+
+#lastSale {
+    margin-bottom: 10px;
+}
+
+.class_data {
+    margin: 0px auto;
+}
+
+label {
+    color: #003B4A;
+}
+
+#salesList input {
+    width: 110px;
+}
+
+#salesList {
+    width: calc(100vw - 57px);
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    display: contents;
+}
+
+#buttondiv {
+    text-align: center;
+}
+
+.salesform .submit {
+    margin: 10px 0px 30px 0px;
+    padding: 6px;
+}
+
+.submit {
+    margin-left: 120px;
+}
+
+.tablecontainer {
+    overflow-x: auto;
+    width: 90%;
+}
+
+table {
+    counter-reset: tableCount;
+    width: 100%;
+}
+
+.counterCell::before {
+    content: counter(tableCount);
+    counter-increment: tableCount;
+}
+
+td,
+th {
+    padding: 5px;
+    border: 1px solid #FEF2E7;
+    text-align: center;
+}
+
+
+/* .errorlist li {
+    color: red;
+} */
+
+
+/* .tablecontainer input {
+    width: 100px;
+} */
+
+.reset {
+    background-color: white;
+    color: green;
+    text-align: center;
+    font-weight: bold;
+    padding: 10px;
+}
+
+.resetform {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.resetform button {
+    margin-left: 124px;
+    padding: 5px;
+}
+
+@media screen and (min-width:360px) {
+    .menu {
+        padding: 10px 20px;
+    }
+    #mobile {
+        top: 90px;
+    }
+}
+
+@media screen and (min-width:481px) {
+    .user2 {
+        display: none;
+    }
+    .user {
+        display: block;
+        margin-right: 10px;
+    }
+    .logout {
+        padding: 3px;
+    }
+    #mobile {
+        top: 99px;
+    }
+}
+
+@media screen and (min-width:481px) {
+    .get_user,
+    .get_order {
+        margin-top: 0px;
+    }
+}
+
+@media screen and (min-width:1000px) {
+    #sideNav {
+        padding: 10px;
+        background-color: #B36624;
+        width: 210px;
+        /* height: calc(100vh - 474px); */
+        height: 72vh;
+        display: block;
+        overflow-y: scroll;
+        /* border: 2px solid green; */
+    }
+    #salesList {
+        width: unset;
+        overflow-x: auto;
+    }
+}

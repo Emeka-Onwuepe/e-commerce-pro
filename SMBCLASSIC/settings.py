@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
-
+import django_heroku
 from pathlib import Path
 import os
 from datetime import timedelta
@@ -183,3 +183,20 @@ EMAIL_HOST_USER = 'emekaonwuepe@lotzcrocoz.com'
 DEFAULT_FROM_EMAIL = 'emekaonwuepe@lotzcrocoz.com'
 EMAIL_HOST_PASSWORD =  os.environ.get('password')
 EMAIL_PORT = 465
+
+
+# # AWS settings
+AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID ")
+AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
+AWS_STORAGE_BUCKET_NAME = "casper-web-files"
+AWS_S3_FILE_OVERWRITE = False
+DEFAULT_FILE_STORAGE = 'SMBCLASSIC.aws_storage.MediaStorage'
+AWS_DEFAULT_ACL = None
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+# STATICFILES_STORAGE = "SMBCLASSIC.aws_storage.StaticStorage"
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+django_heroku.settings(locals())

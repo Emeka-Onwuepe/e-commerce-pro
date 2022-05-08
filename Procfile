@@ -1,0 +1,1 @@
+web: gunicorn SMBCLASSIC.wsgi --log-file - 
