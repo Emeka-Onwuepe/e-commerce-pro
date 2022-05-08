@@ -1,7 +1,7 @@
 {% extends 'sales/sales.html' %} {% block title %}
 <title>Category</title>{% endblock title %} {% block main %}
 <h1>Category</h1>
-<form style="margin-bottom: 30px;" action="{% url 'product:categoryView' categoryId action %}" method="post">
+<form style="margin-bottom: 30px;" enctype="multipart/form-data" action="{% url 'product:categoryView' categoryId action %}" method="post">
     {% csrf_token %} {{form}}
     <button class="addbutton" type="submit">
         

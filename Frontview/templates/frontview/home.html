@@ -10,6 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;700&family=Roboto:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{% static 'CSS/frontview.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'CSS/homeproductpage.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'CSS/general.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'CSS/loader.css' %}">{% block styles %}
     <link rel="stylesheet" type="text/css" href="{% static 'CSS/slides.css' %}">{% endblock styles %}
@@ -56,36 +57,22 @@
         </header>
         <div class="seperator"></div>
         {% block banner %}
-        <div class="bannerdiv">
-            <div class="svgdiv">
-                <svg width="100%" stroke="transparent" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none">
-          <path  d="M0 0 L40 0 L60 50 L40 100 L0 100 " fill="#FEF2E7" />
-          </svg>
 
+        <div class="banner">
+            <div class="bannertext">
+                <h1 class="loader2">
+                    <span>SMB </span> <span>Classic</span>
+                    <span>Wears </span> <span>Boutique </span> </h1>
+                <p>RC No: 3265823</p>
+                <p>...your look, our priority</p>
             </div>
-            <div class="banner">
-                <img class="bannerImage" src="{% static 'CSS/shop.jpg' %}" alt="" />
-                <div></div>
-                <div class="bannertext">
-                </div>
+            <div class="innerbanner">
 
-            </div>
-
-            <div class="bannercover">
-                <div class="bannerflex">
-                    <div class="banneritems">
-                        <h1>SMB Classic Wears Boutique</h1>
-                        <p class="lesser">RC No: 3265823</p>
-                        <p class="lesser">Our physical shops are situated at Abuja but we deliver nation wide</p>
-                        <p style="padding:0px 35px 0px 20px;font-weight:bold">...your look, our priority</p>
-
-                    </div>
-                    <div class="banneritems">
-                        <p class="less product_details">Men and Women Wears Suits | Shoes | Jeans | Chinos | Sneakers | T-Shirts | Under-wears | Night Wears | Jewelries and other accessories</p>
-
-
-                    </div>
-                </div>
+                <img class="bannerImage" src="{% static 'CSS/images/img1.png' %}" alt="" />
+                <img class="bannerImage" src="{% static 'CSS/images/img-2.png' %}" alt="" />
+                <img class="bannerImage" src="{% static 'CSS/images/img-3.png' %}" alt="" />
+                <img class="bannerImage" src="{% static 'CSS/images/img-4.png' %}" alt="" />
+                <img class="bannerImage" src="{% static 'CSS/images/img5.png' %}" alt="" />
             </div>
 
         </div>
@@ -111,14 +98,51 @@
                 </div>
                 {% block main %}
 
-                <section class="list_items">
+                <section class="category_items">
                     {% for category in sorted_categories %}
-                    <div class="items" id='catgorylist'>
-                        <div class="inneritem ">
-                            <a href="{% url 'frontview:categoryView' category.id %}"> {{category}}</a>
+                    <div id='catgorylist'>
+                        <div class="innercategory">
+                            <a class="catlink" href="{% url 'frontview:categoryView' category.id %}"> {{category}}</a>
+                            <a class="catlink2" href="{% url 'frontview:categoryView' category.id %}">Shop Category</a>
+                            <img src="{{category.image.url}}" alt="{{category.name}} image" />
                         </div>
                     </div>
                     {% endfor %}
+                </section>
+
+                <section class="store_features">
+                    <div class="features">
+                        <img class="bannerImage" src="{% static 'CSS/png/delivery.png' %}" alt="" />
+                        <h3>Nation Wide Delivery</h3>
+                        <p>Our physical shops are situated at Abuja but we deliver nation wide, distance is never a barrier.</p>
+                    </div>
+                    <div class="features">
+                        <img class="bannerImage" src="{% static 'CSS/png/certificate.png' %}" alt="" />
+                        <h3>Registered and Certified</h3>
+                        <p>Our business is a registered and certified as a legal business entity in Nigeria. RC No: 3265823</p>
+                    </div>
+                    <div class="features">
+                        <img class="bannerImage" src="{% static 'CSS/png/secure.png' %}" alt="" />
+                        <h3>Secure Shopping</h3>
+                        <p>Your payment data are securely transmitted and handled. Your personal details are never shared with third party. </p>
+                    </div>
+                    <div class="features">
+                        <img class="bannerImage" src="{% static 'CSS/png/refund.png' %}" alt="" />
+                        <h3>Money Back Guaranty</h3>
+                        <p>You can return any of our goods and seek for refund if you we delivered a product different from what you purchased.</p>
+                    </div>
+
+                    <div class="features">
+                        <img class="bannerImage" src="{% static 'CSS/png/support.png' %}" alt="" />
+                        <h3>24/7 Customer Service</h3>
+                        <p>You can easily reach us through different channels of communcations. Please, refer to the contact us section for our contact details</p>
+                    </div>
+                </section>
+
+                <h3 style="margin-top: 15px;margin-bottom:10px">RECENTLY ADDED</h3>
+                <section class="products">
+
+                    {% for product in products %} {% include "frontview/product_template.html" %} {% endfor %}
                 </section>
 
                 <section id='contact_us' class="contact_us">

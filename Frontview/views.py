@@ -1,3 +1,4 @@
+from itertools import product
 import json
 import requests
 from django.urls import reverse
@@ -14,8 +15,8 @@ from SMBCLASSIC.variables import official_email,rootUrl,admin_staff
 
 # Create your views here.
 def homeView(request):
-    
-    return render(request,'frontview/home.html')
+    products = Product.objects.all()[:10]    
+    return render(request,'frontview/home.html',{"products":products})
 
 def cartView(request): 
     locations = Location.objects.all()

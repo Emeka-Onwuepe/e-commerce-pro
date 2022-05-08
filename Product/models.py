@@ -8,6 +8,7 @@ class Category(models.Model):
 
     # TODO: Define fields here
     name = models.CharField("Category",max_length = 150,null=False,blank=False)
+    image = models.ImageField(verbose_name="image", default="image",null=True,blank=True)
     class Meta:
         """Meta definition for Category."""
 
@@ -66,6 +67,7 @@ class Product(models.Model):
     color = models.CharField("color",max_length = 200,null=False,blank=False)
     image = models.ImageField(verbose_name="image", default="image",null=True,blank=True)
     price = models.DecimalField("price", max_digits=50,default=0, decimal_places=2,null=True,blank=True)
+    date = models.DateField("date", auto_now=False, auto_now_add=True)
     publish = models.BooleanField(default=False)
     branches = models.ManyToManyField(Branch, verbose_name="branches",related_name="products_branches",blank=True)
 
@@ -74,6 +76,7 @@ class Product(models.Model):
 
         verbose_name = 'Product'
         verbose_name_plural = 'Products'
+        ordering = ['-date']
 
     def __str__(self):
         """Unicode representation of Product."""

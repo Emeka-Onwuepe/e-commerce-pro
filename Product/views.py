@@ -17,7 +17,7 @@ def categoryView(request,categoryId,action):
         category_instance = Category.objects.get(id=categoryId)
     
     if request.method == "POST" and action == "add":
-        form = CategoryForm(data= request.POST)
+        form = CategoryForm(data= request.POST,files=request.FILES)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse('product:categoryView',
@@ -28,7 +28,8 @@ def categoryView(request,categoryId,action):
             
     if action == "edit":
         if request.method == "POST":
-            form = CategoryForm(data= request.POST,instance=category_instance)
+            form = CategoryForm(data= request.POST,files=request.FILES,instance=category_instance)
+         
             if form.is_valid():
                 form.save()
                 return HttpResponseRedirect(reverse('product:categoryView',
@@ -101,7 +102,7 @@ def sizeView(request,sizeId,action):
         size_instance = Size.objects.get(id=sizeId)
     
     if request.method == "POST" and action == "add":
-        form = SizeForm(data= request.POST,files=request.FILES)
+        form = SizeForm(data= request.POST)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse('product:sizeView',

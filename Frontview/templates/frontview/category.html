@@ -20,6 +20,7 @@
 <div class="products">
 
 
-    {% for product_type in sorted_product_types %} {% for product in product_type.product_type.all %} {% if product.publish %} {% include "frontview/product_template.html" %} {% endif %} {% endfor %} {% endfor %}
+    {% for product_type in sorted_product_types %} {% for product in product_type.product_type.all %}
+     {% if product.publish %} {% include "frontview/product_template.html" %} {% endif %} {% endfor %} {% endfor %}
 </div>
 {% endblock main %}
