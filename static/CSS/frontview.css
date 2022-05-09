@@ -158,7 +158,7 @@ main {
     justify-content: space-evenly;
     flex-wrap: wrap;
     /* margin-top: -10px; */
-    padding: 10px 10px 0px 10px;
+    padding-top: 10px;
 }
 
 #catgorylist {
@@ -199,7 +199,7 @@ main {
 }
 
 .features {
-    width: 250px;
+    width: 100%;
     padding: 10px;
     text-align: center;
     background-color: white;
@@ -420,7 +420,7 @@ legend {
 
 @media screen and (min-width:360px) {
     main {
-        padding: 20px 20px 0px 20px;
+        padding: 20px 10px 0px 10px;
         flex-grow: 1;
     }
     .customerDetails input {
@@ -441,14 +441,14 @@ legend {
     }
     #catgorylist,
     #catgorylist img {
-        width: 300px;
-        height: 300px;
+        width: 320px;
+        height: 320px;
     }
 }
 
 @media screen and (min-width:481px) {
     main {
-        padding: 10px 20px 0px 20px;
+        padding: 10px 10px 0px 10px;
         flex-grow: 1;
     }
     .cart span {
@@ -462,6 +462,28 @@ legend {
     }
     #mobile {
         top: 99px;
+    }
+}
+
+@media screen and (min-width:520px) {
+    .features {
+        width: 250px;
+    }
+}
+
+@media screen and (min-width:588px) {
+    #catgorylist,
+    #catgorylist img {
+        width: 280px;
+        height: 280px;
+    }
+}
+
+@media screen and (min-width:700px) {
+    #catgorylist,
+    #catgorylist img {
+        width: 320px;
+        height: 320px;
     }
 }
 
