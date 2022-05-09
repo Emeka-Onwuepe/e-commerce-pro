@@ -48,10 +48,20 @@
 
 #product {
     padding: 10px;
-    width: 230px;
+    width: 270px;
     /* margin-right: 20px; */
     margin-bottom: 20px;
     box-shadow: grey 2px 2px 5px;
+}
+
+#product img {
+    width: 250px;
+    height: auto;
+}
+
+#product button {
+    margin-left: 78.5px;
+    margin-top: 7px;
 }
 
 .order {
@@ -93,16 +103,6 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
-}
-
-#product img {
-    width: 210px;
-    height: auto;
-}
-
-#product button {
-    margin-left: 83.55px;
-    margin-top: 7px;
 }
 
 #product p,
@@ -195,6 +195,19 @@
 }
 
  */
+
+
+/* @media screen and (min-width:360px) {
+    #product img {
+        width: 150px;
+    }
+    #product {
+        width: 170px;
+    }
+    #product button {
+        margin-left: 28.55px;
+    }
+} */
 
 @media screen and (min-width:750px) {
     #decisionBox,
