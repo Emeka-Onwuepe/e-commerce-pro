@@ -13,7 +13,8 @@
     <link rel="stylesheet" type="text/css" href="{% static 'CSS/homeproductpage.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'CSS/general.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'CSS/loader.css' %}">{% block styles %}
-    <link rel="stylesheet" type="text/css" href="{% static 'CSS/slides.css' %}">{% endblock styles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'CSS/slides.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'CSS/slide_category.css' %}">{% endblock styles %}
     <link rel="shortcut icon" href="{% static 'CSS/logo.png' %}" type="image/png">
     <link rel="apple-touch-icon" href="{% static 'CSS/logo.png' %}">
     <link rel="icon" href="{% static 'CSS/logo4.png' %}" type="image/png"> {% block title %}
@@ -103,7 +104,12 @@
                 </div>
                 {% block main %}
 
+                <section class="slide_category">
+                    {% include "frontview/slide_category.html" %}
+                </section>
+
                 <section class="category_items">
+
                     {% for category in sorted_categories %}
                     <div id='catgorylist'>
                         <div class="innercategory">

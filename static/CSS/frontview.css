@@ -1,5 +1,5 @@
 body {
-    background-color: whitesmoke;
+    background-color: white;
 }
 
 .menu {
@@ -175,16 +175,19 @@ main {
     padding: 10px;
     opacity: 0.7;
     font-size: 20px;
+    display: none;
 }
 
 .catlink2 {
     position: absolute;
     background-color: #1C0B01;
     padding: 10px;
+    /* z-index: 1; */
     opacity: 0.8;
     font-size: 20px;
     margin-top: 120px;
     margin-left: 70px;
+    display: none;
 }
 
 #catgorylist img {
