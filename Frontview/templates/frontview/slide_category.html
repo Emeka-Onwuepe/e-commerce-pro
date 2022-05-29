@@ -14,26 +14,26 @@
         <input type="radio" name="radio_btn" onclick="handleClick(this)" id="radio4">
 
         <div class="slide first" id="1">
-            <a class="catlink" href="{% url 'frontview:categoryView' 1 %}"> Suits</a>
-            <a class="catlink2" href="{% url 'frontview:categoryView' 2 %}">Shop Category</a>
+            <a class="catlink" href="{% url 'frontview:categoryView' 'suits' %}"> Suits</a>
+            <a class="catlink2" href="{% url 'frontview:categoryView' 'suits' %}">Shop Category</a>
             <img src="{% static 'CSS/slide_img/suits.jpg' %}" alt="Suits image" />
         </div>
 
         <div class="slide" id="2">
-            <a class="catlink" href="{% url 'frontview:categoryView' 1 %}"> Shoes</a>
-            <a class="catlink2" href="{% url 'frontview:categoryView' 2 %}">Shop Category</a>
+            <a class="catlink" href="{% url 'frontview:categoryView' 'shoes' %}"> Shoes</a>
+            <a class="catlink2" href="{% url 'frontview:categoryView' 'shoes' %}">Shop Category</a>
             <img src="{% static 'CSS/slide_img/shoes.jpg' %}" alt=" Shoes image" />
         </div>
 
         <div class="slide" id="3">
-            <a class="catlink" href="{% url 'frontview:categoryView' 1 %}">Shirts</a>
-            <a class="catlink2" href="{% url 'frontview:categoryView' 2 %}">Shop Category</a>
+            <a class="catlink" href="{% url 'frontview:categoryView' 'shirts' %}">Shirts</a>
+            <a class="catlink2" href="{% url 'frontview:categoryView' 'shirts' %}">Shop Category</a>
             <img src="{% static 'CSS/slide_img/shirts.jpg' %}" alt="Shirts image" />
         </div>
 
         <div class="slide" id="4">
-            <a class="catlink" href="{% url 'frontview:categoryView' 1 %}">Travelling Boxes</a>
-            <a class="catlink2" href="{% url 'frontview:categoryView' 2 %}">Shop Category</a>
+            <a class="catlink" href="{% url 'frontview:categoryView' 'bags' %}">Bags</a>
+            <a class="catlink2" href="{% url 'frontview:categoryView' 'bags' %}">Shop Category</a>
             <img src="{% static 'CSS/slide_img/box.jpg' %}" alt="Travelling Boxes image" />
         </div>
 

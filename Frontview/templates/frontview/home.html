@@ -86,7 +86,7 @@
                     <nav>
                         {% for category in sorted_categories %}
 
-                        <a href="{% url 'frontview:categoryView' category.id %}"> {{category}}</a> {% endfor %}
+                        <a href="{% url 'frontview:categoryView' category.name %}"> {{category}}</a> {% endfor %}
 
                     </nav>
                 </div>
@@ -113,8 +113,8 @@
                     {% for category in sorted_categories %}
                     <div id='catgorylist'>
                         <div class="innercategory">
-                            <a class="catlink" href="{% url 'frontview:categoryView' category.id %}"> {{category}}</a>
-                            <a class="catlink2" href="{% url 'frontview:categoryView' category.id %}">Shop Category</a>
+                            <a class="catlink" href="{% url 'frontview:categoryView' category.name %}"> {{category}}</a>
+                            <a class="catlink2" href="{% url 'frontview:categoryView' category.name %}">Shop Category</a>
                             <img src="{{category.image.url}}" alt="{{category.name}} image" />
                         </div>
                     </div>
