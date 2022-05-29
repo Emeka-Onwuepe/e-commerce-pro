@@ -1,0 +1,129 @@
+<!-- <div id='catgorylist'>
+    <div class="innercategory">
+        <a class="catlink" href="{% url 'frontview:categoryView' 1 %}"> {{category}}</a>
+        <a class="catlink2" href="{% url 'frontview:categoryView' 2 %}">Shop Category</a>
+        <img src="" alt="{{category.name}} image" />
+    </div>
+</div> -->
+{% load static %}
+<div class="slider">
+    <div class="slides">
+        <input type="radio" name="radio_btn" onclick="handleClick(this)" id="radio1">
+        <input type="radio" name="radio_btn" onclick="handleClick(this)" id="radio2">
+        <input type="radio" name="radio_btn" onclick="handleClick(this)" id="radio3">
+        <input type="radio" name="radio_btn" onclick="handleClick(this)" id="radio4">
+
+        <div class="slide first" id="1">
+            <a class="catlink" href="{% url 'frontview:categoryView' 'suits' %}"> Suits</a>
+            <a class="catlink2" href="{% url 'frontview:categoryView' 'suits' %}">Shop Category</a>
+            <img src="{% static 'CSS/slide_img/suits.jpg' %}" alt="Suits image" />
+        </div>
+
+        <div class="slide" id="2">
+            <a class="catlink" href="{% url 'frontview:categoryView' 'shoes' %}"> Shoes</a>
+            <a class="catlink2" href="{% url 'frontview:categoryView' 'shoes' %}">Shop Category</a>
+            <img src="{% static 'CSS/slide_img/shoes.jpg' %}" alt=" Shoes image" />
+        </div>
+
+        <div class="slide" id="3">
+            <a class="catlink" href="{% url 'frontview:categoryView' 'shirts' %}">Shirts</a>
+            <a class="catlink2" href="{% url 'frontview:categoryView' 'shirts' %}">Shop Category</a>
+            <img src="{% static 'CSS/slide_img/shirts.jpg' %}" alt="Shirts image" />
+        </div>
+
+        <div class="slide" id="4">
+            <a class="catlink" href="{% url 'frontview:categoryView' 'bags' %}">Bags</a>
+            <a class="catlink2" href="{% url 'frontview:categoryView' 'bags' %}">Shop Category</a>
+            <img src="{% static 'CSS/slide_img/box.jpg' %}" alt="Travelling Boxes image" />
+        </div>
+
+        <div class="navigation-auto">
+            <div class="auto-btn1"></div>
+            <div class="auto-btn2"></div>
+            <div class="auto-btn3"></div>
+            <div class="auto-btn4"></div>
+        </div>
+
+    </div>
+
+    <div class="navigation-manual">
+        <label for="radio1" class="manual-btn"></label>
+        <label for="radio2" class="manual-btn"></label>
+        <label for="radio3" class="manual-btn"></label>
+        <label for="radio4" class="manual-btn"></label>
+        <!-- <label for="radio5" class="manual-btn"></label> -->
+    </div>
+
+</div>
+
+<script>
+    let counter = 1
+    const handleLinkDisplay = (num, auto = true) => {
+        if (!auto) {
+            counter = num
+
+
+        }
+        let arr;
+        switch (num) {
+            case 1:
+                arr = [2, 3, 4]
+                break;
+            case 2:
+                arr = [1, 3, 4]
+                break;
+            case 3:
+                arr = [2, 1, 4]
+                break;
+            case 4:
+                arr = [2, 3, 1]
+                break;
+
+        }
+
+        let inVeiw = document.getElementById(num)
+        let incatlinks = inVeiw.getElementsByTagName("a")
+        let catlink2 = inVeiw.getElementsByClassName('catlink2')[0]
+
+        let inVeiwWidth = inVeiw.clientWidth
+        let inVeiwHeight = inVeiw.clientHeight
+
+        for (id of arr) {
+            let outVeiw = document.getElementById(id)
+            let catlinks = outVeiw.getElementsByTagName("a")
+            for (link of catlinks) {
+                link.style.display = 'none'
+            }
+        }
+
+        setTimeout(() => {
+            for (link of incatlinks) {
+                link.style.display = 'block'
+            }
+            let left = (inVeiwWidth - catlink2.offsetWidth) / 2
+            let top = (inVeiwHeight - catlink2.offsetHeight) / 2
+            catlink2.style.marginLeft = left + 'px'
+            catlink2.style.marginTop = top + 'px'
+
+        }, 1500)
+
+    }
+
+    handleLinkDisplay(counter)
+    setInterval(() => {
+        document.getElementById('radio' + counter).checked = true;
+        handleLinkDisplay(counter)
+        counter++
+        if (counter > 4) {
+            counter = 1
+        }
+    }, 5000)
+
+    const handleClick = (elem) => {
+        const slides = document.getElementsByName('slide')
+        for (slide of slides) {
+            slide.style.display = "none"
+        }
+        handleLinkDisplay(parseInt(elem.id[5]), false)
+    }
+</script>

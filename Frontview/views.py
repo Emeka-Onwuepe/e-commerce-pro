@@ -23,8 +23,8 @@ def cartView(request):
     return render(request,'frontview/cart.html',{"public_key":settings.PAYSTACT_PUBLIC_KEY,
                                                  "locations":locations})
 
-def categoryView(request,catId):
-    category = get_object_or_404(Category,pk=catId)
+def categoryView(request,cat):
+    category = get_object_or_404(Category,name__iexact=cat)
     unsorted_product_types = Product_Type.objects.filter(category=category.id,
                                                             product_type__publish = True)
     sorted_product_types = []
