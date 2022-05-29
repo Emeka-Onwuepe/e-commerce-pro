@@ -148,7 +148,7 @@ AUTH_USER_MODEL = 'User.User'
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'WAT'
 
 USE_I18N = True
 
