@@ -113,8 +113,8 @@
                     {% for category in sorted_categories %}
                     <div id='catgorylist'>
                         <div class="innercategory">
-                            <a class="catlink" href="{% url 'frontview:categoryView' category.name %}"> {{category}}</a>
-                            <a class="catlink2" href="{% url 'frontview:categoryView' category.name %}">Shop Category</a>
+                            <a id="catlink" class="catlink" href="{% url 'frontview:categoryView' category.name %}"> {{category}}</a>
+                            <a id="catlink2" class="catlink2" href="{% url 'frontview:categoryView' category.name %}">Shop Category</a>
                             <img src="{{category.image.url}}" alt="{{category.name}} image" />
                         </div>
                     </div>
@@ -174,6 +174,8 @@
                                 <h4>Call</h4>
                                 <p>Phone:
                                     <a href="tel:+2348038559808">08038559808</a>
+                                <br/>
+                                    <a style='margin-left:56px' href="tel:+2347061122735">07061122735</a>
                                 </p>
                             </div>
 
@@ -182,6 +184,9 @@
                                 <p>Shop No. G-002, Ground Floor,
                                     <br/> Area 1 Shopping Complex,
                                     <br/> Garki, Abuja</p>
+                                <p style='margin-top: 10px'>Block B1 Shop 5,
+                                    <br/> Wuse Modern Market Extension,
+                                    <br/> Wuse, Abuja</p>
                             </div>
 
                             <div id='socials'>
@@ -206,8 +211,8 @@
                 </div>
             </div>
 
-            <div id="backToTop" class="backToTop">
-                <a href="#">&#10094;</a>
+            <div onclick="window.scrollTo({top: 0, behavior:'smooth'})" id="backToTop" class="backToTop">
+                <a onclick="window.scrollTo({top: 0, behavior:'smooth'})">&#10094;</a>
             </div>
         </div>
         <footer>

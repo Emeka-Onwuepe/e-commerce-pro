@@ -51,7 +51,9 @@
     width: 270px;
     /* margin-right: 20px; */
     margin-bottom: 20px;
-    box-shadow: grey 2px 2px 5px;
+    box-shadow: 0px 2px 8px 0px rgba(17, 17, 17, 0.3);
+    -ms-box-shadow: 0px 2px 8px 0px rgba(17, 17, 17, 0.3);
+    -webkit-box-shadow: 0px 2px 8px 0px rgba(17, 17, 17, 0.3);
 }
 
 #product img {
@@ -60,8 +62,10 @@
 }
 
 #product button {
-    margin-left: 78.5px;
+    margin-left: 77.5px;
     margin-top: 7px;
+    padding: 6px;
+    background-color: #9E612C;
 }
 
 .order {

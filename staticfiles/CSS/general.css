@@ -167,11 +167,13 @@ footer span {
     -webkit-transform: rotate(90deg);
     -ms-transform: rotate(90deg);
     display: none;
+    cursor: pointer;
 }
 
 .backToTop a {
     color: white;
     font-size: 30px;
+    cursor: pointer;
 }
 
 @media screen and (min-width:360px) {

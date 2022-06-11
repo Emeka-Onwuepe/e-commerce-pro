@@ -190,11 +190,6 @@ main {
     display: none;
 }
 
-#catlink2,
-#catlink {
-    display: block;
-}
-
 #catgorylist img {
     width: 280px;
     height: 280px;
