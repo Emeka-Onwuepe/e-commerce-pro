@@ -2,8 +2,6 @@ asgiref==3.3.1
 certifi==2020.12.5
 cffi==1.14.4
 chardet==4.0.0
-coinbase==2.1.0
-coinbase-commerce==1.0.1
 colorama==0.4.4
 coreapi==2.3.3
 coreschema==0.0.4
@@ -13,7 +11,6 @@ Django==3.1.5
 django-cors-headers==3.6.0
 django-filter==2.4.0
 django-guardian==2.3.0
-django-heroku==0.3.1
 django-rest-knox==4.1.0
 django-storages==1.11.1
 djangorestframework==3.12.2
@@ -25,9 +22,7 @@ Jinja2==2.11.2
 jmespath==0.10.0
 Markdown==3.3.3
 MarkupSafe==1.1.1
-mysqlclient==2.0.3
 Pillow==8.1.0
-psycopg2==2.8.6
 pycparser==2.20
 pycryptodome==3.10.1
 Pygments==2.7.4
