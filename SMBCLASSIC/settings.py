@@ -29,8 +29,8 @@ SECRET_KEY = os.environ.get("SECRET_KEY_8")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1','http://127.0.0.1:8000','https://stocksaleapp.herokuapp.com']
-
+# ALLOWED_HOSTS = ['127.0.0.1','http://127.0.0.1:8000','https://stocksaleapp.herokuapp.com']
+ALLOWED_HOSTS = ['https://smbclassic.com.ng','smbclassic.com.ng']
 
 # Application definition
 
@@ -179,24 +179,24 @@ PAYSTACT_PUBLIC_KEY = os.environ.get("PAYSTACT_PUBLIC_KEY")
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_SSL = True
 EMAIL_HOST = 'lotzcrocoz.com'
-EMAIL_HOST_USER = 'emekaonwuepe@lotzcrocoz.com'
-DEFAULT_FROM_EMAIL = 'emekaonwuepe@lotzcrocoz.com'
+EMAIL_HOST_USER = 'info@smbclassic.com.ng'
+DEFAULT_FROM_EMAIL = 'info@smbclassic.com.ng'
 EMAIL_HOST_PASSWORD =  os.environ.get('password')
 EMAIL_PORT = 465
 
 
-# # AWS settings
-AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID ")
-AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
-AWS_STORAGE_BUCKET_NAME = "casper-web-files"
-AWS_S3_FILE_OVERWRITE = False
-DEFAULT_FILE_STORAGE = 'SMBCLASSIC.aws_storage.MediaStorage'
-AWS_DEFAULT_ACL = None
-AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
-AWS_S3_OBJECT_PARAMETERS = {
-    'CacheControl': 'max-age=86400',
-}
-# STATICFILES_STORAGE = "SMBCLASSIC.aws_storage.StaticStorage"
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# # # AWS settings
+# AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID ")
+# AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
+# AWS_STORAGE_BUCKET_NAME = "casper-web-files"
+# AWS_S3_FILE_OVERWRITE = False
+# DEFAULT_FILE_STORAGE = 'SMBCLASSIC.aws_storage.MediaStorage'
+# AWS_DEFAULT_ACL = None
+# AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+# AWS_S3_OBJECT_PARAMETERS = {
+#     'CacheControl': 'max-age=86400',
+# }
+# # STATICFILES_STORAGE = "SMBCLASSIC.aws_storage.StaticStorage"
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-django_heroku.settings(locals()) 
+# django_heroku.settings(locals()) 
