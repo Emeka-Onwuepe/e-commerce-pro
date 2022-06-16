@@ -126,7 +126,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': os.environ.get("db_name"),
         'USER':  os.environ.get("db_user"),
-        'HOST': 'https://smbclassic.com.ng',
+        'HOST': 'localhost',
         'PASSWORD':  os.environ.get("db_password"),
         'PORT': ''
     }
