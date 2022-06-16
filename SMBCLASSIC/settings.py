@@ -29,7 +29,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY_8")
 DEBUG = True
 
 # ALLOWED_HOSTS = ['127.0.0.1','http://127.0.0.1:8000','https://stocksaleapp.herokuapp.com']
-ALLOWED_HOSTS = ['https://smbclassic.com.ng','smbclassic.com.ng']
+ALLOWED_HOSTS = ['https://smbclassic.com.ng','smbclassic.com.ng','www.smbclassic.com.ng']
 
 # Application definition
 
