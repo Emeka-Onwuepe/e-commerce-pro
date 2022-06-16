@@ -110,16 +110,29 @@ WSGI_APPLICATION = 'SMBCLASSIC.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'smbclassic',
+#         'USER': 'root',
+#         'HOST': 'localhost',
+#         'PASSWORD': '',
+#         'PORT': ''
+#     }
+# }
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'smbclassic',
-        'USER': 'root',
-        'HOST': 'localhost',
-        'PASSWORD': '',
+        'NAME': os.environ.get("db_name"),
+        'USER':  os.environ.get("db_user"),
+        'HOST': 'https://smbclassic.com.ng',
+        'PASSWORD':  os.environ.get("db_password"),
         'PORT': ''
     }
 }
+
+
 
 
 # Password validation
